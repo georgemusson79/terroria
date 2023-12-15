@@ -1,0 +1,235 @@
+//Player.cpp
+#include "Main.h"
+#include "debug.h"
+#include "Player.h"
+#include "Colliders.h"
+#include "Item.h"
+#include "Cursor.h"
+#include "Tiles.h"
+#include "Item_pickup.h"
+Player::Player(Vector2 pos) {
+	this->frameCount = 3;
+	this->renderToScreen = true;
+	this->health = 400;
+	this->maxHealth = 400;
+	this->position = pos;
+	this->width =2;
+	this->maxXVelocity = 0.4;
+	this->height = 3.5;
+	this->setTexture("assets\\player\\plr.png");
+	this->armTexture = IMG_LoadTexture(Main::renderer,"assets\\player\\arm.png");
+	this->hitboxes.push_back(new SquareHitbox({ this->position.X,this->position.Y }, this->width, this->height));
+	this->inventory= std::vector<std::vector<std::shared_ptr<Item>>>(inventoryRows, std::vector<std::shared_ptr<Item>>(inventoryColumns));
+}
+
+Player::Player() {
+	
+}
+
+void Player::update() {
+	this->handleKeyInput();
+	this->handleMouseInput();
+	if (this->usingItem) this->swingAnim(this->inventory[selectedHBItem][0].get());
+	this->velocity = this->moveEntity(this->velocity);
+	if (this->openedChest != nullptr && this->position.distance({ this->openedChest->X,this->openedChest->Y }) > 9) this->openedChest->close();
+	this->animationTimePassed++;;
+	Main::camera->setPos(this->center.X, this->center.Y);
+	this->handleWalking();
+	checkDmgImmune();
+	Main::updateLightMap(this->center, 500);
+	Main::player->isCollidingWithGUI = false;
+}
+
+
+void Player::clearInventory() {
+	for (int row = 0; row < this->inventoryRows; row++) {
+		for (int col = 0; col < this->inventoryColumns; col++) {
+			this->inventory[row][col].reset();
+		}
+	}
+}
+
+
+
+bool Player::hurt(int dmg, float kb,Entity* src) {
+	if (Entity::hurt(dmg,kb)) {
+		this->invulnerable = true;
+		this->dmgImmuneTime = SDL_GetTicks();
+		return true;
+	}
+	return false;
+
+}
+
+void Player::kill() {
+	if (this == Main::player) Main::player = nullptr;
+	delete this;
+}
+
+bool Player::renderEntity() {
+	if (!this->renderToScreen) return false;
+	int alpha = 255;
+	if (this->invulnerable) alpha = 128;
+	SDL_SetTextureAlphaMod(this->texture, alpha);
+	SDL_SetTextureAlphaMod(this->armTexture, alpha);
+	iVector2 renderPos = Main::convertWorldPosToCameraPos(this->position);
+	Vector2 dims = { Main::convertTileSizeToPixelSize(this->width * this->scale), Main::convertTileSizeToPixelSize(this->height * this->scale) };
+	SDL_Rect r = { renderPos.X,renderPos.Y,dims.X,dims.Y };
+	SDL_Rect partToRender = Main::getTextureFrame(this->animationFrame, this->frameCount, this->texture, this->textureWidth, this->textureHeight, 0, 0);
+	SDL_RenderCopyEx(Main::renderer, this->texture, &partToRender, &r, this->rotation, &this->rotationPoint, this->getSpriteDirection());
+	if (Debug::renderHitboxes) this->renderHitboxes();
+
+	this->armDims= { this->width * 0.2,this->height * 0.4};
+	this->armPos = { center.X - (armDims.X / 2),position.Y + (this->height * 0.4) };
+	SDL_Point armdims = { Main::convertTileSizeToPixelSize(armDims.X), Main::convertTileSizeToPixelSize(armDims.Y) };
+	iVector2 armpos = Main::convertWorldPosToCameraPos({ center.X-(armDims.X/2),position.Y+(this->height*0.4)});
+	SDL_Rect armRect = { armpos.X,armpos.Y,armdims.x,armdims.y };
+	SDL_Point rotationPt = { armRect.w/2, 0};
+	double rotation = armRotation * this->hDirection;
+	SDL_RenderCopyEx(Main::renderer, this->armTexture, NULL, &armRect,rotation,&rotationPt,this->getSpriteDirection());
+	return true;
+}
+
+
+bool Player::dropItem(std::shared_ptr<Item>& item) {
+	if (item != nullptr) {
+		ItemPickup* pickup = new ItemPickup(new Item(*item), this->position);
+		pickup->velocity = Vector2(0.3 * this->hDirection, -0.3);
+		item.reset();
+		return true;
+	}
+	return false;
+}
+
+
+Vector2 Player::moveEntity(Vector2 velocity) {
+	Vector2 vel=Entity::moveEntity(velocity);
+	if (!this->isWalking && this->onGround)  {
+		vel.X -= Main::setSign(vel.X, deceleration);
+		if (abs(velocity.X) < deceleration) vel.X = 0;
+	}
+	return vel;
+}
+
+void Player::jump() {
+	if (this->onGround) this->velocity.Y =-abs(jumpVelocity) - vAcceleration;
+}
+
+
+void Player::rightClick() {
+	Vector2 pos = Cursor::cursorWorldPos;
+	if (Main::tiles[pos.X][pos.Y] != nullptr) {
+		Main::tiles[pos.X][pos.Y]->onRightClick(this);
+		//Main::tiles[pos.X][pos.Y]->destroy();
+	}
+}
+void Player::leftClick() {
+	Vector2 pos = Cursor::cursorWorldPos;
+	if (Main::tiles[pos.X][pos.Y] != nullptr) Main::tiles[pos.X][pos.Y]->onLeftClick(this);
+	this->swingAnim(this->inventory[selectedHBItem][0].get());
+}
+
+void Player::handleMouseInput() {
+	Uint32 mousePressed = SDL_GetMouseState(nullptr, nullptr);
+	if (mousePressed & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+		this->leftClick();
+		auto pos = Cursor::cursorWorldPos;
+		if (mousePressed!=Main::heldMouseKeys && !Main::player->isCollidingWithGUI) Chest* h = new Chest(pos.X, pos.Y, true); 
+	}
+
+	else if (mousePressed & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+		this->rightClick();
+	}
+	Main::heldMouseKeys = mousePressed;
+}
+
+void Player::handleKeyInput() {
+	const Uint8* keys=SDL_GetKeyboardState(nullptr);
+	this->isWalking = false;
+	if (keys[SDL_SCANCODE_SPACE]) {
+		this->jump();
+	}
+
+	if (keys[SDL_SCANCODE_A]) {
+		this->velocity.X -= (this->velocity.X > -this->maxXVelocity) ? this->hAcceleration : 0;
+		this->isWalking = true;
+	}
+
+
+	if (keys[SDL_SCANCODE_D]) {
+		this->velocity.X += (this->velocity.X < maxXVelocity) ? this->hAcceleration : 0;
+		this->isWalking = true;
+	}
+
+	if (keys[SDL_SCANCODE_ESCAPE] && !Main::heldKeys[SDL_SCANCODE_ESCAPE]) {
+		Main::player->inventoryOpen = !Main::player->inventoryOpen;
+		if (this->openedChest != nullptr) this->openedChest->close();
+	}
+
+	if (keys[SDL_SCANCODE_K] && !Main::heldKeys[SDL_SCANCODE_K]) Main::camera->setZoom(Main::camera->zoom() - 1);
+	memcpy(Main::heldKeys, keys, SDL_NUM_SCANCODES);
+}
+
+bool Player::handleWalking() {
+	if (abs(velocity.X) < 0.03) {
+		animationFrame = (int)PlayerSprite::IDLE;
+		if (!this->usingItem) armRotation = 0;
+		return false;
+	}
+ 
+
+	if (this->animationTimePassed < 15) return false;
+	PlayerSprite walkAnims[] = {PlayerSprite::WALK1,PlayerSprite::IDLE,PlayerSprite::WALK2,PlayerSprite::IDLE};
+	this->walkFrame++;
+	if (this->walkFrame == std::size(walkAnims)) this->walkFrame = 0;
+	this->animationFrame = (int)walkAnims[this->walkFrame];
+	this->animationTimePassed = 0;
+	if (!usingItem) {
+		switch (walkFrame) {
+		case (0):
+			armRotation = -45;
+			break;
+		case (2):
+			armRotation = 45;
+			break;
+		default:
+			armRotation = 0;
+		}
+
+	}
+	return true;
+}
+
+void Player::swingAnim(Item* item) {
+	animationOverride = true;
+	if (!this->usingItem) {
+		if (this->swingItem != nullptr) delete this->swingItem;
+		if(item!=nullptr and item->useTime!=0) this->swingItem = item->getItemProjectile(this->armPos);
+		this->armRotation = 90;
+		this->usingItem = true;
+	}
+
+
+	if (item != nullptr && item->useTime != 0) {
+		this->armRotation += double(270 - 90) / item->useTime;
+		if (this->swingItem != nullptr) {
+			Vector2 itemPos = Main::rotatePt({ this->armPos.X + this->armDims.X / 2, this->armPos.Y + (this->armDims.Y*0.75) }, this->armPos, this->armRotation*this->hDirection);
+			this->swingItem->setPos(itemPos.X-this->swingItem->width,itemPos.Y-this->swingItem->height);
+			//this->swingItem->rotation = armRotation*this->hDirection;
+		}
+	}
+	else {
+
+		this->armRotation = 0;
+		this->animationOverride = false;
+		this->usingItem = false;
+	}
+
+	if (this->armRotation > 270) {
+		this->animationOverride = false;
+		this->usingItem = false;
+		this->armRotation = 0;
+		delete this->swingItem;
+		this->swingItem = nullptr;
+	}
+}

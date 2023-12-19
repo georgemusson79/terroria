@@ -9,7 +9,7 @@ Item::Item() {
 }
 
 ItemSwing* Item::getItemProjectile(Vector2 position) {
-	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,45);
+	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,0,handOffset);
 	if (!this->melee) obj->deleteHitboxes();
 	return obj;
 }

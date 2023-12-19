@@ -58,3 +58,6 @@ bool Vector2::operator==(Vector2 vector) {
 bool Vector2::operator!=(Vector2 vector) {
 	return (this->X != vector.X || this->Y != vector.Y);
 }
+void Vector2::out() {
+	std::cout << "(" << this->X << " , " << this->Y << ")\n";
+}

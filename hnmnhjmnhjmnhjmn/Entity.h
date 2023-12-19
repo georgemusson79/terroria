@@ -59,6 +59,7 @@ public:
     virtual bool setX(double X);
     virtual bool setY(double Y);
     virtual bool setPos(double X, double Y);
+    virtual bool setCenter(double X, double Y);
     virtual bool renderEntity();
     SDL_RendererFlip getSpriteDirection();
     virtual void updateHitboxes();
@@ -79,4 +80,5 @@ public:
     Entity(Vector2 position, float width, float height,int health, SDL_Texture* t, bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
     Entity();
     virtual ~Entity();
+    void setRotation(double rotation);
 };

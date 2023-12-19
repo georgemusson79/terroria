@@ -26,6 +26,8 @@ Player::Player() {
 	
 }
 
+
+
 void Player::update() {
 	this->handleKeyInput();
 	this->handleMouseInput();
@@ -87,6 +89,10 @@ bool Player::renderEntity() {
 	SDL_Point rotationPt = { armRect.w/2, 0};
 	double rotation = armRotation * this->hDirection;
 	SDL_RenderCopyEx(Main::renderer, this->armTexture, NULL, &armRect,rotation,&rotationPt,this->getSpriteDirection());
+	Vector2 handPos = this->getHandPos();
+	Main::drawSquare(handPos, { 255,0,0 }, armRect.w);
+
+
 	return true;
 }
 
@@ -203,7 +209,10 @@ bool Player::handleWalking() {
 void Player::swingAnim(Item* item) {
 	animationOverride = true;
 	if (!this->usingItem) {
-		if (this->swingItem != nullptr) delete this->swingItem;
+		if (this->swingItem != nullptr) {
+			delete this->swingItem;
+			this->swingItem = nullptr;
+		}
 		if(item!=nullptr and item->useTime!=0) this->swingItem = item->getItemProjectile(this->armPos);
 		this->armRotation = 90;
 		this->usingItem = true;
@@ -211,11 +220,20 @@ void Player::swingAnim(Item* item) {
 
 
 	if (item != nullptr && item->useTime != 0) {
+	//bruh this code sucks
 		this->armRotation += double(270 - 90) / item->useTime;
+		double itemRotation = (armRotation + 180) * hDirection;
 		if (this->swingItem != nullptr) {
-			Vector2 itemPos = Main::rotatePt({ this->armPos.X + this->armDims.X / 2, this->armPos.Y + (this->armDims.Y*0.75) }, this->armPos, this->armRotation*this->hDirection);
-			this->swingItem->setPos(itemPos.X-this->swingItem->width,itemPos.Y-this->swingItem->height);
-			//this->swingItem->rotation = armRotation*this->hDirection;
+			this->swingItem->setRotation(0);
+			Vector2 handPos = this->getHandPos(this->swingItem->handOffset);
+			Vector2 itemCenter = { handPos.X + (swingItem->width/2),handPos.Y + (swingItem->height/2) };
+			//move item center to account for rotation offset so that it remains in the players hand
+			Vector2 newPos=Main::rotatePt(itemCenter, handPos, armRotation*hDirection);
+			this->swingItem->setCenter(newPos.X, newPos.Y);
+			
+			this->swingItem->setRotation(itemRotation);
+			this->tempRotation += 1;
+			
 		}
 	}
 	else {
@@ -232,4 +250,11 @@ void Player::swingAnim(Item* item) {
 		delete this->swingItem;
 		this->swingItem = nullptr;
 	}
+}
+
+Vector2 Player::getHandPos(Vector2 offset) {
+	Vector2 base = { this->armPos.X + (this->armDims.X / 2),this->armPos.Y };
+	Vector2 end = { base.X,base.Y + this->armDims.Y };
+	end = Main::rotatePt(end-offset, base, armRotation*this->hDirection);
+	return end;
 }

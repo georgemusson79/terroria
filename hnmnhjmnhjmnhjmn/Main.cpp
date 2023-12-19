@@ -125,19 +125,7 @@ int main() {
     //ItemSwing* obj = new ItemSwing(Main::player->position, 10, 10, "assets\\Items\\sword.png");
     while (Debug::running) {
         Main::resetLightMap();
-   
-        //if (increasing) {
-        //    Main::player->health++;
-        //    if (Main::player->health == Main::player->maxHealth) increasing = false;
-        //}
-        //else {
-        //    Main::player->health--;
-        //    if (Main::player->health == 0) increasing = true;
-        //}
-        //Main::lightMap= std::vector<std::vector<uint16_t>>(Main::WORLD_WIDTH + 1, std::vector<uint16_t>(Main::WORLD_HEIGHT + 1, num));
-  /*      num = (increasing) ? num+1 : num-1;
-        if (num > 14) increasing = false;
-        if (num < 1) increasing = true;*/
+
         
         Cursor::update();
         Main::handleEvents(&e, nullptr);

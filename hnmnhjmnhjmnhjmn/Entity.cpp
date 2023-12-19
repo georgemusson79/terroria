@@ -64,6 +64,11 @@ bool Entity::setPos(double X, double Y) {
 	return false;
 }
 
+bool Entity::setCenter(double X, double Y) {
+	Vector2 pos = { X - (this->width / 2),Y - (this->height / 2) };
+	return this->setPos(pos.X, pos.Y);
+}
+
 bool Entity::renderEntity() {
 	if (!this->renderToScreen) return false;
 	iVector2 renderPos = Main::convertWorldPosToCameraPos(this->position);
@@ -110,6 +115,15 @@ Entity::Entity(Vector2 position, float width, float height,int health, SDL_Textu
 }
 
 Entity::Entity() : renderToScreen(false) {
+}
+
+void Entity::setRotation(double rotation) {
+	this->rotation = rotation;
+	for (Hitbox* hitbox : this->hitboxes) {
+		if (hitbox->type == hitboxType::ROTATABLE) {
+			dynamic_cast<RotatableHitbox*>(hitbox)->setRotation(rotation);
+		}
+	}
 }
 
 Entity::~Entity() {

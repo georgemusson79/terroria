@@ -12,6 +12,7 @@ enum class PlayerSprite {
 class Chest;
 class Player : public Entity {
 private:
+    int tempRotation = 0;
     ItemSwing* swingItem = nullptr;
     bool useItemAnim = false;
     bool animationOverride = false;
@@ -22,6 +23,7 @@ private:
     Vector2 armPos = { 0,0 };
     Vector2 armRotationPt = { 0,0 };
     Vector2 armDims = { 0,0 };
+    Vector2 getHandPos(Vector2 offset={0,0});
 public:
     void swingAnim(Item* item);
     bool usingItem = false;

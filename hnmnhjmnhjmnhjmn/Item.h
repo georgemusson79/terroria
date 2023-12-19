@@ -30,6 +30,8 @@ public:
 	bool isAmmo = false;
 	bool consumable = false;
 	bool melee = false;
+	Vector2 handOffset = { 0,0 }; //where the item should be held in relation to the player hand
+	double rotationInInventory = 0;
 
 	ItemSwing* getItemProjectile(Vector2 position);
 	virtual bool use();

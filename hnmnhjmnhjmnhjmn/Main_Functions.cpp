@@ -196,6 +196,19 @@ void Main::renderPos(Vector2 pos) {
 }
 
 
+void Main::drawSquare(Vector2 center, SDL_Color color, int width) {
+    Uint8 r;
+    Uint8 g;
+    Uint8 b;
+    Uint8 a;
+    SDL_GetRenderDrawColor(Main::renderer, &r, &g, &b, &a);
+    SDL_SetRenderDrawColor(Main::renderer, color.r, color.g, color.b, 255);
+    center = Main::convertWorldPosToCameraPos(center).convertToVector2();
+    SDL_Rect rect = { center.X - (width / 2),center.Y - (width / 2),width,width };
+    SDL_RenderFillRect(Main::renderer, &rect);
+    SDL_SetRenderDrawColor(Main::renderer, r, g, b, a);
+}
+
 Vector2 Main::getIntersectPt(Line l1, Line l2) {
     double x1 = l1.start.X;
     double y1 = l1.start.Y;

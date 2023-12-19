@@ -73,6 +73,7 @@ namespace Main {
     Vector2 rotatePt(Vector2 in, Vector2 around, double rotation);
     bool inWorldBounds(Vector2 pos);
     void renderPos(Vector2 pos);
+    void drawSquare(Vector2 center, SDL_Color color, int width);
     Vector2 getIntersectPt(Line l1, Line l2);
     template <typename T>
     T* clone(T& obj) {

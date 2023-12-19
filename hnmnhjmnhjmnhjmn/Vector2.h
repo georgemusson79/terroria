@@ -23,6 +23,7 @@ struct Vector2 {
 	bool operator<(Vector2 vector);
 	bool operator==(Vector2 vector);
 	bool operator!=(Vector2 vector);
+	void out();
 
 
 

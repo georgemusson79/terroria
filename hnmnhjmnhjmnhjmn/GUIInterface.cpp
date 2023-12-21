@@ -228,6 +228,5 @@ void GUIinterface::InventoryTile::update() {
 				Main::player->selectedHBItem = this->place;
 			}
 		}
-		if (Main::heldKeys[SDL_SCANCODE_Q] && this->item!=nullptr) Main::player->dropItem(this->item);
 	}
 }

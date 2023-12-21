@@ -9,9 +9,17 @@ ItemPickup::ItemPickup(Item* item, Vector2 position) : Entity(position, item->wi
 	this->maxYVelocity = 0.09;
 	this->vAcceleration = 0.01;
 	this->starttime = SDL_GetTicks();
-	Main::entities.push_back(this);
-	
+	this->addToEntitiesList();
 };
+
+ItemPickup::ItemPickup(std::shared_ptr<Item> ptr, Vector2 position) : Entity(position, ptr->width, ptr->height, 1, ptr->texturePath) {
+	this->item_sharedPtr = ptr;
+	this->item = this->item_sharedPtr.get();
+	this->maxYVelocity = 0.09;
+	this->vAcceleration = 0.01;
+	this->starttime = SDL_GetTicks();
+	this->addToEntitiesList();
+}
 
 void ItemPickup::update() {
 	Entity::update();

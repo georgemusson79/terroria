@@ -107,7 +107,6 @@ void Main::handleKeyEvents(SDL_Event* e) {
                 new ItemPickup(bob, Main::player->position);
             }
 
-            //else if (e->key.keysym.sym == SDLK_q) Main::player->dropItem(Main::player->inventory[0][Main::player->selectedHBItem]);
             else if (e->key.keysym.sym == SDLK_F11) {
                 if (Debug::fullscreen) SDL_SetWindowFullscreen(Main::window, SDL_WINDOW_FULLSCREEN_DESKTOP);
                 else SDL_SetWindowFullscreen(Main::window,0);
@@ -197,7 +196,9 @@ void Main::renderPos(Vector2 pos) {
     SDL_SetRenderDrawColor(Main::renderer, 0, 0, 0, 0);
 }
 
-
+ItemPickup* Main::convertItemToItemPickup(Item* item, Vector2 position) {
+    return new ItemPickup(item, position);
+}
 void Main::drawSquare(Vector2 center, SDL_Color color, int width) {
     Uint8 r;
     Uint8 g;
@@ -245,4 +246,9 @@ Vector2 Main::rotatePt(Vector2 in, Vector2 around, double rotation) {
     Vector2 res = { matrix[0][0] * org.X + matrix[0][1] * org.Y,matrix[1][0] * org.X + matrix[1][1] * org.Y };
     res += around;
     return res;
+}
+
+bool Main::checkForTile(Vector2 pos) {
+    if (Main::inWorldBounds(pos) and Main::tiles[pos.X][pos.Y] != nullptr and Main::tiles[pos.X][pos.Y]->getID() != AIR) return true;
+    return false;
 }

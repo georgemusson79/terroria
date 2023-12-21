@@ -111,6 +111,10 @@ Entity::Entity(Vector2 position, float width, float height,int health,std::strin
 	Main::entities.push_back(this);
 }
 
+void Entity::addToEntitiesList() {
+	Main::entities.push_back(this);
+}
+
 Entity::Entity(Vector2 position, float width, float height,int health, SDL_Texture* t, bool gravity, bool defaultCollider, bool tileCollision) : position(position), width(width), height(height), gravity(gravity), tileCollision(tileCollision),health(health),maxHealth(health) {
 	this->texture = t;
 	setPos(position.X, position.Y);

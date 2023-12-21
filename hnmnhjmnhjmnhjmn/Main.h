@@ -10,6 +10,8 @@ class Tile;
 class Camera;
 class Player;
 class TileWall;
+class Item;
+class ItemPickup;
 struct Line;
 
 enum skyBackgrounds {
@@ -74,7 +76,9 @@ namespace Main {
     bool inWorldBounds(Vector2 pos);
     void renderPos(Vector2 pos);
     void drawSquare(Vector2 center, SDL_Color color, int width);
+    ItemPickup* convertItemToItemPickup(Item* item, Vector2 position);
     Vector2 getIntersectPt(Line l1, Line l2);
+    bool checkForTile(Vector2 pos);
     template <typename T>
     T* clone(T& obj) {
         return new T(obj);

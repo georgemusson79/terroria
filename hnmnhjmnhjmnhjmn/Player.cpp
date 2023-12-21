@@ -101,15 +101,6 @@ bool Player::renderEntity() {
 }
 
 
-bool Player::dropItem(std::shared_ptr<Item>& item) {
-	if (item != nullptr) {
-		ItemPickup* pickup = new ItemPickup(new Item(*item), this->position);
-		pickup->velocity = Vector2(0.3 * this->hDirection, -0.3);
-		item.reset();
-		return true;
-	}
-	return false;
-}
 
 
 Vector2 Player::moveEntity(Vector2 velocity) {
@@ -133,15 +124,27 @@ void Player::rightClick() {
 		//Main::tiles[pos.X][pos.Y]->destroy();
 	}
 }
+
+bool Player::dropItem(std::shared_ptr<Item>& item) {
+	if (item != nullptr) {
+		std::shared_ptr<Item> item2;
+		item2.swap(item);
+		ItemPickup* pickup = new ItemPickup(item2, this->position);
+		pickup->velocity = Vector2(0.3 * this->hDirection, -0.3);
+	}
+	return false;
+}
+
+
 void Player::leftClick() {
 	Vector2 pos = Cursor::cursorWorldPos;
 	if (Main::tiles[pos.X][pos.Y] != nullptr) Main::tiles[pos.X][pos.Y]->onLeftClick(this);
+	if (this->usingItem) return;
 //use item
 	std::shared_ptr<Item> &selectedItem = this->inventory[0][selectedHBItem];
 	if (selectedItem.get() != nullptr and selectedItem->isUseable) {
 		if (selectedItem->use(this) and selectedItem->consumable) {
 			selectedItem->setCount(selectedItem->getCount() - 1);
-			std::cout << selectedItem->getCount() << "\n";
 			if (selectedItem->getCount() == 0)  selectedItem = nullptr;
 		}
 	}
@@ -178,6 +181,8 @@ void Player::handleKeyInput() {
 		this->velocity.X += (this->velocity.X < maxXVelocity) ? this->hAcceleration : 0;
 		this->isWalking = true;
 	}
+
+	if (keys[SDL_SCANCODE_Q] && !Main::heldKeys[SDL_SCANCODE_Q]) this->dropItem(this->inventory[0][selectedHBItem]);
 
 	if (keys[SDL_SCANCODE_ESCAPE] && !Main::heldKeys[SDL_SCANCODE_ESCAPE]) {
 		Main::player->inventoryOpen = !Main::player->inventoryOpen;

@@ -5,6 +5,7 @@
 #include "Player.h"
 #include <SDL_image.h>
 #include "gui.h"
+#include "Item_pickup.h"
 
 Item::Item() {
 	this->null = true;
@@ -20,6 +21,8 @@ bool Item::shoot(){
 	return true;
 }
 
+
+
 bool Item::use(Player* player) {
 	player->swingAnim(this);
 	return true;
@@ -27,6 +30,7 @@ bool Item::use(Player* player) {
 
 Item::~Item() {
 }
+
 
 
 void Item::renderTexture(SDL_Rect* pos) {

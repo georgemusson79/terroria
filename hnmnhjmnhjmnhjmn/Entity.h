@@ -14,6 +14,7 @@ protected:
     int textureWidth = 0;
     int textureHeight = 0;
     bool markForDeletion = false;
+    void addToEntitiesList();
 public:
     bool null = false;
     bool renderToScreen = true;

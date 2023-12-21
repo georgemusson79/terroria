@@ -2,6 +2,7 @@
 #include <array>
 //player.h
 #include "Projectiles.h"
+#include "Main.h"
 #include "Entity.h"
 #include "Items.h"
 #include <functional>
@@ -113,15 +114,18 @@ public:
         return false;
     }
 
+
+
     
     bool hurt(int dmg, float kb=0,Entity* src=nullptr) override;
     void kill() override;
-    bool dropItem(std::shared_ptr<Item>& item);
     Vector2 moveEntity(Vector2 velocity) override;
     void rightClick();
     void leftClick();
     void handleMouseInput();
     void handleKeyInput();
     void jump();
+    bool dropItem(std::shared_ptr<Item>& item);
+    
 
 };

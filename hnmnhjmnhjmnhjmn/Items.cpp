@@ -42,10 +42,25 @@ WoodItem::WoodItem() {
 bool WoodItem::use(Player* player) {
 	//use(player);
 	Vector2 pos = Cursor::WorldPos();
-	if (pos.distance(player->position) < player->placeRng and Main::inWorldBounds(pos) and (Main::tiles[pos.X][pos.Y] == nullptr or Main::tiles[pos.X][pos.Y]->getID() == AIR)) {
-		player->swingAnim(this);
-		new Wood(pos.X, pos.Y);
-		return true;
+	if (pos.distance(player->position) < player->placeRng and !Main::checkForTile(pos)) {
+		//check for adjacent tiles to place on
+		Dirt d=Dirt(pos.X, pos.Y,false);
+		if (Main::player->collidesWith(&d)) {
+			return false;
+		}
+		for (Entity* e : Main::entities) {
+			if (e->collidesWith(&d)) {
+				return false;
+			}
+		}
+		std::vector<Vector2> surroundingTiles = { {pos.X + 1,pos.Y},{pos.X,pos.Y + 1},{pos.X - 1,pos.Y},{pos.X,pos.Y - 1} };
+		for (Vector2& p : surroundingTiles) {
+			if (Main::checkForTile(p)) {
+				player->swingAnim(this);
+				Wood(pos.X, pos.Y);
+				return true;
+			}
+		}
 	}
-	else return false;
+	return false;
 }

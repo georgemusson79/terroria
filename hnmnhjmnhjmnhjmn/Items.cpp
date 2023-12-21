@@ -57,6 +57,7 @@ bool WoodItem::use(Player* player) {
 		for (Vector2& p : surroundingTiles) {
 			if (Main::checkForTile(p)) {
 				player->swingAnim(this);
+				//new Chest(pos.X, pos.Y);
 				Wood(pos.X, pos.Y);
 				return true;
 			}

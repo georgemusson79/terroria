@@ -56,6 +56,7 @@ protected:
 };
 
 class MultiTileObject : public Tile {
+    //must be created with new unlike normal tiles
 protected:
     bool placeIntoWorld;
 

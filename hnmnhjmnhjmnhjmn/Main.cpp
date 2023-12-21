@@ -118,7 +118,6 @@ int main() {
     Main::testcbox->active = false;
     int starttime = SDL_GetTicks();
     int frmstart = SDL_GetTicks();
-    Wood(Main::player->position.X, Main::player->position.Y -100);
     bool increasing = true;
     //Entity1* en=new Entity1({ Main::player->position.X + 10, Main::player->position.Y });
     //Entity1* en2=new Entity1(en->position);

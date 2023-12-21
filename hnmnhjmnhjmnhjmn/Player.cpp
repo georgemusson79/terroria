@@ -32,7 +32,7 @@ Player::Player() {
 void Player::update() {
 	this->handleKeyInput();
 	this->handleMouseInput();
-	if (this->usingItem) this->swingAnim(this->inventory[selectedHBItem][0].get());
+	if (this->usingItem) this->swingAnim(&this->heldItem);
 	this->velocity = this->moveEntity(this->velocity);
 	if (this->openedChest != nullptr && this->position.distance({ this->openedChest->X,this->openedChest->Y }) > 9) this->openedChest->close();
 	this->animationTimePassed++;;
@@ -139,7 +139,6 @@ void Player::leftClick() {
 //use item
 	std::shared_ptr<Item> &selectedItem = this->inventory[0][selectedHBItem];
 	if (selectedItem.get() != nullptr and selectedItem->isUseable) {
-		if (selectedItem != nullptr)std::cout << selectedItem->name << "\n";
 		if (selectedItem->use(this) and selectedItem->consumable) {
 			selectedItem->setCount(selectedItem->getCount() - 1);
 			std::cout << selectedItem->getCount() << "\n";
@@ -222,19 +221,16 @@ bool Player::handleWalking() {
 void Player::swingAnim(Item* item) {
 	animationOverride = true;
 	if (!this->usingItem) {
-		if (this->swingItem != nullptr) {
-			delete this->swingItem;
-			this->swingItem = nullptr;
-		}
-		if(item!=nullptr and item->useTime!=0) this->swingItem = item->getItemProjectile(this->armPos);
+		this->heldItem = *item;
+		this->swingItem = item->getItemProjectile(this->armPos);
 		this->armRotation = 90;
 		this->usingItem = true;
 	}
 
 
-	if (item != nullptr && item->useTime != 0) {
+	if (this->usingItem and this->swingItem!=nullptr and this->armRotation<300 and this->heldItem.useTime!=0) {
 	//bruh this code sucks
-		this->armRotation += double(270 - 90) / item->useTime;
+		this->armRotation += double(270 - 90) / this->heldItem.useTime;
 		double itemRotation = (armRotation + 180) * hDirection;
 		if (this->swingItem != nullptr) {
 			this->swingItem->setRotation(0);
@@ -249,16 +245,8 @@ void Player::swingAnim(Item* item) {
 			
 		}
 	}
+
 	else {
-
-		this->armRotation = 0;
-		this->animationOverride = false;
-		this->usingItem = false;
-		if (this->swingItem != nullptr) this->swingItem->despawn();
-		this->swingItem = nullptr;
-	}
-
-	if (this->armRotation > 300) {
 		this->animationOverride = false;
 		this->usingItem = false;
 		this->armRotation = 0;

@@ -11,6 +11,7 @@ Item1::Item1() {
 	this->useTime = 50;
 	this->width = 1;
 	this->height = 5;
+	this->useTime = 15;
 	this->name = "cool sword bro";
 	this->setTexture("assets\\Items\\sword.png");
 	this->setHotbarTexture("assets\\Items\\swordh.png");
@@ -22,13 +23,8 @@ Item1::Item1() {
 }
 
 bool Item1::use(Player* player) {
-	//use(player);
-	Vector2 pos = Cursor::WorldPos();
-	if (pos.distance(player->position) < player->placeRng and Main::inWorldBounds(pos) and (Main::tiles[pos.X][pos.Y] == nullptr or Main::tiles[pos.X][pos.Y]->getID() == AIR)) {
-		player->swingAnim(this);
-		new Wood(pos.X, pos.Y);
-		return true;
-	}
+	player->swingAnim(this);
+	return true;
 }
 
 WoodItem::WoodItem() {
@@ -39,7 +35,7 @@ WoodItem::WoodItem() {
 	this->id = 1;
 	this->name = "Wood tile";
 	this->maxStack = 999;
-	this->useTime = 5;
+	this->useTime = 15;
 	this->consumable = true;
 }
 

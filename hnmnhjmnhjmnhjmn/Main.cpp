@@ -123,7 +123,7 @@ int main() {
     //Entity1* en=new Entity1({ Main::player->position.X + 10, Main::player->position.Y });
     //Entity1* en2=new Entity1(en->position);
     //ItemSwing* obj = new ItemSwing(Main::player->position, 10, 10, "assets\\Items\\sword.png");
-    Main::player->pickup(new WoodItem(), 0, 0, true);
+    //Main::player->pickup(new WoodItem(), 0, 0, true);
     while (Debug::running) {
         Main::resetLightMap();
 

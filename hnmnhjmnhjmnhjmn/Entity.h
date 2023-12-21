@@ -15,7 +15,7 @@ protected:
     int textureHeight = 0;
     bool markForDeletion = false;
 public:
- 
+    bool null = false;
     bool renderToScreen = true;
     std::vector<Hitbox*> hitboxes = {};
     Vector2 velocity = { 0,0 };

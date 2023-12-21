@@ -7,6 +7,7 @@
 #include "gui.h"
 
 Item::Item() {
+	this->null = true;
 }
 
 ItemSwing* Item::getItemProjectile(Vector2 position) {

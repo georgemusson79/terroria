@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Items.h"
 #include <functional>
+#include <memory>
 
 enum class PlayerSprite {
      WALK1, IDLE, WALK2
@@ -12,9 +13,9 @@ enum class PlayerSprite {
 class Chest;
 class Player : public Entity {
 private:
-    std::shared_ptr<Item> heldItem;
-    int tempRotation = 0;
+    Item heldItem;
     ItemSwing* swingItem = nullptr;
+    int tempRotation = 0;
     bool useItemAnim = false;
     bool animationOverride = false;
     int walkFrame = 0;

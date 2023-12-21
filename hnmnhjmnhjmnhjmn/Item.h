@@ -12,6 +12,7 @@ class Player;
 class Item {
 
 public:
+	bool null = false;
 	SpecialisedType itemType = SpecialisedType::GENERIC;
 	std::shared_ptr<SDL_Texture> texture = nullptr;
 	std::string texturePath = "";
@@ -21,7 +22,7 @@ public:
 	int id = -1;
 	int width = 0;
 	int height = 0;
-	int useTime =15;
+	int useTime =0;
 	int useAnimation = -1;
 	int useSound = -1;
 	int maxStack = 999;

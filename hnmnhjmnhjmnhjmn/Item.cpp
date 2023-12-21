@@ -2,6 +2,7 @@
 #include "Item.h"
 #include "Projectiles.h"
 #include "Main.h"
+#include "Player.h"
 #include <SDL_image.h>
 #include "gui.h"
 
@@ -18,7 +19,8 @@ bool Item::shoot(){
 	return true;
 }
 
-bool Item::use() {
+bool Item::use(Player* player) {
+	player->swingAnim(this);
 	return true;
 }
 
@@ -27,7 +29,8 @@ Item::~Item() {
 
 
 void Item::renderTexture(SDL_Rect* pos) {
-	SDL_RenderCopy(Main::renderer, this->texture.get(), NULL, pos);
+	if (this->hotbarTexture == nullptr) SDL_RenderCopyEx(Main::renderer, this->texture.get(), NULL, pos, this->rotationInInventory, NULL, SDL_FLIP_NONE);
+	else SDL_RenderCopy(Main::renderer, this->hotbarTexture.get(), NULL, pos);
 }
 
 void Item::setTexture(std::string path) {
@@ -40,6 +43,18 @@ void Item::setTexture(std::string path) {
 		this->texture = s;
 	}
 }
+
+void Item::setHotbarTexture(std::string path) {
+	this->hotbarTexturePath = path;
+	if (this->hotbarTexturePath != "") {
+		SDL_Texture* t = IMG_LoadTexture(Main::renderer, this->hotbarTexturePath.c_str());
+		std::shared_ptr<SDL_Texture> s(t, [](SDL_Texture* ptr) {
+			SDL_DestroyTexture(ptr);
+			});
+		this->hotbarTexture = s;
+	}
+}
+
 
 void Item::setCount(int count) {
 	this->count = count;

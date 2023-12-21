@@ -76,13 +76,18 @@ bool Entity::renderEntity() {
 	SDL_Rect r = { renderPos.X,renderPos.Y,dims.X,dims.Y };
 	SDL_Rect partToRender = Main::getTextureFrame(this->animationFrame, this->frameCount, this->texture, this->textureWidth, this->textureHeight, 0, 0);
 	SDL_RenderCopyEx(Main::renderer, this->texture, &partToRender, &r,this->rotation,NULL,this->getSpriteDirection());
-	std::cout << this->rotation << "\n";
 	if (Debug::renderHitboxes) this->renderHitboxes();
 	return true;
 }
 
 
-
+bool Entity::toBeDeleted() {
+	return this->markForDeletion;
+}
+void Entity::despawn() {
+	this->deleteHitboxes();
+	this->markForDeletion = true;
+}
 void Entity::updateHitboxes() {
 	Vector2 offset = this->position - this->oldPos;
 	for (int i = 0; i < this->hitboxes.size(); i++) {
@@ -218,7 +223,7 @@ void Entity::deleteTexture() {
 }
 
 void Entity::kill() {
-	this->markForDeletion = true;
+	this->despawn();
 }
 
 bool Entity::hurt(int dmg,float kb,Entity* src) {

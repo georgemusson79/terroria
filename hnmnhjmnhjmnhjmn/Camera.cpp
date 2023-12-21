@@ -82,7 +82,7 @@ bool Camera::renderTileWalls() {
 }
 
 bool Camera::renderEntities() {
-	for (Entity* entity : Main::entities) entity->renderEntity();
+	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted()) entity->renderEntity();
 	return true;
 }
 bool Camera::renderScreen(bool renderHitboxes) {

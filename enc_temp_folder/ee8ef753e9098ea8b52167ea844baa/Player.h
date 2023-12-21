@@ -12,7 +12,6 @@ enum class PlayerSprite {
 class Chest;
 class Player : public Entity {
 private:
-    std::shared_ptr<Item> heldItem;
     int tempRotation = 0;
     ItemSwing* swingItem = nullptr;
     bool useItemAnim = false;

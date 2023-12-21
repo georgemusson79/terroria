@@ -125,16 +125,10 @@
     <ClInclude Include="headers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Items.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cursor.h">
@@ -181,6 +175,12 @@
     </ClInclude>
     <ClInclude Include="Projectiles.h">
       <Filter>Header Files\projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>Header Files\item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

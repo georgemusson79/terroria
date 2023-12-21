@@ -102,6 +102,8 @@ void Main::handleKeyEvents(SDL_Event* e) {
 
             if (e->key.keysym.sym == SDLK_b) {
                 Item1* bob=new Item1;
+                WoodItem* item = new WoodItem;
+                new ItemPickup(item, Main::player->position-Vector2(2,2));
                 new ItemPickup(bob, Main::player->position);
             }
 
@@ -138,7 +140,7 @@ void Main::setCursorType(cursorType type) {
 void Main::removeDeletedEntities() {
     std::vector<Entity*> deleteEntities = {};
     for (auto entity : Main::entities) {
-        if (entity->markForDeletion) deleteEntities.push_back(entity);
+        if (entity->toBeDeleted()) deleteEntities.push_back(entity);
     }
     for (auto entity : deleteEntities) {
         auto it=std::find(Main::entities.begin(), Main::entities.end(), entity);

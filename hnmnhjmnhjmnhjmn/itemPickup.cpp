@@ -17,12 +17,12 @@ void ItemPickup::update() {
 	Entity::update();
 	this->aliveTime = SDL_GetTicks() - this->starttime;
 	if (this->collidesWith(Main::player)) {
-		if (this->aliveTime > 400 && !this->markForDeletion && Main::player->pickup(item)) {
-			this->markForDeletion = true;
+		if (this->aliveTime > 400 && !this->toBeDeleted() && Main::player->pickup(item)) {
+			this->despawn();
 		}
 	}
 	if (this->onGround) this->velocity.X = 0;
-	if (this->aliveTime > this->despawnTime) this->markForDeletion = true;
+	if (this->aliveTime > this->despawnTime) this->despawn();
 }
 
 ItemPickup::~ItemPickup() {

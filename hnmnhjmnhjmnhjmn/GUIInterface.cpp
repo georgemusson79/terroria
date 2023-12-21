@@ -22,8 +22,9 @@ void GUIinterface::InventoryTile::renderTile() {
 	SDL_RenderCopy(Main::renderer, texture->texture, &inputRect, &outputRect);
 	if (this->item != nullptr) {
 		SDL_Rect itemRect;
-		itemRect.x = outputRect.x + size / 8; itemRect.y = outputRect.y += size / 8;
-		itemRect.w = size * 6 / 8; itemRect.h = size * 6 / 8;
+		float margin = float(size) / 8;
+		itemRect.x = outputRect.x + margin; itemRect.y = outputRect.y += margin;
+		itemRect.w = size -(2*margin); itemRect.h = size-(2*margin);
 		this->item->renderTexture(&itemRect);
 		if (this->item->count>1) {
 			//puts number displaying item count in bottom right corner of tile

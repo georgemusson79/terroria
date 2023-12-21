@@ -13,8 +13,9 @@ protected:
     int animationFrame = 0;
     int textureWidth = 0;
     int textureHeight = 0;
-public:
     bool markForDeletion = false;
+public:
+ 
     bool renderToScreen = true;
     std::vector<Hitbox*> hitboxes = {};
     Vector2 velocity = { 0,0 };
@@ -34,7 +35,6 @@ public:
     SDL_Texture* texture = nullptr;
     bool canFlipH = true;
     bool canFlipV = false;
-
     int health = 100;
     int maxHealth = 100;
     int damage = 0;
@@ -65,6 +65,8 @@ public:
     virtual void updateHitboxes();
     virtual void renderHitboxes();
     virtual void deleteHitboxes();
+    bool toBeDeleted();
+    void despawn();
     inline virtual bool collidesWith(Vector2 position);
     inline virtual bool collidesWith(Hitbox* inputHitbox);
     inline virtual bool collidesWith(Tile* tile);

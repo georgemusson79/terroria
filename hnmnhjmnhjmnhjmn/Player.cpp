@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "Player.h"
 #include "Colliders.h"
+#include "Vector2.h"
 #include "Item.h"
 #include "Cursor.h"
 #include "Tiles.h"
@@ -68,6 +69,9 @@ void Player::kill() {
 	delete this;
 }
 
+
+
+
 bool Player::renderEntity() {
 	if (!this->renderToScreen) return false;
 	int alpha = 255;
@@ -132,15 +136,24 @@ void Player::rightClick() {
 void Player::leftClick() {
 	Vector2 pos = Cursor::cursorWorldPos;
 	if (Main::tiles[pos.X][pos.Y] != nullptr) Main::tiles[pos.X][pos.Y]->onLeftClick(this);
-	this->swingAnim(this->inventory[selectedHBItem][0].get());
+//use item
+	std::shared_ptr<Item> &selectedItem = this->inventory[0][selectedHBItem];
+	if (selectedItem.get() != nullptr and selectedItem->isUseable) {
+		if (selectedItem != nullptr)std::cout << selectedItem->name << "\n";
+		if (selectedItem->use(this) and selectedItem->consumable) {
+			selectedItem->setCount(selectedItem->getCount() - 1);
+			std::cout << selectedItem->getCount() << "\n";
+			if (selectedItem->getCount() == 0)  selectedItem = nullptr;
+		}
+	}
 }
 
 void Player::handleMouseInput() {
 	Uint32 mousePressed = SDL_GetMouseState(nullptr, nullptr);
 	if (mousePressed & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 		this->leftClick();
-		auto pos = Cursor::cursorWorldPos;
-		if (mousePressed!=Main::heldMouseKeys && !Main::player->isCollidingWithGUI) Chest* h = new Chest(pos.X, pos.Y, true); 
+		//auto pos = Cursor::cursorWorldPos;
+		//if (mousePressed!=Main::heldMouseKeys && !Main::player->isCollidingWithGUI) Chest* h = new Chest(pos.X, pos.Y, true); 
 	}
 
 	else if (mousePressed & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
@@ -241,13 +254,15 @@ void Player::swingAnim(Item* item) {
 		this->armRotation = 0;
 		this->animationOverride = false;
 		this->usingItem = false;
+		if (this->swingItem != nullptr) this->swingItem->despawn();
+		this->swingItem = nullptr;
 	}
 
-	if (this->armRotation > 270) {
+	if (this->armRotation > 300) {
 		this->animationOverride = false;
 		this->usingItem = false;
 		this->armRotation = 0;
-		delete this->swingItem;
+		this->swingItem->despawn();
 		this->swingItem = nullptr;
 	}
 }

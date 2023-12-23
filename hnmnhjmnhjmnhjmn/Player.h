@@ -79,7 +79,7 @@ public:
         }
         return false;
     }
-
+    bool pickup(std::shared_ptr<Item>);
     bool pickup(Item* item) {
         for (int x = 0; x < inventoryRows; x++) {
             for (int y = 0; y < inventoryColumns; y++) {

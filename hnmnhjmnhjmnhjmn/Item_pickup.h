@@ -11,6 +11,7 @@ public:
 	int aliveTime = 0;
 	int despawnTime = 300000;
 	ItemPickup(Item* item,Vector2 position);
+	~ItemPickup();
 
 	ItemPickup(std::shared_ptr<Item> ptr, Vector2 position);
 	void update() override;

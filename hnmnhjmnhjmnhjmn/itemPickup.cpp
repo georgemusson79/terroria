@@ -18,7 +18,6 @@ ItemPickup::ItemPickup(std::shared_ptr<Item> ptr, Vector2 position) : Entity(pos
 	this->maxYVelocity = 0.09;
 	this->vAcceleration = 0.01;
 	this->starttime = SDL_GetTicks();
-	this->addToEntitiesList();
 }
 
 void ItemPickup::update() {
@@ -26,15 +25,14 @@ void ItemPickup::update() {
 	Entity::update();
 	this->aliveTime = SDL_GetTicks() - this->starttime;
 	if (this->collidesWith(Main::player)) {
-		if (this->aliveTime > 400 && !this->toBeDeleted() && Main::player->pickup(item)) {
-			this->pickedUp = true;
-			this->despawn();
+		if (this->aliveTime > 400 && !this->toBeDeleted()) {
+			this->pickedUp = (this->item_sharedPtr==nullptr) ? Main::player->pickup(item) : Main::player->pickup(this->item_sharedPtr);
+			if (this->pickedUp) this->despawn();
 		}
 	}
 	if (this->onGround) this->velocity.X = 0;
 	if (this->aliveTime > this->despawnTime) this->despawn();
 }
 
-//ItemPickup::~ItemPickup() {
-//	if (!pickedUp) delete this->item;
-//}
+ItemPickup::~ItemPickup() {
+}

@@ -77,6 +77,21 @@ void Player::kill() {
 }
 
 
+bool Player::pickup(std::shared_ptr<Item> item) {
+	for (int x = 0; x < inventoryRows; x++) {
+		for (int y = 0; y < inventoryColumns; y++) {
+			if (inventory[x][y] == nullptr) {
+				inventory[x][y] = item;
+				return true;
+			}
+			else if (inventory[x][y]->id == item->id && (inventory[x][y]->count + item->count) <= item->maxStack) {
+				inventory[x][y]->setCount(inventory[x][y]->count + item->count);
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 
 bool Player::renderEntity() {
@@ -132,6 +147,8 @@ void Player::rightClick() {
 }
 
 bool Player::dropItem(std::shared_ptr<Item>& item) {
+	//there is probably something wrong here
+	//TODO: track item and see where it disappears
 	if (item != nullptr) {
 		std::shared_ptr<Item> item2;
 		item2.swap(item);

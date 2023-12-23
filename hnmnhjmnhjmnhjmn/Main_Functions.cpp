@@ -102,10 +102,10 @@ void Main::handleKeyEvents(SDL_Event* e) {
         if (Main::player != nullptr) {
 
             if (e->key.keysym.sym == SDLK_b) {
-               // TestSword* bob=new TestSword;
+               //TestSword* bob=new TestSword;
                //// WoodItem* item = new WoodItem;
-               // //new ItemPickup(item, Main::player->position-Vector2(2,2));
-                new ItemPickup(new WoodItem, Cursor::WorldPos());
+               new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
+                //new ItemPickup(new WoodItem, Cursor::WorldPos());
                 for (auto e : Main::entities) std::cout << e->displayName << "\n";
                 //new Zombie(Cursor::WorldPos());
                 //new Entity1(Cursor::WorldPos());

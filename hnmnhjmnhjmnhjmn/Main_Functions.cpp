@@ -10,6 +10,7 @@
 #include "Cursor.h"
 #include "Items.h"
 #include <SDL.h>
+#include <set>
 
 Vector2 Main::convertCameraPosToWorldPos(iVector2 pos) {
     if (Main::camera != nullptr) {
@@ -101,11 +102,19 @@ void Main::handleKeyEvents(SDL_Event* e) {
         if (Main::player != nullptr) {
 
             if (e->key.keysym.sym == SDLK_b) {
-                Item1* bob=new Item1;
-                WoodItem* item = new WoodItem;
-                new ItemPickup(item, Main::player->position-Vector2(2,2));
-                new ItemPickup(bob, Main::player->position);
+               // TestSword* bob=new TestSword;
+               //// WoodItem* item = new WoodItem;
+               // //new ItemPickup(item, Main::player->position-Vector2(2,2));
+                new ItemPickup(new WoodItem, Cursor::WorldPos());
+                for (auto e : Main::entities) std::cout << e->displayName << "\n";
+                //new Zombie(Cursor::WorldPos());
+                //new Entity1(Cursor::WorldPos());
             }
+
+            if (e->key.keysym.sym == SDLK_DELETE) {
+                for (auto e : Main::entities) e->despawn();
+            }
+
 
             else if (e->key.keysym.sym == SDLK_F11) {
                 if (Debug::fullscreen) SDL_SetWindowFullscreen(Main::window, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -137,13 +146,22 @@ void Main::setCursorType(cursorType type) {
 }
 
 void Main::removeDeletedEntities() {
-    std::vector<Entity*> deleteEntities = {};
-    for (auto entity : Main::entities) {
-        if (entity->toBeDeleted()) deleteEntities.push_back(entity);
+    std::set<Entity*> deleteEntities = {};
+    for (Entity* entity : Main::entities) {
+        if (entity->toBeDeleted()) deleteEntities.insert(entity);
     }
-    for (auto entity : deleteEntities) {
+    for (Entity* entity : deleteEntities) {
         auto it=std::find(Main::entities.begin(), Main::entities.end(), entity);
         if (it != Main::entities.end()) Main::entities.erase(it);
+    }
+
+    //FIX THIS
+    std::vector<Entity*> list(deleteEntities.begin(), deleteEntities.end());
+    while (!list.empty()) {
+        if (list.size() > 0) {
+           delete list.back();
+           list.pop_back();
+        }
     }
 }
 

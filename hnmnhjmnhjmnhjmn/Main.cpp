@@ -125,7 +125,6 @@ int main() {
     //Main::player->pickup(new WoodItem(), 0, 0, true);
     while (Debug::running) {
         Main::resetLightMap();
-
         
         Cursor::update();
         Main::handleEvents(&e, nullptr);

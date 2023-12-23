@@ -11,8 +11,10 @@ Item::Item() {
 	this->null = true;
 }
 
-ItemSwing* Item::getItemProjectile(Vector2 position) {
-	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,0,handOffset);
+ItemSwing* Item::getItemProjectile(Vector2 position,Entity* owner=nullptr) {
+	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,0,handOffset,owner);
+	obj->damage = this->damage;
+	obj->kbDealt = this->kb;
 	if (!this->melee) obj->deleteHitboxes();
 	return obj;
 }
@@ -29,6 +31,8 @@ bool Item::use(Player* player) {
 }
 
 Item::~Item() {
+	SDL_DestroyTexture(this->texture.get());
+	SDL_DestroyTexture(this->hotbarTexture.get());
 }
 
 

@@ -4,22 +4,28 @@
 #include "debug.h"
 #include "Vector2.h"
 #include "Colliders.h"
+#include <fstream>
+#include <filesystem>
+#include <iostream>
 void Entity::update() {
 	this->velocity = moveEntity(this->velocity);
+	this->timeBetweenFrames++;
 }
 
 
 
-void::Entity::getEntityCollisions() {
-
+std::vector<Entity*> Entity::getEntityCollisions() {
+	std::vector<Entity*> tgts = {};
+	for (Entity* e : Main::entities) if (this->collidesWith(e)) tgts.push_back(e);
+	return tgts;
 }
 
 void Entity::onTileCollision() {
 
 }
 
-void Entity::onHitNPC() {
-
+void Entity::onHitNPC(Entity* NPC) {
+	NPC->hurt(this->damage, this->kbDealt, this);
 }
 
 void Entity::onHitPlayer() {
@@ -103,7 +109,7 @@ SDL_RendererFlip Entity::getSpriteDirection() {
 	return flipType;
 }
 
-Entity::Entity(Vector2 position, float width, float height,int health,std::string pathToTexture, bool gravity,bool defaultCollider, bool tileCollision) : position(position),width(width),height(height),gravity(gravity),tileCollision(tileCollision){
+Entity::Entity(Vector2 position, float width, float height,int health,std::string pathToTexture, bool gravity,bool defaultCollider, bool tileCollision) : position(position),width(width),height(height),gravity(gravity),tileCollision(tileCollision),health(health),maxHealth(health){
 	this->setTexture(pathToTexture);
 	setPos(position.X,position.Y);
 	if (defaultCollider) hitboxes.push_back(new SquareHitbox(this->position, this->width, this->height));
@@ -124,6 +130,15 @@ Entity::Entity(Vector2 position, float width, float height,int health, SDL_Textu
 }
 
 Entity::Entity() : renderToScreen(false) {
+}
+
+bool Entity::switchFrames(int frame) {
+	if (frame<this->frameCount && this->timeBetweenFrames>this->minTimeBetweenFrames) {
+		this->animationFrame = frame;
+		this->timeBetweenFrames = 0;
+		return true;
+	}
+	return false;
 }
 
 void Entity::setRotation(double rotation) {
@@ -168,6 +183,7 @@ bool Entity::collidesWith(Tile* tile) {
 }
 
 bool Entity::collidesWith(Entity* entity) {
+	if (entity==nullptr || entity->entityCollision == false || this->entityCollision == false) return false;
 	for (Hitbox* hitbox : entity->hitboxes) if (this->collidesWith(hitbox)) return true;
 	return false;
 }
@@ -217,20 +233,26 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 void Entity::setTexture(std::string path) {
 	this->deleteTexture();
 	this->texture = IMG_LoadTexture(Main::renderer, path.c_str());
-	assert(SDL_QueryTexture(this->texture, NULL, NULL, &this->textureWidth, &this->textureHeight) == 0);
+	SDL_QueryTexture(this->texture, NULL, NULL, &this->textureWidth, &this->textureHeight);
 }
 
 
 void Entity::deleteTexture() {
-	if (this->texture != nullptr) SDL_DestroyTexture(this->texture);
+	SDL_DestroyTexture(this->texture);
 	this->texture = nullptr;
 }
 
 void Entity::kill() {
+	this->killed = true;
 	this->despawn();
 }
 
+bool Entity::getKilled() {
+	return this->killed;
+}
+
 bool Entity::hurt(int dmg,float kb,Entity* src) {
+	if (this->health == -1) return false;
 	this->checkDmgImmune();
 	if (this->invulnerable) return false;
 	this->health -= dmg;

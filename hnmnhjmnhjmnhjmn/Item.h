@@ -19,6 +19,8 @@ public:
 	std::string name = "";
 	std::shared_ptr<SDL_Texture> itemTextCount = nullptr;
 	int count = 1;
+	int damage = 0;
+	float kb = 0;
 	int id = -1;
 	int width = 0;
 	int height = 0;
@@ -39,7 +41,7 @@ public:
 	double rotationInInventory = 0;
 	std::shared_ptr<SDL_Texture> hotbarTexture = nullptr;
 
-	ItemSwing* getItemProjectile(Vector2 position);
+	ItemSwing* getItemProjectile(Vector2 position,Entity* owner);
 	virtual bool use(Player* player);
 	virtual bool shoot();
 	virtual void renderTexture(SDL_Rect* pos);

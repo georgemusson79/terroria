@@ -9,6 +9,7 @@
 #include "Tiles.h"
 #include "Item_pickup.h"
 Player::Player(Vector2 pos) {
+	this->displayName = "player";
 	this->frameCount = 3;
 	this->renderToScreen = true;
 	this->health = 400;
@@ -25,6 +26,10 @@ Player::Player(Vector2 pos) {
 
 Player::Player() {
 	
+}
+
+Player::~Player() {
+	if (this->swingItem!=nullptr) this->swingItem->despawn();
 }
 
 
@@ -65,8 +70,10 @@ bool Player::hurt(int dmg, float kb,Entity* src) {
 }
 
 void Player::kill() {
-	if (this == Main::player) Main::player = nullptr;
-	delete this;
+	if (this == Main::player) {
+		Main::player = nullptr;
+		delete this;
+	}
 }
 
 
@@ -106,8 +113,7 @@ bool Player::renderEntity() {
 Vector2 Player::moveEntity(Vector2 velocity) {
 	Vector2 vel=Entity::moveEntity(velocity);
 	if (!this->isWalking && this->onGround)  {
-		vel.X -= Main::setSign(vel.X, deceleration);
-		if (abs(velocity.X) < deceleration) vel.X = 0;
+		vel.X = 0;
 	}
 	return vel;
 }
@@ -142,8 +148,8 @@ void Player::leftClick() {
 	if (this->usingItem) return;
 //use item
 	std::shared_ptr<Item> &selectedItem = this->inventory[0][selectedHBItem];
-	if (selectedItem.get() != nullptr and selectedItem->isUseable) {
-		if (selectedItem->use(this) and selectedItem->consumable) {
+	if (selectedItem.get() != nullptr && selectedItem->isUseable && !this->usingItem) {
+		if (selectedItem->use(this) && selectedItem->consumable) {
 			selectedItem->setCount(selectedItem->getCount() - 1);
 			if (selectedItem->getCount() == 0)  selectedItem = nullptr;
 		}
@@ -227,7 +233,7 @@ void Player::swingAnim(Item* item) {
 	animationOverride = true;
 	if (!this->usingItem) {
 		this->heldItem = *item;
-		this->swingItem = item->getItemProjectile(this->armPos);
+		this->swingItem = item->getItemProjectile(this->armPos,this);
 		this->armRotation = 90;
 		this->usingItem = true;
 	}

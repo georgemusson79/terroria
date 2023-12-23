@@ -7,3 +7,12 @@ public:
 	//void updateHitboxes() override;
 	void update() override;
 };
+
+class Zombie : public Entity {
+public:
+
+	bool walking = false;
+	void walk(Vector2 pos);
+	Zombie(Vector2 position);
+	void update() override;
+};

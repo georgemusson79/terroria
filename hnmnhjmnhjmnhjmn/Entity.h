@@ -4,19 +4,25 @@
 
 struct SDL_Point;
 struct SDL_texture;
-
+#
 class Hitbox;
 class Tile;
 class Entity {
 protected:
+    bool killed = false;
     int frameCount = 1;
     int animationFrame = 0;
+    int timeBetweenFrames = 0;
+    int minTimeBetweenFrames = 15;
     int textureWidth = 0;
     int textureHeight = 0;
     bool markForDeletion = false;
     void addToEntitiesList();
 public:
+    std::string displayName = "";
     bool null = false;
+    bool hostile = false;
+    bool friendly = false;
     bool renderToScreen = true;
     std::vector<Hitbox*> hitboxes = {};
     Vector2 velocity = { 0,0 };
@@ -39,6 +45,8 @@ public:
     int health = 100;
     int maxHealth = 100;
     int damage = 0;
+    int defense = 0;
+    float kbDealt = 0;
     float kbResist = 0;
     bool melee = false;
     bool invulnerable = false;
@@ -54,9 +62,9 @@ public:
 
     virtual void update();
     virtual void checkDmgImmune();
-    virtual void onHitNPC();
+    virtual void onHitNPC(Entity* NPC);
     virtual void onHitPlayer();
-    virtual void getEntityCollisions();
+    virtual std::vector<Entity*> getEntityCollisions();
     virtual bool setX(double X);
     virtual bool setY(double Y);
     virtual bool setPos(double X, double Y);
@@ -67,7 +75,7 @@ public:
     virtual void renderHitboxes();
     virtual void deleteHitboxes();
     bool toBeDeleted();
-    void despawn();
+    virtual void despawn();
     inline virtual bool collidesWith(Vector2 position);
     inline virtual bool collidesWith(Hitbox* inputHitbox);
     inline virtual bool collidesWith(Tile* tile);
@@ -79,9 +87,11 @@ public:
     void deleteTexture();
     virtual bool hurt(int dmg, float kb = 0,Entity* src=nullptr);
     virtual void kill();
+    bool getKilled();
     Entity(Vector2 position, float width, float height, int health, std::string pathToTexture, bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
     Entity(Vector2 position, float width, float height,int health, SDL_Texture* t, bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
     Entity();
+    bool switchFrames(int frame);
     virtual ~Entity();
     void setRotation(double rotation);
 };

@@ -4,9 +4,9 @@
 
 class Player;
 
-class Item1 : public Item {
+class TestSword : public Item {
 public:
-	Item1();
+	TestSword();
 	bool use(Player* player) override;
 };
 

@@ -3,6 +3,7 @@
 class Item;
 class ItemPickup : public Entity {
 private:
+	bool pickedUp = false;
 	int starttime;
 	std::shared_ptr<Item> item_sharedPtr = nullptr;
 public:
@@ -13,6 +14,6 @@ public:
 
 	ItemPickup(std::shared_ptr<Item> ptr, Vector2 position);
 	void update() override;
-	~ItemPickup();
+	//~ItemPickup();
 	
 };

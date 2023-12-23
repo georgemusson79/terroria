@@ -3,8 +3,9 @@
 #include "Entity.h"
 class ItemSwing : public Entity {
 public:
+	Entity* owner = nullptr;
 	float hitboxRotation = 0;
 	Vector2 handOffset = { 0,0 };
-	ItemSwing(Vector2 position,float width, float height, std::string texturePath,float hitboxRotation=0,Vector2 handOffset={0,0});
-
+	ItemSwing(Vector2 position,float width, float height, std::string texturePath,float hitboxRotation=0,Vector2 handOffset={0,0},Entity* owner=nullptr);
+	void update() override;
 };

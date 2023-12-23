@@ -77,7 +77,7 @@ void GUIinterface::renderPlayerHealh(Player* player) {
 	int w = size*4;
 	
 	int x = (heartCount > 10) ? (startPos.x + gap * 5) - (w / 2) : (startPos.x + gap * heartCount/2) - (w / 2);
-	std::string str = std::format("Life: {} / {}", player->health, player->maxHealth);
+	std::string str = "Life:" + std::to_string(player->health) + "/" + std::to_string(player->maxHealth);
 	std::shared_ptr<SDL_Texture> text = GUIinterface::getTextPointer(str);
 	pos = { x,0,w,startPos.y };
 	SDL_RenderCopy(Main::renderer, text.get(), NULL, &pos);

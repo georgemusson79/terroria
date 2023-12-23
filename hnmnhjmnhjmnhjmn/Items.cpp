@@ -6,23 +6,24 @@
 #include "Tile.h"
 #include "Tiles.h"
 
-Item1::Item1() {
+TestSword::TestSword() {
 	this->maxStack = 9;
-	this->useTime = 50;
 	this->width = 1;
 	this->height = 5;
-	this->useTime = 15;
+	this->useTime = 30;
 	this->name = "cool sword bro";
 	this->setTexture("assets\\Items\\sword.png");
 	this->setHotbarTexture("assets\\Items\\swordh.png");
 	this->id = 0;
+	this->damage = 20;
+	this->kb = 0.7;
 	this->melee = true;
 	this->itemType = SpecialisedType::GENERIC;
 	this->handOffset = { 0.4,0.4 };
 	this->rotationInInventory = 45;
 }
 
-bool Item1::use(Player* player) {
+bool TestSword::use(Player* player) {
 	player->swingAnim(this);
 	return true;
 }
@@ -42,7 +43,7 @@ WoodItem::WoodItem() {
 bool WoodItem::use(Player* player) {
 	//use(player);
 	Vector2 pos = Cursor::WorldPos();
-	if (pos.distance(player->position) < player->placeRng and !Main::checkForTile(pos)) {
+	if (pos.distance(player->position) < player->placeRng && !Main::checkForTile(pos)) {
 		//check for adjacent tiles to place on
 		Dirt d=Dirt(pos.X, pos.Y,false);
 		if (Main::player->collidesWith(&d)) {

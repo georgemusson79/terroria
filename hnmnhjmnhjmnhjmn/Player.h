@@ -27,6 +27,7 @@ private:
     Vector2 armRotationPt = { 0,0 };
     Vector2 armDims = { 0,0 };
     Vector2 getHandPos(Vector2 offset={0,0});
+
 public:
     void swingAnim(Item* item);
     bool usingItem = false;
@@ -54,6 +55,7 @@ public:
     bool getCursorDistance();
     Player(Vector2 pos);
     Player();
+    ~Player();
     void update() override;
     void placeBlock(Tile* t);
     bool renderEntity() override;

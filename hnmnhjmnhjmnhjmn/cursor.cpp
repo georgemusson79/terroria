@@ -73,7 +73,7 @@ bool Cursor::dropItem(Player* player) {
 		double length = Cursor::WorldPos().distance(player->position);
 		Vector2 normalised = (Cursor::WorldPos() - player->position) / Vector2(length, length);
 		Vector2 velocity = normalised * Vector2(0.3, -0.3);
-		ItemPickup* pickup=new ItemPickup(new Item(*Cursor::item),player->position);
+		ItemPickup* pickup=new ItemPickup(Cursor::item,player->position);
 		pickup->velocity = velocity;
 		Cursor::item.reset();
 		Cursor::isHoldingItem = false;

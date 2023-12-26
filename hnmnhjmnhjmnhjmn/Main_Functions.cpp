@@ -103,11 +103,8 @@ void Main::handleKeyEvents(SDL_Event* e) {
 
             if (e->key.keysym.sym == SDLK_b) {
                //TestSword* bob=new TestSword;
-               //// WoodItem* item = new WoodItem;
                new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
-                //new ItemPickup(new WoodItem, Cursor::WorldPos());
-                for (auto e : Main::entities) std::cout << e->displayName << "\n";
-                //new Zombie(Cursor::WorldPos());
+               new Zombie(Cursor::WorldPos());
                 //new Entity1(Cursor::WorldPos());
             }
 
@@ -215,7 +212,7 @@ void Main::renderPos(Vector2 pos) {
 }
 
 ItemPickup* Main::convertItemToItemPickup(Item* item, Vector2 position) {
-    return new ItemPickup(item, position);
+    return new ItemPickup(std::shared_ptr<Item>(item), position);
 }
 void Main::drawSquare(Vector2 center, SDL_Color color, int width) {
     Uint8 r;
@@ -269,4 +266,11 @@ Vector2 Main::rotatePt(Vector2 in, Vector2 around, double rotation) {
 bool Main::checkForTile(Vector2 pos) {
     if (Main::inWorldBounds(pos) and Main::tiles[pos.X][pos.Y] != nullptr and Main::tiles[pos.X][pos.Y]->getID() != AIR) return true;
     return false;
+}
+
+void Main::spawnEntities() {
+    for (Entity* e : Main::entitiesToSpawn) {
+        Main::entities.push_back(e);
+    }
+    Main::entitiesToSpawn = {};
 }

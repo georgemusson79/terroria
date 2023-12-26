@@ -38,6 +38,7 @@ namespace Main {
     extern std::map<int, SDL_Texture*> backgrounds;
     extern uint16_t defaultLightValue;
     extern std::vector<Entity*> entities;
+    extern std::vector<Entity*> entitiesToSpawn;
     extern SDL_Renderer* renderer;
     extern SDL_Window* window;
     extern bool scaleToWindowSize;
@@ -67,6 +68,7 @@ namespace Main {
     SDL_Rect getTextureFrame(int frameNumber,int totalFrames,SDL_Texture* texture,int textureWidth,int textureHeight, int startX = 0, int startY = 0);
     void setCursorType(cursorType type);
     void removeDeletedEntities();
+    void spawnEntities();
     double toDegrees(double val);
     double toRadians(double val);
     double setSign(double src, double tgt);

@@ -23,6 +23,7 @@ bool Main::scaleToWindowSize = false;
 uint16_t Main::WORLD_HEIGHT = 1500;
 uint16_t Main::WORLD_WIDTH = 7000;
 std::vector<Entity*> Main::entities = {};
+std::vector<Entity*> Main::entitiesToSpawn = {};
 std::map<int,SDL_Texture*> Main::tileTexture;
 std::map<int, SDL_Texture*> Main::tileWallTexture;
 std::map<int, SDL_Texture*> Main::backgrounds;
@@ -124,7 +125,10 @@ int main() {
     //ItemSwing* obj = new ItemSwing(Main::player->position, 10, 10, "assets\\Items\\sword.png");
     //Main::player->pickup(new WoodItem(), 0, 0, true);
     while (Debug::running) {
+        Main::spawnEntities();
+        Main::removeDeletedEntities();
         Main::resetLightMap();
+
         
         Cursor::update();
         Main::handleEvents(&e, nullptr);
@@ -139,7 +143,7 @@ int main() {
             if (Main::entities[e] != nullptr && !Main::entities[e]->toBeDeleted()) Main::entities[e]->update();
         }
         for (Tile* t : Main::testcbox->collidesWithTiles()) t->destroy();
-        Main::removeDeletedEntities();
+
         Main::camera->renderScreen();
         //handle fps: should be put in function and needs work
 
@@ -153,8 +157,8 @@ int main() {
             frmstart = SDL_GetTicks();
         }
         Main::frames++;
-        if (SDL_GetTicks() - starttime > 1000) {
-            std::cout << Main::frames << "\n";
+        if (SDL_GetTicks() - starttime > 10000) {
+            std::cout << Main::frames/10 << "\n";
             Main::frames = 0;
             starttime = SDL_GetTicks();
         }

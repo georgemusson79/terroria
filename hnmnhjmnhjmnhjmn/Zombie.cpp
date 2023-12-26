@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Main.h"
 #include "Player.h"
+#include "Item_pickup.h"
 Zombie::Zombie(Vector2 position) : Entity(position,2,3,500,"assets\\enemy\\zombie1.png") {
 	this->dmgImmuneMaxTime = 20;
 	this->displayName = "zombie";
@@ -15,6 +16,11 @@ Zombie::Zombie(Vector2 position) : Entity(position,2,3,500,"assets\\enemy\\zombi
 	this->hostile = true;
 	this->frameCount = 3;
 	this->setTexture("assets\\enemy\\zombie1.png");
+}
+
+void Zombie::kill() {
+	Entity::kill();
+	new ItemPickup(std::shared_ptr<Item>(new WoodItem), this->position);
 }
 
 void Zombie::walk(Vector2 pos) {
@@ -40,3 +46,4 @@ void Zombie::update() {
 	if (this->onGround && !this->walking) this->velocity.X = 0;
 	if (this->collidesWith(Main::player)) Main::player->hurt(this->damage, this->kbDealt, this);
 }
+

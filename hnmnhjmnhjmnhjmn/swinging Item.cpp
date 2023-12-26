@@ -23,7 +23,7 @@ void ItemSwing::update() {;
 	Entity::update();
 	if (this->owner!=nullptr) this->velocity = this->owner->velocity;
 	for (Entity* e : Main::entities) {
-		if (this->collidesWith(e) and this!=e) {
+		if (this != e and this->collidesWith(e)) {
 			this->onHitNPC(e);
 		}
 	}

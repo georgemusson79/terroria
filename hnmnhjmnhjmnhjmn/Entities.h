@@ -13,6 +13,8 @@ public:
 
 	bool walking = false;
 	void walk(Vector2 pos);
+	virtual void kill() override;
 	Zombie(Vector2 position);
 	void update() override;
 };
+

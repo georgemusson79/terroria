@@ -42,7 +42,7 @@ public:
     SDL_Texture* texture = nullptr;
     bool canFlipH = true;
     bool canFlipV = false;
-    int health = 100;
+    int health = -1;
     int maxHealth = 100;
     int damage = 0;
     int defense = 0;

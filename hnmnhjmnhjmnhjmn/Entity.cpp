@@ -114,7 +114,7 @@ Entity::Entity(Vector2 position, float width, float height,int health,std::strin
 	setPos(position.X,position.Y);
 	if (defaultCollider) hitboxes.push_back(new SquareHitbox(this->position, this->width, this->height));
 	this->rotationPoint = { Main::convertTileSizeToPixelSize(width)/2,Main::convertTileSizeToPixelSize(height) / 2 };
-	Main::entities.push_back(this);
+	Main::entitiesToSpawn.push_back(this);
 }
 
 void Entity::addToEntitiesList() {
@@ -151,6 +151,7 @@ void Entity::setRotation(double rotation) {
 }
 
 Entity::~Entity() {
+
 	SDL_DestroyTexture(this->texture);
 	this->deleteHitboxes();
 }
@@ -183,7 +184,7 @@ bool Entity::collidesWith(Tile* tile) {
 }
 
 bool Entity::collidesWith(Entity* entity) {
-	if (entity==nullptr || entity->entityCollision == false || this->entityCollision == false) return false;
+	if (entity==nullptr || entity->getKilled() || this->getKilled() || this->toBeDeleted() || entity->toBeDeleted() || !entity->entityCollision || this->entityCollision == false) return false;
 	for (Hitbox* hitbox : entity->hitboxes) if (this->collidesWith(hitbox)) return true;
 	return false;
 }
@@ -252,7 +253,7 @@ bool Entity::getKilled() {
 }
 
 bool Entity::hurt(int dmg,float kb,Entity* src) {
-	if (this->health == -1) return false;
+	if (this->maxHealth == -1 or this->dmgImmuneMaxTime==-1) return false;
 	this->checkDmgImmune();
 	if (this->invulnerable) return false;
 	this->health -= dmg;

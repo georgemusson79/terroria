@@ -75,6 +75,7 @@ namespace Main {
     void updateLightMap(Vector2 position, int lightStrength);
     void resetLightMap();
     Vector2 rotatePt(Vector2 in, Vector2 around, double rotation);
+    double getAngle(Vector2 pointA, Vector2 pointB);
     bool inWorldBounds(Vector2 pos);
     void renderPos(Vector2 pos);
     void drawSquare(Vector2 center, SDL_Color color, int width);

@@ -11,7 +11,7 @@ public:
 
 class Zombie : public Entity {
 public:
-
+	int rotation = 0;
 	bool walking = false;
 	void walk(Vector2 pos);
 	virtual void kill() override;

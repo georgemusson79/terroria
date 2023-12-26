@@ -4,7 +4,11 @@
 
 struct SDL_Point;
 struct SDL_texture;
-#
+
+enum class RotationType {
+    ABSOLUTE,RELATIVE
+};
+
 class Hitbox;
 class Tile;
 class Entity {
@@ -75,7 +79,7 @@ public:
     virtual void renderHitboxes();
     virtual void deleteHitboxes();
     bool toBeDeleted();
-    void setRotationAround(double rotation, Vector2 point);
+    void setRotationAround(double rotation, Vector2 point, RotationType rotationType);  //rotation type can be set to absolute or relative, absolute doesnt consider where the entity currently is
     virtual void despawn();
     inline virtual bool collidesWith(Vector2 position);
     inline virtual bool collidesWith(Hitbox* inputHitbox);

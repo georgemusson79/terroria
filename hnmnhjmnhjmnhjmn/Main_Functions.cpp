@@ -250,6 +250,11 @@ Vector2 Main::getIntersectPt(Line l1, Line l2) {
     return { intersectX, intersectY };
 }
 
+double Main::getAngle(Vector2 pointA, Vector2 pointB) {
+    pointB = pointB - pointA;
+    return Main::toDegrees(std::atan2(pointB.X, pointB.Y));
+}
+
 Vector2 Main::rotatePt(Vector2 in, Vector2 around, double rotation) {
     Vector2 org = in - around;
     double rad = Main::toRadians(rotation);

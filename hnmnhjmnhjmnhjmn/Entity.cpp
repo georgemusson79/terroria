@@ -6,6 +6,7 @@
 #include "Colliders.h"
 #include <fstream>
 #include <filesystem>
+#include <cmath>
 #include <iostream>
 void Entity::update() {
 	this->velocity = moveEntity(this->velocity);
@@ -150,15 +151,24 @@ void Entity::setRotation(double rotation) {
 	}
 }
 
-void Entity::setRotationAround(double rotation, Vector2 point) {
+void Entity::setRotationAround(double rotation, Vector2 point,RotationType rotationType) {
 	this->rotation = rotation;
 	for (Hitbox* hitbox : this->hitboxes) {
+		//hitbox->setCenter(Main::rotatePt(hitbox->getCenter(), point, rotation));
 		if (hitbox->type == hitboxType::ROTATABLE) {
-			Main::rotatePt(hitbox->getCenter(), point, rotation);
-
-			dynamic_cast<RotatableHitbox*>(hitbox)->setRotation(rotation);
+			RotatableHitbox* hb = dynamic_cast<RotatableHitbox*>(hitbox);
+			hb->setRotation(0);
+			hb->setRotation(rotation);
 		}
 	}
+	Vector2 pos;
+	if (rotationType == RotationType::ABSOLUTE) {
+		double angle=Main::getAngle(point, this->center);
+		pos = Main::rotatePt(this->center, point, angle);
+		this->setCenter(pos.X, pos.Y);
+	}
+	pos= Main::rotatePt(this->center, point, rotation);
+	this->setCenter(pos.X, pos.Y);
 }
 
 Entity::~Entity() {

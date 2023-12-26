@@ -19,6 +19,8 @@ public:
     hitboxType type;
     Vector2 position = { 0,0 };
     virtual ~Hitbox();
+    virtual Vector2 getCenter() = 0;
+    virtual void setCenter(Vector2 position) = 0;
     virtual bool collidesWith(Vector2 pos)=0;
     virtual bool collidesWith(Tile* tile) = 0;
     virtual bool collidesWith(Hitbox* inputHitbox) = 0;
@@ -47,9 +49,11 @@ public:
     float w = 0;
     SquareHitbox(Vector2 position, float width, float height);
     SquareHitbox();
+    void setCenter(Vector2 position) override;
     std::array<Vector2, 4> getCorners();
     std::array<Line, 4> getLines();
     bool collidesWith(Vector2 pos) override;
+    Vector2 getCenter() override;
     bool collidesWith(Tile* tile) override;
     bool collidesWith(Hitbox* inputHitbox) override;
     std::vector<Tile*> collidesWithTiles()  override;
@@ -62,6 +66,8 @@ public:
     double r = 0;
     CircleHitbox(Vector2 position, float radius);
     CircleHitbox();
+    void setCenter(Vector2 position) override;
+    Vector2 getCenter() override;
     bool collidesWith(Vector2 pos) override;
     bool collidesWith(Tile* tile) override;
     bool collidesWith(Hitbox* inputHitbox) override;
@@ -84,10 +90,10 @@ public:
     std::array<Vector2, 4> corners = {};
     RotatableHitbox(Vector2 center, double w, double h);
     void setPosition(Vector2 position) override;
-
+    void setCenter(Vector2 position) override;
 
     void updateCorners();
-
+    Vector2 getCenter() override;
     bool collidesWith(Line line);
     bool collidesWithSq(SquareHitbox* sq);
     bool collidesWithRotatable(RotatableHitbox* sq);

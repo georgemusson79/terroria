@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Main.h"
 #include "Player.h"
+#include "Colliders.h"
 #include "Item_pickup.h"
 Zombie::Zombie(Vector2 position) : Entity(position,2,3,500,"assets\\enemy\\zombie1.png") {
 	this->dmgImmuneMaxTime = 20;

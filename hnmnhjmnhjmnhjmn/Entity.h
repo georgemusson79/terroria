@@ -75,6 +75,7 @@ public:
     virtual void renderHitboxes();
     virtual void deleteHitboxes();
     bool toBeDeleted();
+    void setRotationAround(double rotation, Vector2 point);
     virtual void despawn();
     inline virtual bool collidesWith(Vector2 position);
     inline virtual bool collidesWith(Hitbox* inputHitbox);

@@ -29,6 +29,14 @@ bool CircleHitbox::collidesWith(Vector2 pos) {
 	return false;
 }
 
+Vector2 CircleHitbox::getCenter() {
+	return this->position;
+ }
+
+void CircleHitbox::setCenter(Vector2 position) {
+	this->position = position;
+}
+
 bool CircleHitbox::collidesWith(Tile* tile) {
 	if (tile != nullptr && this->active) {
 		Vector2 tilepos = { tile->X,tile->Y };
@@ -94,6 +102,17 @@ SquareHitbox::SquareHitbox(Vector2 position, float width, float height) : Hitbox
 	this->position = position;
 	this->w = width;
 	this->h = height;
+}
+
+Vector2 SquareHitbox::getCenter() {
+	double x = this->position.X + (this->w / 2);
+	double y = this->position.Y + (this->h / 2);
+	return { x,y };
+}
+
+void SquareHitbox::setCenter(Vector2 position) {
+	this->position.X = position.X - (this->w / 2);
+	this->position.Y= position.Y - (this->h / 2);
 }
 
 SquareHitbox::SquareHitbox() : Hitbox::Hitbox(hitboxType::SQUARE) {
@@ -245,6 +264,10 @@ void RotatableHitbox::updateCorners() {
 	}
 }
 
+void RotatableHitbox::setCenter(Vector2 position) {
+	this->position = position;
+}
+
 void RotatableHitbox::renderHitbox() {
 	Uint8 r, g, b, a;
 	SDL_GetRenderDrawColor(Main::renderer, &r, &g, &b, &a);
@@ -271,6 +294,10 @@ bool RotatableHitbox::collidesWith(Line line) {
 		if (l2.checkIfIntersects(line)) return true;
 	}
 	return false;
+}
+
+Vector2 RotatableHitbox::getCenter() {
+	return this->position;
 }
 
 bool RotatableHitbox::collidesWithSq(SquareHitbox* sq) {

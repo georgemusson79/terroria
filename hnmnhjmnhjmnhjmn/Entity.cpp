@@ -150,6 +150,17 @@ void Entity::setRotation(double rotation) {
 	}
 }
 
+void Entity::setRotationAround(double rotation, Vector2 point) {
+	this->rotation = rotation;
+	for (Hitbox* hitbox : this->hitboxes) {
+		if (hitbox->type == hitboxType::ROTATABLE) {
+			Main::rotatePt(hitbox->getCenter(), point, rotation);
+
+			dynamic_cast<RotatableHitbox*>(hitbox)->setRotation(rotation);
+		}
+	}
+}
+
 Entity::~Entity() {
 
 	SDL_DestroyTexture(this->texture);

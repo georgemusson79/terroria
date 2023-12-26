@@ -272,7 +272,9 @@ void Player::swingAnim(Item* item) {
 			this->tempRotation += 1;
 			
 		}
+		
 	}
+
 
 	else {
 		this->animationOverride = false;
@@ -281,6 +283,7 @@ void Player::swingAnim(Item* item) {
 		this->swingItem->despawn();
 		this->swingItem = nullptr;
 	}
+
 }
 
 Vector2 Player::getHandPos(Vector2 offset) {

@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Colliders.h"
 #include "Item_pickup.h"
-Zombie::Zombie(Vector2 position) : Entity(position,2,3,500,"assets\\enemy\\zombie1.png") {
+Zombie::Zombie(Vector2 position) : Entity(position, 2, 3, 500, "assets\\enemy\\zombie1.png") {
 	this->dmgImmuneMaxTime = 20;
 	this->displayName = "zombie";
 	this->maxXVelocity = 0.2;
@@ -16,7 +16,9 @@ Zombie::Zombie(Vector2 position) : Entity(position,2,3,500,"assets\\enemy\\zombi
 	this->friendly = false;
 	this->hostile = true;
 	this->frameCount = 3;
+	this->arm = new Arm({ 1,1 }, { 0.5,20 }, 0.5, 20, "assets\\player\\arm2.png", true, this);
 	this->setTexture("assets\\enemy\\zombie1.png");
+	this->arm->heldItem = TestSword().getItemProjectile({ 999,999 }, this);
 }
 
 void Zombie::kill() {
@@ -25,8 +27,8 @@ void Zombie::kill() {
 }
 
 void Zombie::walk(Vector2 pos) {
-	
-	if (this->position.distance(pos)>1) {
+
+	if (this->position.distance(pos) > 1) {
 		if (this->onGround) {
 			this->walking = true;
 			this->hAcceleration = (this->position.X < pos.X) ? 0.1 : -0.1;
@@ -43,8 +45,9 @@ void Zombie::walk(Vector2 pos) {
 
 void Zombie::update() {
 	Entity::update();
-	if (Main::player!=nullptr) this->walk(Main::player->position);
+	if (Main::player != nullptr) this->walk(Main::player->position);
 	if (this->onGround && !this->walking) this->velocity.X = 0;
 	if (this->collidesWith(Main::player)) Main::player->hurt(this->damage, this->kbDealt, this);
+	(this->hDirection > 0) ? this->arm->rotation++ : this->arm->rotation--;
 }
 

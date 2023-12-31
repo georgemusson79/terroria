@@ -4,13 +4,14 @@
 #include "Cursor.h"
 #include "Player.h"
 #include "Tile.h"
+#include "Entities.h"
 #include "Tiles.h"
 
 TestSword::TestSword() {
 	this->maxStack = 9;
 	this->width = 1;
 	this->height = 5;
-	this->useTime = 30;
+	this->useTime = 20;
 	this->name = "cool sword bro";
 	this->setTexture("assets\\Items\\sword.png");
 	this->setHotbarTexture("assets\\Items\\swordh.png");
@@ -24,7 +25,7 @@ TestSword::TestSword() {
 }
 
 bool TestSword::use(Player* player) {
-	player->swingAnim(this);
+	player->arm->swingAnim();
 	return true;
 }
 
@@ -36,7 +37,7 @@ WoodItem::WoodItem() {
 	this->id = 1;
 	this->name = "Wood tile";
 	this->maxStack = 999;
-	this->useTime = 15;
+	this->useTime = 5;
 	this->consumable = true;
 }
 
@@ -57,7 +58,7 @@ bool WoodItem::use(Player* player) {
 		std::vector<Vector2> surroundingTiles = { {pos.X + 1,pos.Y},{pos.X,pos.Y + 1},{pos.X - 1,pos.Y},{pos.X,pos.Y - 1} };
 		for (Vector2& p : surroundingTiles) {
 			if (Main::checkForTile(p)) {
-				player->swingAnim(this);
+				player->arm->swingAnim();
 				//new Chest(pos.X, pos.Y);
 				Wood(pos.X, pos.Y);
 				return true;

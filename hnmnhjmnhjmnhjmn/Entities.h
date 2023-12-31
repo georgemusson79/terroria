@@ -24,18 +24,19 @@ public:
 
 class Arm : public Entity {
 protected:
-	Item* heldItem = nullptr;
+	std::shared_ptr<Item> heldItem = nullptr;
 	ItemSwing* swingItem = nullptr;
 public:
 	bool usingItem = false;
-	void setHeldItem(Item* item);
+	void setHeldItem(std::shared_ptr<Item> item);
+	void deleteHeldItem();
 	ItemSwing* getSwingItem();
-	Item* getItem();
+	std::shared_ptr<Item> getItem();
 	void swingAnim();
 	void updatePos();
 	void useItem();
 	float restingRotation = 0; //angle arm should be at when not doing anything
-	Entity* owner;
+	Entity* owner = nullptr;
 	Vector2 defaultShoulderPos; //where to rotate around, relative to owner center
 	Vector2 defaultHandPos; //where to rotate held weapons around, relative to shoulder pos at 0 degrees
 	float width; //width in tiles

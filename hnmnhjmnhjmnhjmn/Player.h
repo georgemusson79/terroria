@@ -12,10 +12,11 @@ enum class PlayerSprite {
      WALK1, IDLE, WALK2
 };
 class Chest;
+class Arm;
 class Player : public Entity {
 private:
-    Item heldItem;
-    ItemSwing* swingItem = nullptr;
+    //Item heldItem;
+    //ItemSwing* swingItem = nullptr;
     int tempRotation = 0;
     bool useItemAnim = false;
     bool animationOverride = false;
@@ -29,7 +30,8 @@ private:
     Vector2 getHandPos(Vector2 offset={0,0});
 
 public:
-    void swingAnim(Item* item);
+    Arm* arm;
+    //void swingAnim(Item* item);
     bool usingItem = false;
     bool isWalking = false;
     bool isCollidingWithGUI = false;
@@ -58,7 +60,7 @@ public:
     ~Player();
     void update() override;
     void placeBlock(Tile* t);
-    bool renderEntity() override;
+    //bool renderEntity() override;
     void clearInventory();
     template <typename ItemType>
     bool pickup(ItemType* item, int row, int column, bool replace = false) {

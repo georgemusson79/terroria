@@ -125,8 +125,8 @@ int main() {
     //ItemSwing* obj = new ItemSwing(Main::player->position, 10, 10, "assets\\Items\\sword.png");
     //Main::player->pickup(new WoodItem(), 0, 0, true);
     while (Debug::running) {
-        Main::spawnEntities();
         Main::removeDeletedEntities();
+        Main::spawnEntities();
         Main::resetLightMap();
 
         

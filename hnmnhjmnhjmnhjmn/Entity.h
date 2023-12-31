@@ -24,6 +24,7 @@ protected:
     bool markForDeletion = false;
     void addToEntitiesList();
 public:
+    int renderPriority = 10; //smaller means it will be rendered first
     std::string displayName = "";
     bool active = true;
     bool hostile = false;

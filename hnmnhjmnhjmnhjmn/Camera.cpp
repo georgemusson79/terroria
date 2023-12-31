@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Entity.h"
 #include "tileWalls.h"
+#include "Entities.h"
 #include <algorithm>
 #include "gui.h"
 #include "Colliders.h"
@@ -82,7 +83,9 @@ bool Camera::renderTileWalls() {
 }
 
 bool Camera::renderEntities() {
-	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted()) entity->renderEntity();
+	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted()) {
+		if (Main::player==nullptr || entity!=Main::player->arm) entity->renderEntity();
+	}
 	return true;
 }
 bool Camera::renderScreen(bool renderHitboxes) {
@@ -147,6 +150,7 @@ void Camera::blockPlacementPositionDraw(Vector2 pos) {
 
 void Camera::renderPlayer(Player* player) {
 	player->renderEntity();
+	player->arm->renderEntity();
 }
 
 void Camera::renderPlayerGUI(Player* player) {

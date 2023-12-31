@@ -5,6 +5,7 @@
 #include "Item.h"
 
 Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::string pathToTexture, bool useDefaultHitbox, Entity* owner) : Entity(shoulderPos, width, height, -1, pathToTexture, false, false, false) {
+	this->renderPriority = 0;
 	this->defaultShoulderPos = shoulderPos;
 	this->defaultHandPos = handPos;
 	this->owner = owner;
@@ -15,14 +16,13 @@ Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::s
 }
 
 void Arm::useItem() {
-	if (this->swingItem == nullptr) return;
+	if (this->swingItem == nullptr || !usingItem) return;
 	double itemRotation = (this->rotation + 180);
 	this->swingItem->setRotation(0);
 	Vector2 handPos = this->getHandPos(this->swingItem->handOffset);
 	Vector2 itemCenter = { handPos.X + (this->swingItem->width / 2),handPos.Y + (swingItem->height / 2) };
 	Vector2 newPos = Main::rotatePt(itemCenter, handPos, this->rotation);
 	this->swingItem->setCenter(newPos.X, newPos.Y);
-	this->swingItem->active = true;
 	this->swingItem->setRotation(itemRotation);
 }
 
@@ -42,26 +42,27 @@ void Arm::update() {
 	this->updatePos();
 	if (this->usingItem) this->useItem();
 	this->hDirection = this->owner->hDirection;
-	this->rotation = Main::setSign(this->hDirection, this->rotation);
-	this->setRotationAround(Main::setSign(this->hDirection,this->rotation), this->getShoulderPos(), RotationType::ABSOLUTE);
+	//this->rotation = Main::setSign(this->hDirection,this->rotation);
+	this->setRotationAround(this->rotation, this->getShoulderPos(), RotationType::ABSOLUTE);
 
 }
 
 void Arm::swingAnim() {
-	if (!this->usingItem) {
+	if (!this->markForDeletion && !this->usingItem && heldItem!=nullptr) {
 		this->rotation = 0;
 		this->usingItem = true;
+		this->swingItem->active = true;
 	}
 
 	if (this->heldItem!=nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) {
 		//bruh this code sucks
-		this->rotation += (double(270 - 90) / this->heldItem->useTime) * this->hDirection;
+		this->rotation = Main::setSign(this->hDirection,this->rotation) + ((double(270 - 90) / this->heldItem->useTime) * this->hDirection);
 	}
 
 
 	else {
 		this->usingItem = false;
-		this->swingItem->active = false;
+		if (this->swingItem!=nullptr) this->swingItem->active = false;
 		this->rotation = 0;
 	}
 
@@ -79,21 +80,27 @@ Vector2 Arm::getShoulderPos() {
 	return pos;
 }
 
-void Arm::setHeldItem(Item* item) {
-	delete this->heldItem;
-	if (this->swingItem!=nullptr) this->swingItem->despawn();
+void Arm::setHeldItem(std::shared_ptr<Item> item) {
+	if (this->heldItem!=nullptr && item!=nullptr) if (item->name == this->heldItem->name) return;
+	this->deleteHeldItem();
 	this->heldItem = item;
 	this->swingItem = item->getItemProjectile(this->getHandPos(item->handOffset), this->owner);
+	this->swingItem->active = false;
 }
+
 
 ItemSwing* Arm::getSwingItem() {
 	return this->swingItem;
 }
-Item* Arm::getItem() {
+std::shared_ptr<Item> Arm::getItem() {
 	return this->heldItem;
 }
 
 Arm::~Arm() {
-	delete this->heldItem;
-	this->swingItem->despawn();
+	this->deleteHeldItem();
+}
+
+void Arm::deleteHeldItem() {
+	if (this->swingItem != nullptr) this->swingItem->despawn();
+	this->swingItem = nullptr;
 }

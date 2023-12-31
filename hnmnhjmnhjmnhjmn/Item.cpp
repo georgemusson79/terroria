@@ -5,6 +5,7 @@
 #include "Player.h"
 #include <SDL_image.h>
 #include "gui.h"
+#include "Entities.h"
 #include "Item_pickup.h"
 
 Item::Item() {
@@ -26,7 +27,6 @@ bool Item::shoot(){
 
 
 bool Item::use(Player* player) {
-	player->swingAnim(this);
 	return true;
 }
 

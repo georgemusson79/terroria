@@ -103,13 +103,14 @@ void Main::handleKeyEvents(SDL_Event* e) {
 
             if (e->key.keysym.sym == SDLK_b) {
                //TestSword* bob=new TestSword;
+                new ItemPickup(std::shared_ptr<Item>(new WoodItem), Main::player->position - Vector2(2, 2));
                new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
                new Zombie(Cursor::WorldPos());
                 //new Entity1(Cursor::WorldPos());
             }
 
             if (e->key.keysym.sym == SDLK_DELETE) {
-                for (auto e : Main::entities) e->despawn();
+                for (auto e : Main::entities) if (e!=Main::player->arm) e->despawn();
             }
 
 
@@ -277,5 +278,8 @@ void Main::spawnEntities() {
     for (Entity* e : Main::entitiesToSpawn) {
         Main::entities.push_back(e);
     }
+    std::sort(Main::entities.begin(), Main::entities.end(), [](Entity* a, Entity* b) {
+        return a->renderPriority > b->renderPriority;
+        });
     Main::entitiesToSpawn = {};
 }

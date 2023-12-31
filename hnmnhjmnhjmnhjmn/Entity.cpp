@@ -5,6 +5,7 @@
 #include "Vector2.h"
 #include "Colliders.h"
 #include <fstream>
+#include "Player.h"
 #include <filesystem>
 #include <cmath>
 #include <iostream>
@@ -25,12 +26,12 @@ void Entity::onTileCollision() {
 
 }
 
-void Entity::onHitNPC(Entity* NPC) {
-	NPC->hurt(this->damage, this->kbDealt, this);
+void Entity::onHitNPC(Entity* NPC,Entity* src) {
+	NPC->hurt(this->damage, this->kbDealt, src);
 }
 
-void Entity::onHitPlayer() {
-	
+void Entity::onHitPlayer(Player* player,Entity* src) {
+	player->hurt(this->damage, this->kbDealt, src);
 }
 
 bool Entity::setX(double X) {
@@ -77,6 +78,7 @@ bool Entity::setCenter(double X, double Y) {
 }
 
 bool Entity::renderEntity() {
+	if (!this->active) return false;
 	if (!this->renderToScreen) return false;
 	iVector2 renderPos = Main::convertWorldPosToCameraPos(this->position);
 	Vector2 dims = { Main::convertTileSizeToPixelSize(this->width*this->scale), Main::convertTileSizeToPixelSize(this->height*this->scale) };
@@ -205,7 +207,7 @@ bool Entity::collidesWith(Tile* tile) {
 }
 
 bool Entity::collidesWith(Entity* entity) {
-	if (entity==nullptr || entity->getKilled() || this->getKilled() || this->toBeDeleted() || entity->toBeDeleted() || !entity->entityCollision || this->entityCollision == false) return false;
+	if (entity==nullptr || entity->getKilled() || this->getKilled() || this->toBeDeleted() || entity->toBeDeleted() || !entity->entityCollision || this->entityCollision == false || !this->active || !entity->active) return false;
 	for (Hitbox* hitbox : entity->hitboxes) if (this->collidesWith(hitbox)) return true;
 	return false;
 }
@@ -292,4 +294,10 @@ void Entity::checkDmgImmune() {
 	if (this->invulnerable) {
 		if (SDL_GetTicks() - dmgImmuneTime > dmgImmuneMaxTime && dmgImmuneMaxTime!=-1) this->invulnerable = false;
 	}
+}
+
+bool Entity::checkOnSameTeam(Entity* e) {
+	if (this->hostile && e->hostile) return true;
+	if (e->friendly && this->friendly) return false;
+	return false;
 }

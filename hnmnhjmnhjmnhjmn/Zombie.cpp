@@ -16,9 +16,9 @@ Zombie::Zombie(Vector2 position) : Entity(position, 2, 3, 500, "assets\\enemy\\z
 	this->friendly = false;
 	this->hostile = true;
 	this->frameCount = 3;
-	this->arm = new Arm({ 1,1 }, { 0.5,20 }, 0.5, 20, "assets\\player\\arm2.png", true, this);
+	this->arm = new Arm({0,0}, {0, 1.9}, 0.5, 2, "assets\\player\\arm2.png", true, this);
 	this->setTexture("assets\\enemy\\zombie1.png");
-	this->arm->heldItem = TestSword().getItemProjectile({ 999,999 }, this);
+	this->arm->setHeldItem(new TestSword());
 }
 
 void Zombie::kill() {
@@ -45,9 +45,14 @@ void Zombie::walk(Vector2 pos) {
 
 void Zombie::update() {
 	Entity::update();
+	bool usingitem = this->arm->usingItem;
+	if (this->weaponCooldown == 0) this->arm->swingAnim();
+	else weaponCooldown--;
+	if (usingitem && !this->arm->usingItem) this->weaponCooldown = 40;
 	if (Main::player != nullptr) this->walk(Main::player->position);
 	if (this->onGround && !this->walking) this->velocity.X = 0;
 	if (this->collidesWith(Main::player)) Main::player->hurt(this->damage, this->kbDealt, this);
-	(this->hDirection > 0) ? this->arm->rotation++ : this->arm->rotation--;
+	//this->arm->rotation++;
+	//(this->hDirection > 0) ? this->arm->rotation++ : this->arm->rotation--;
 }
 

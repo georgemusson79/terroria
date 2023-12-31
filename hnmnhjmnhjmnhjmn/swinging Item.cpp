@@ -14,19 +14,33 @@ ItemSwing::ItemSwing(Vector2 position, float width, float height, std::string te
 	this->hitboxes.push_back(hb);
 	this->invulnerable = true;
 	this->displayName = "weapon";
-
+	if (this->owner != nullptr) {
+		this->hostile = owner->hostile;
+		this->friendly = owner->friendly;
+	}
 }
-void ItemSwing::update() {;
 
+void ItemSwing::handleCollisions() {
+	for (Entity* e : Main::entities) {
+		if (this != e && this->owner != e && this->collidesWith(e)) {
+			if (this->owner==nullptr || !this->owner->checkOnSameTeam(e)) this->onHitNPC(e,this->owner);
+		}
+	}
+	if (this->owner != Main::player && Main::player!=nullptr) {
+		if (this->collidesWith(Main::player)) {
+			if (this->owner!=nullptr || !this->owner->checkOnSameTeam(Main::player)) this->onHitPlayer(Main::player, this->owner);
+		}
+	}
+}
+
+void ItemSwing::update() {
+	this->hDirection = this->owner->hDirection;
 	if (this->owner == nullptr) this->despawn();
 	this->invulnerable = true;
 	Entity::update();
+	this->handleCollisions();
 	if (this->owner!=nullptr) this->velocity = this->owner->velocity;
-	for (Entity* e : Main::entities) {
-		if (this != e and this->collidesWith(e)) {
-			this->onHitNPC(e);
-		}
-	}
+
 }
 
 

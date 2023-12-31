@@ -140,7 +140,7 @@ int main() {
         }
         Main::testcbox->r+=0.01;
         for (int e = 0; e < Main::entities.size(); e++) {
-            if (Main::entities[e] != nullptr && !Main::entities[e]->toBeDeleted()) Main::entities[e]->update();
+            if (Main::entities[e] != nullptr && !Main::entities[e]->toBeDeleted() && Main::entities[e]->active) Main::entities[e]->update();
         }
         for (Tile* t : Main::testcbox->collidesWithTiles()) t->destroy();
 

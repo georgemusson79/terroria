@@ -11,6 +11,7 @@ enum class RotationType {
 
 class Hitbox;
 class Tile;
+class Player;
 class Entity {
 protected:
     bool killed = false;
@@ -24,7 +25,7 @@ protected:
     void addToEntitiesList();
 public:
     std::string displayName = "";
-    bool null = false;
+    bool active = true;
     bool hostile = false;
     bool friendly = false;
     bool renderToScreen = true;
@@ -66,8 +67,8 @@ public:
 
     virtual void update();
     virtual void checkDmgImmune();
-    virtual void onHitNPC(Entity* NPC);
-    virtual void onHitPlayer();
+    virtual void onHitNPC(Entity* NPC, Entity* src = nullptr);
+    virtual void onHitPlayer(Player* player, Entity* src = nullptr);
     virtual std::vector<Entity*> getEntityCollisions();
     virtual bool setX(double X);
     virtual bool setY(double Y);
@@ -99,4 +100,5 @@ public:
     bool switchFrames(int frame);
     virtual ~Entity();
     void setRotation(double rotation);
+    bool checkOnSameTeam(Entity* e);
 };

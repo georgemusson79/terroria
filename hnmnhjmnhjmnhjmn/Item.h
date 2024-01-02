@@ -13,6 +13,7 @@ class Item {
 
 public:
 	bool null = false;
+	float defaultHeldRotation = 0;
 	SpecialisedType itemType = SpecialisedType::GENERIC;
 	std::shared_ptr<SDL_Texture> texture = nullptr;
 	std::string texturePath = "";

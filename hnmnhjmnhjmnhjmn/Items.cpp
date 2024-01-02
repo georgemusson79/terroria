@@ -22,6 +22,7 @@ TestSword::TestSword() {
 	this->itemType = SpecialisedType::GENERIC;
 	this->handOffset = { 0.4,0.4 };
 	this->rotationInInventory = 45;
+	this->defaultHeldRotation = 90;
 }
 
 bool TestSword::use(Player* player) {
@@ -37,7 +38,7 @@ WoodItem::WoodItem() {
 	this->id = 1;
 	this->name = "Wood tile";
 	this->maxStack = 999;
-	this->useTime = 5;
+	this->useTime = 60;
 	this->consumable = true;
 }
 

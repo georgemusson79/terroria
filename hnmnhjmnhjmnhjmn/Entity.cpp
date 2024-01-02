@@ -206,6 +206,8 @@ bool Entity::collidesWith(Tile* tile) {
 	return false;
 }
 
+
+
 bool Entity::collidesWith(Entity* entity) {
 	if (entity==nullptr || entity->getKilled() || this->getKilled() || this->toBeDeleted() || entity->toBeDeleted() || !entity->entityCollision || this->entityCollision == false || !this->active || !entity->active) return false;
 	for (Hitbox* hitbox : entity->hitboxes) if (this->collidesWith(hitbox)) return true;

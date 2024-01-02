@@ -4,9 +4,10 @@
 #include "Player.h"
 #include <iostream>
 #include "Main.h"
-ItemSwing::ItemSwing(Vector2 position, float width, float height, std::string texturePath,float hitboxRotation,Vector2 handOffset,Entity* owner) : Entity(position,width,height,-1,texturePath,false,false,false) {
+ItemSwing::ItemSwing(Vector2 position, float width, float height, std::string texturePath,float hitboxRotation,Vector2 handOffset,Entity* owner,float defaultRotation) : Entity(position,width,height,-1,texturePath,false,false,false) {
 	this->deleteHitboxes();
 	this->handOffset = handOffset;
+	this->defaultRotation = defaultRotation;
 	RotatableHitbox* hb = new RotatableHitbox(this->center, this->width, this->height);
 	this->hitboxRotation = hitboxRotation;
 	this->owner = owner;

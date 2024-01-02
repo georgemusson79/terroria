@@ -338,7 +338,8 @@ bool RotatableHitbox::collidesWith(Vector2 pos) {
 	return false;
 }
 bool RotatableHitbox::collidesWith(Tile* tile) {
-	return true;
+	SquareHitbox sq = tile->getHitbox();
+	return this->collidesWithSq(&sq);
 }
 bool RotatableHitbox::collidesWith(Hitbox* inputHitbox) {
 	switch (inputHitbox->type) {

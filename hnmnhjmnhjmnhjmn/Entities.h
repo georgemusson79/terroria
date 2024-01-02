@@ -33,6 +33,7 @@ public:
 	ItemSwing* getSwingItem();
 	std::shared_ptr<Item> getItem();
 	void swingAnim();
+	void pokeAnim(float angle);
 	void updatePos();
 	void useItem();
 	float restingRotation = 0; //angle arm should be at when not doing anything

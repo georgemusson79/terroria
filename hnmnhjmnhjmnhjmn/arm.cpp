@@ -17,11 +17,11 @@ Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::s
 
 void Arm::useItem() {
 	if (this->swingItem == nullptr || !usingItem) return;
-	double itemRotation = (this->rotation + 180);
+	double itemRotation = (this->rotation + 180)+this->swingItem->defaultRotation*this->hDirection;
 	this->swingItem->setRotation(0);
 	Vector2 handPos = this->getHandPos(this->swingItem->handOffset);
 	Vector2 itemCenter = { handPos.X + (this->swingItem->width / 2),handPos.Y + (swingItem->height / 2) };
-	Vector2 newPos = Main::rotatePt(itemCenter, handPos, this->rotation);
+	Vector2 newPos = Main::rotatePt(itemCenter, handPos, this->rotation+this->swingItem->defaultRotation*this->hDirection);
 	this->swingItem->setCenter(newPos.X, newPos.Y);
 	this->swingItem->setRotation(itemRotation);
 }
@@ -45,6 +45,20 @@ void Arm::update() {
 	//this->rotation = Main::setSign(this->hDirection,this->rotation);
 	this->setRotationAround(this->rotation, this->getShoulderPos(), RotationType::ABSOLUTE);
 
+}
+
+void Arm::pokeAnim(float angle) {
+	if (!this->markForDeletion && !this->usingItem && heldItem != nullptr) {
+		this->rotation = 0;
+		this->usingItem = true;
+		this->swingItem->active = true;
+	}
+	if (this->heldItem != nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) this->rotation = Main::setSign(this->hDirection, angle);
+	else {
+		this->usingItem = false;
+		if (this->swingItem != nullptr) this->swingItem->active = false;
+		this->rotation = 0;
+	}
 }
 
 void Arm::swingAnim() {

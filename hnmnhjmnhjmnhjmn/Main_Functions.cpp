@@ -104,7 +104,9 @@ void Main::handleKeyEvents(SDL_Event* e) {
             if (e->key.keysym.sym == SDLK_b) {
                //TestSword* bob=new TestSword;
                 new ItemPickup(std::shared_ptr<Item>(new WoodItem), Main::player->position - Vector2(2, 2));
-               new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
+               ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
+               i->item->width = 3;
+               i->item->height = 9;
                new Zombie(Cursor::WorldPos());
                 //new Entity1(Cursor::WorldPos());
             }

@@ -24,18 +24,25 @@ public:
 
 class Arm : public Entity {
 protected:
+	int animationFramesPassed = 0;
 	std::shared_ptr<Item> heldItem = nullptr;
 	ItemSwing* swingItem = nullptr;
 public:
+	float pokeAnimationRotation = 0;
+	int timeToNextUse = 0;
+	bool swingItemActiveOverride = false; //when true other code can decide when the swingitem is active or inactive
 	bool usingItem = false;
 	void setHeldItem(std::shared_ptr<Item> item);
 	void deleteHeldItem();
+	void useItemCancel();
 	ItemSwing* getSwingItem();
 	std::shared_ptr<Item> getItem();
+	bool useHeldItem(float angle=0);
 	void swingAnim();
 	void pokeAnim(float angle);
+	void useItemAnimation(float startAngle = 0);
 	void updatePos();
-	void useItem();
+	void positionItem(); //move item so it is correctly placed in the hand
 	float restingRotation = 0; //angle arm should be at when not doing anything
 	Entity* owner = nullptr;
 	Vector2 defaultShoulderPos; //where to rotate around, relative to owner center

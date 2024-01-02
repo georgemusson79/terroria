@@ -15,8 +15,8 @@ Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::s
 	}
 }
 
-void Arm::useItem() {
-	if (this->swingItem == nullptr || !usingItem) return;
+void Arm::positionItem() {
+	if (this->swingItem == nullptr) return;
 	double itemRotation = (this->rotation + 180);
 	//this->swingItem->setRotation(0);
 	Vector2 handPos = this->getHandPos(swingItem->handOffset);
@@ -41,46 +41,79 @@ void Arm::updatePos() {
 
 void Arm::update() {
 	this->updatePos();
-	if (this->usingItem) this->useItem();
+	if (this->usingItem) this->useItemAnimation();
+	if (this->timeToNextUse != 0) this->timeToNextUse--;
+	if (this->usingItem || this->swingItemActiveOverride) this->positionItem();
 	this->hDirection = this->owner->hDirection;
 	//this->rotation = Main::setSign(this->hDirection,this->rotation);
 	this->setRotationAround(this->rotation, this->getShoulderPos(), RotationType::ABSOLUTE);
 
 }
 
+
 void Arm::pokeAnim(float angle) {
-	if (!this->markForDeletion && !this->usingItem && heldItem != nullptr) {
-		this->rotation = 0;
-		this->usingItem = true;
-		this->swingItem->active = true;
-	}
-	if (this->heldItem != nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) this->rotation = angle;
-	else {
-		this->usingItem = false;
-		if (this->swingItem != nullptr) this->swingItem->active = false;
-		this->rotation = 0;
-	}
+	this->rotation = angle;
+	animationFramesPassed++;
 }
 
 void Arm::swingAnim() {
-	if (!this->markForDeletion && !this->usingItem && heldItem!=nullptr) {
+	 if (abs(this->rotation) < 300 && this->heldItem->animationTime > 0) {
+		float inc = ((double(270 - 90) / this->heldItem->animationTime) * this->hDirection);
+		this->rotation = Main::setSign(this->hDirection,this->rotation) + inc;
+		animationFramesPassed++;
+	 }
+
+}
+
+
+void Arm::useItemCancel() {
+	this->usingItem = false;
+	if (!this->swingItemActiveOverride && this->swingItem != nullptr) {
+		this->swingItem->active = false;
 		this->rotation = 0;
+	}
+}
+
+void Arm::useItemAnimation(float angle) {
+ 	if (!this->markForDeletion && !this->usingItem && heldItem != nullptr) {
+		this->rotation = Main::setSign(this->hDirection,90);
+		this->pokeAnimationRotation = angle;
 		this->usingItem = true;
 		this->swingItem->active = true;
+		this->animationFramesPassed = 0;
 	}
 
-	if (this->heldItem!=nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) {
-		this->rotation = Main::setSign(this->hDirection,this->rotation) + ((double(270 - 90) / this->heldItem->useTime) * this->hDirection);
-	}
-
-
-	else {
+	if (heldItem == nullptr || this->animationFramesPassed >= heldItem->animationTime) {
 		this->usingItem = false;
-		if (this->swingItem!=nullptr) this->swingItem->active = false;
-		this->rotation = 0;
+		if (!this->swingItemActiveOverride && this->swingItem != nullptr) {
+			this->swingItem->active = false;
+			this->rotation = 0;
+		}
+		return;
+	}
+
+
+	switch (swingItem->useAnimation) {
+	case (0):
+		this->swingAnim();
+		break;
+	case (1):
+		this->pokeAnim(this->pokeAnimationRotation);
 	}
 
 }
+
+bool Arm::useHeldItem(float angle) {
+	if (this->heldItem != nullptr && this->timeToNextUse==0 && this->heldItem->isUseable) {
+		if (this->heldItem->use((Player*)this->owner)) {
+			this->useItemAnimation(angle);
+			this->timeToNextUse = this->heldItem->useTime;
+			return true;
+		}
+	}
+	return false;
+}
+
 
 Vector2 Arm::getHandPos(Vector2 itemOffset) { //the pivot point for items that are held
 	Vector2 base = this->getShoulderPos();

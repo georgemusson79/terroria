@@ -13,7 +13,7 @@ Item::Item() {
 }
 
 ItemSwing* Item::getItemProjectile(Vector2 position,Entity* owner=nullptr) {
-	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,0,handOffset,owner,this->defaultHeldRotation);
+	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,0,handOffset,owner,this->useAnimation,this->defaultHeldRotation);
 	obj->damage = this->damage;
 	obj->kbDealt = this->kb;
 	if (!this->melee) obj->deleteHitboxes();

@@ -46,11 +46,8 @@ void Zombie::walk(Vector2 pos) {
 
 void Zombie::update() {
 	Entity::update();
-	bool usingitem = this->arm->usingItem;
-	if (this->weaponCooldown == 0) this->arm->pokeAnim(-Main::getAngle(this->center, Main::player->center));
-	else weaponCooldown--;
-	std::cout << -Main::getAngle(this->center, Main::player->center) << "\n";
-	if (usingitem && !this->arm->usingItem) this->weaponCooldown = 40;
+	if (this->arm->timeToNextUse==0) this->arm->useHeldItem(-Main::getAngle(this->center,Main::player->center));
+	//std::cout << -Main::getAngle(this->center, Main::player->center) << "\n";
 	if (Main::player != nullptr) this->walk(Main::player->position);
 	if (this->onGround && !this->walking) this->velocity.X = 0;
 	if (this->collidesWith(Main::player)) Main::player->hurt(this->damage, this->kbDealt, this);

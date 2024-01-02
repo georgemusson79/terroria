@@ -42,7 +42,6 @@ Player::~Player() {
 void Player::update() {
 	this->handleKeyInput();
 	this->handleMouseInput();
-	if (this->arm != nullptr && this->arm->usingItem) this->arm->swingAnim();
 	this->velocity = this->moveEntity(this->velocity);
 	if (this->openedChest != nullptr && this->position.distance({ this->openedChest->X,this->openedChest->Y }) > 9) this->openedChest->close();
 	this->animationTimePassed++;;
@@ -167,13 +166,14 @@ bool Player::dropItem(std::shared_ptr<Item>& item) {
 void Player::leftClick() {
 	Vector2 pos = Cursor::cursorWorldPos;
 	if (Main::tiles[pos.X][pos.Y] != nullptr) Main::tiles[pos.X][pos.Y]->onLeftClick(this);
-	if (this->arm->usingItem) return;
+	if (this->arm->timeToNextUse > 0) return;
 //use item
 	std::shared_ptr<Item> &selectedItem = this->inventory[0][selectedHBItem];
-
-	if (selectedItem.get() != nullptr && selectedItem->isUseable && !this->arm->usingItem) {
+	if (selectedItem.get() != nullptr) {
+		this->arm->useItemCancel();
 		this->arm->setHeldItem(selectedItem);
-		if (selectedItem->use(this) && selectedItem->consumable) {
+		float r = -Main::getAngle(this->center, pos);
+		if (this->arm->useHeldItem(r) && selectedItem->consumable) {
 			selectedItem->setCount(selectedItem->getCount() - 1);
 			if (selectedItem->getCount() == 0)  selectedItem = nullptr;
 		}

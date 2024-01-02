@@ -4,7 +4,7 @@
 #include "Player.h"
 #include <iostream>
 #include "Main.h"
-ItemSwing::ItemSwing(Vector2 position, float width, float height, std::string texturePath,float hitboxRotation,Vector2 handOffset,Entity* owner,float defaultRotation) : Entity(position,width,height,-1,texturePath,false,false,false) {
+ItemSwing::ItemSwing(Vector2 position, float width, float height, std::string texturePath,float hitboxRotation,Vector2 handOffset,Entity* owner,int useAnimation,float defaultRotation) : Entity(position,width,height,-1,texturePath,false,false,false) {
 	this->deleteHitboxes();
 	this->handOffset = handOffset;
 	this->defaultRotation = defaultRotation;
@@ -14,6 +14,7 @@ ItemSwing::ItemSwing(Vector2 position, float width, float height, std::string te
 	hb->setRotation(hitboxRotation);
 	this->hitboxes.push_back(hb);
 	this->invulnerable = true;
+	this->useAnimation= useAnimation;
 	this->displayName = "weapon";
 	if (this->owner != nullptr) {
 		this->hostile = owner->hostile;

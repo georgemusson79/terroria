@@ -7,4 +7,5 @@ namespace Debug {
     bool lighting = true;
     bool noclip = false;
     bool fullscreen = false;
+    float MAX_ENTITY_UPDATE_DIST = 30;
 }

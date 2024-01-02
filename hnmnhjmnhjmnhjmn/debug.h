@@ -6,4 +6,5 @@ namespace Debug {
 	extern bool lighting;
 	extern bool fullscreen;
 	extern bool running;
+	extern float MAX_ENTITY_UPDATE_DIST;
 }

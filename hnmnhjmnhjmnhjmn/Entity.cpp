@@ -285,7 +285,9 @@ bool Entity::hurt(int dmg,float kb,Entity* src) {
 	float kbres = (kbResist == 0) ? 1 : kbResist;
 	kb = kb / kbres;
 
-	this->velocity += {kb, -abs(kb)*((float)rand() / RAND_MAX)};
+	float kbDirection = (src==nullptr) ? 0 : (this->center.X - src->center.X > 0) ? 1 : -1;
+	
+	this->velocity += {kb*kbDirection, -abs(kb)*((float)rand() / RAND_MAX)};
 	this->dmgImmuneTime = SDL_GetTicks();
 	this->invulnerable = true;
 	if (this->health <= 0) this->kill();

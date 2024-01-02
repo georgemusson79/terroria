@@ -4,11 +4,13 @@
 #include "Player.h"
 #include "Item.h"
 
-Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::string pathToTexture, bool useDefaultHitbox, Entity* owner) : Entity(shoulderPos, width, height, -1, pathToTexture, false, false, false) {
+Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::string pathToTexture, bool useDefaultHitbox, Entity* owner, Vector2 startPos) : Entity(shoulderPos, width, height, -1, pathToTexture, false, false, false) {
 	this->renderPriority = 0;
 	this->defaultShoulderPos = shoulderPos;
+	this->position = startPos;
 	this->defaultHandPos = handPos;
 	this->owner = owner;
+	this->displayName = owner->displayName+"'s arm";
 	this->updatePos();
 	if (useDefaultHitbox) {
 		this->hitboxes.push_back(new RotatableHitbox(this->center, width, height));
@@ -48,6 +50,14 @@ void Arm::update() {
 	//this->rotation = Main::setSign(this->hDirection,this->rotation);
 	this->setRotationAround(this->rotation, this->getShoulderPos(), RotationType::ABSOLUTE);
 
+}
+
+
+void Arm::setOwner(Entity* owner) {
+	this->owner = owner;
+}
+Entity* Arm::getOwner() {
+	return this->owner;
 }
 
 

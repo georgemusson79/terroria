@@ -91,12 +91,16 @@ namespace Main {
 
 class Camera {
 private:
+    float screenWidth = 0;
+    float screenHeight = 0;
     CornersRect checkCameraBoundsAt(Vector2 pos);
     double X = 0;
     SDL_Renderer* renderer;
     double Y = 0;
     double zoomScale = 16;
 public:
+    float diagonalLength = 0;
+    Vector2 getScreenDims(); //return width and height in tiles
     CornersRect cameraBounds = { {0,0},{0,0},{0,0},{0,0} };
     void blockPlacementPositionDraw(Vector2 pos);
     bool setX(double X, bool renderScrOnMove=false);

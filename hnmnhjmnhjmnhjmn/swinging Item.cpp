@@ -30,7 +30,7 @@ void ItemSwing::handleCollisions() {
 	}
 	if (this->owner != Main::player && Main::player!=nullptr) {
 		if (this->collidesWith(Main::player)) {
-			if (this->owner!=nullptr || !this->owner->checkOnSameTeam(Main::player)) this->onHitPlayer(Main::player, this->owner);
+ 			if (this->owner!=nullptr || !this->owner->checkOnSameTeam(Main::player)) this->onHitPlayer(Main::player, this->owner);
 		}
 	}
 }

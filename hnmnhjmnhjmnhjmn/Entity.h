@@ -21,9 +21,10 @@ protected:
     int minTimeBetweenFrames = 15;
     int textureWidth = 0;
     int textureHeight = 0;
-    bool markForDeletion = false;
     void addToEntitiesList();
 public:
+    bool markForDeletion = false;
+    bool alwaysUpdate = false;
     int renderPriority = 10; //smaller means it will be rendered first
     std::string displayName = "";
     bool active = true;

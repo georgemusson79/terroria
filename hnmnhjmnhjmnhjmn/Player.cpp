@@ -15,14 +15,14 @@ Player::Player(Vector2 pos) {
 	this->renderToScreen = true;
 	this->health = 400;
 	this->maxHealth = 400;
-	this->position = pos;
+	this->setPos(pos.X,pos.Y);
 	this->width =2;
 	this->maxXVelocity = 0.4;
 	this->height = 3.5;
 	this->setTexture("assets\\player\\plr.png");
 	Vector2 armDims= { this->width * 0.2,this->height * 0.4};
 //	this->armPos = { center.X - (armDims.X / 2),position.Y + (this->height * 0.4) };
-	this->arm = new Arm({ 0,0 }, { 0,armDims.Y }, armDims.X, armDims.Y, "assets\\player\\arm.png", false, this);
+	this->arm = new Arm({ 0,-0.4 }, { 0, armDims.Y }, armDims.X, armDims.Y, "assets\\player\\arm.png", false, this,this->position);
 	//this->armTexture = IMG_LoadTexture(Main::renderer,"assets\\player\\arm.png");
 	this->hitboxes.push_back(new SquareHitbox({ this->position.X,this->position.Y }, this->width, this->height));
 	this->inventory= std::vector<std::vector<std::shared_ptr<Item>>>(inventoryRows, std::vector<std::shared_ptr<Item>>(inventoryColumns));
@@ -64,7 +64,7 @@ void Player::clearInventory() {
 
 
 bool Player::hurt(int dmg, float kb,Entity* src) {
-	if (Entity::hurt(dmg,kb)) {
+	if (Entity::hurt(dmg,kb,src)) {
 		this->invulnerable = true;
 		this->dmgImmuneTime = SDL_GetTicks();
 		return true;

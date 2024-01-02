@@ -24,6 +24,7 @@ public:
 
 class Arm : public Entity {
 protected:
+	Entity* owner = nullptr;
 	int animationFramesPassed = 0;
 	std::shared_ptr<Item> heldItem = nullptr;
 	ItemSwing* swingItem = nullptr;
@@ -35,6 +36,7 @@ public:
 	void setHeldItem(std::shared_ptr<Item> item);
 	void deleteHeldItem();
 	void useItemCancel();
+	void setOwner(Entity* owner);
 	ItemSwing* getSwingItem();
 	std::shared_ptr<Item> getItem();
 	bool useHeldItem(float angle=0);
@@ -44,15 +46,15 @@ public:
 	void updatePos();
 	void positionItem(); //move item so it is correctly placed in the hand
 	float restingRotation = 0; //angle arm should be at when not doing anything
-	Entity* owner = nullptr;
 	Vector2 defaultShoulderPos; //where to rotate around, relative to owner center
 	Vector2 defaultHandPos; //where to rotate held weapons around, relative to shoulder pos at 0 degrees
 	float width; //width in tiles
 	float height; //height in tiles
-	Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::string pathToTexture, bool hasHitbox, Entity* owner);
+	Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::string pathToTexture, bool hasHitbox, Entity* owner,Vector2 startPos = { 500,500 });
 	~Arm();
 	Vector2 getHandPos(Vector2 itemOffset);
 	Vector2 getShoulderPos();
+	Entity* getOwner();
 	virtual void update() override;
 	bool renderEntity() override;
 };

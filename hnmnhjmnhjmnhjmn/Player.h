@@ -30,7 +30,7 @@ private:
     Vector2 getHandPos(Vector2 offset={0,0});
 
 public:
-    Arm* arm;
+    Arm* arm = nullptr;
     //void swingAnim(Item* item);
     bool usingItem = false;
     bool isWalking = false;

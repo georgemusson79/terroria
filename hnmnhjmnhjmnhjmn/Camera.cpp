@@ -83,8 +83,10 @@ bool Camera::renderTileWalls() {
 }
 
 bool Camera::renderEntities() {
-	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted()) {
-		if (Main::player==nullptr || entity!=Main::player->arm) entity->renderEntity();
+	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted() && Main::player->center.distance(entity->center)< (this->diagonalLength/2)+(std::sqrt(std::powf(entity->width, 2) + std::powf(entity->height, 2))/2)) {
+		if (Main::player == nullptr || entity != Main::player->arm) {
+			entity->renderEntity();
+		}
 	}
 	return true;
 }
@@ -124,6 +126,9 @@ int Camera::zoom() {
 
 void Camera::updateCameraBounds() {
 	this->cameraBounds= this->checkCameraBoundsAt({ this->X, this->Y });
+	screenWidth = this->cameraBounds.bottomRight.X - this->cameraBounds.bottomLeft.X;
+	screenHeight = this->cameraBounds.bottomLeft.Y - this->cameraBounds.topLeft.Y;
+	diagonalLength = std::sqrt(std::powf(screenWidth, 2) + std::powf(screenHeight, 2));
 }
 
 
@@ -176,4 +181,8 @@ CornersRect Camera::checkCameraBoundsAt(Vector2 pos) {
 	bounds.topLeft = { lowerX,upperY };
 	bounds.topRight = { upperX,upperY };
 	return bounds;
+}
+
+Vector2 Camera::getScreenDims() {
+	return { this->screenWidth,this->screenHeight };
 }

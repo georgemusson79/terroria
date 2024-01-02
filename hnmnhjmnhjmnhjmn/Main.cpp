@@ -111,7 +111,7 @@ int main() {
     Main::camera=new Camera(1000,1000,Main::renderer);
     Main::player = new Player({ 500,Main::WORLD_HEIGHT / 2 });
     Main::player->setY(Main::player->position.Y - 10);
-    Main::p2 = new Player({ 500,Main::WORLD_HEIGHT/2 });
+    //Main::p2 = new Player({ 500,Main::WORLD_HEIGHT/2 });
     SDL_Event e;
    
     Main::testcbox->position = Main::player->position;
@@ -140,7 +140,11 @@ int main() {
         }
         Main::testcbox->r+=0.01;
         for (int e = 0; e < Main::entities.size(); e++) {
-            if (Main::entities[e] != nullptr && !Main::entities[e]->toBeDeleted() && Main::entities[e]->active) Main::entities[e]->update();
+            if (Main::entities[e] != nullptr && !Main::entities[e]->toBeDeleted() && Main::entities[e]->active) {
+                Entity* entity = Main::entities[e];
+                float maxUpdateDist = Main::camera->diagonalLength + std::sqrt(std::powf(entity->width, 2) + std::powf(entity->height, 2));
+                if (Main::entities[e]->alwaysUpdate || Main::entities[e]->center.distance(Main::player->center)<maxUpdateDist)  Main::entities[e]->update();
+            }
         }
         for (Tile* t : Main::testcbox->collidesWithTiles()) t->destroy();
 

@@ -17,13 +17,14 @@ Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::s
 
 void Arm::useItem() {
 	if (this->swingItem == nullptr || !usingItem) return;
-	double itemRotation = (this->rotation + 180)+this->swingItem->defaultRotation*this->hDirection;
-	this->swingItem->setRotation(0);
-	Vector2 handPos = this->getHandPos(this->swingItem->handOffset);
-	Vector2 itemCenter = { handPos.X + (this->swingItem->width / 2),handPos.Y + (swingItem->height / 2) };
-	Vector2 newPos = Main::rotatePt(itemCenter, handPos, this->rotation+this->swingItem->defaultRotation*this->hDirection);
+	double itemRotation = (this->rotation + 180);
+	//this->swingItem->setRotation(0);
+	Vector2 handPos = this->getHandPos(swingItem->handOffset);
+	//Vector2 handPos = this->getHandPos({ this->swingItem->handOffset.X,Main::setSign(hDirection,this->swingItem->handOffset.Y) });
+	Vector2 itemCenter = { handPos.X ,handPos.Y + (swingItem->height / 2) };
+	Vector2 newPos = Main::rotatePt(itemCenter, handPos, this->rotation+Main::setSign(this->hDirection,swingItem->defaultRotation));
 	this->swingItem->setCenter(newPos.X, newPos.Y);
-	this->swingItem->setRotation(itemRotation);
+	this->swingItem->setRotation(itemRotation + Main::setSign(this->hDirection,swingItem->defaultRotation));
 }
 
 
@@ -53,7 +54,7 @@ void Arm::pokeAnim(float angle) {
 		this->usingItem = true;
 		this->swingItem->active = true;
 	}
-	if (this->heldItem != nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) this->rotation = Main::setSign(this->hDirection, angle);
+	if (this->heldItem != nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) this->rotation = angle;
 	else {
 		this->usingItem = false;
 		if (this->swingItem != nullptr) this->swingItem->active = false;
@@ -69,7 +70,6 @@ void Arm::swingAnim() {
 	}
 
 	if (this->heldItem!=nullptr && this->usingItem && abs(this->rotation) < 300 && this->heldItem->useTime != 0) {
-		//bruh this code sucks
 		this->rotation = Main::setSign(this->hDirection,this->rotation) + ((double(270 - 90) / this->heldItem->useTime) * this->hDirection);
 	}
 
@@ -84,13 +84,13 @@ void Arm::swingAnim() {
 
 Vector2 Arm::getHandPos(Vector2 itemOffset) { //the pivot point for items that are held
 	Vector2 base = this->getShoulderPos();
-	Vector2 end = base + Vector2(this->hDirection * this->defaultHandPos.X, this->defaultHandPos.Y);
+	Vector2 end = base + Vector2(this->defaultHandPos.X, this->defaultHandPos.Y);
 	end = Main::rotatePt(end - itemOffset, base, this->rotation);
 	return end;
 }
 Vector2 Arm::getShoulderPos() {
 	Vector2 pos = this->owner->center + this->defaultShoulderPos;
-	pos.X + (this->width / 2);
+	pos.X += (this->width / 2);
 	return pos;
 }
 

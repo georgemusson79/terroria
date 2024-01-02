@@ -20,9 +20,7 @@ TestSword::TestSword() {
 	this->kb = 0.7;
 	this->melee = true;
 	this->itemType = SpecialisedType::GENERIC;
-	this->handOffset = { 0.4,0.4 };
 	this->rotationInInventory = 45;
-	this->defaultHeldRotation = 90;
 }
 
 bool TestSword::use(Player* player) {

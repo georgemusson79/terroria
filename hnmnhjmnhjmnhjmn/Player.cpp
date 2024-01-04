@@ -10,6 +10,8 @@
 #include "Item_pickup.h"
 #include "Entities.h"
 Player::Player(Vector2 pos) {
+	this->friendly = true;
+	this->hostile = false;
 	this->displayName = "player";
 	this->frameCount = 3;
 	this->renderToScreen = true;
@@ -130,7 +132,12 @@ bool Player::pickup(std::shared_ptr<Item> item) {
 
 
 Vector2 Player::moveEntity(Vector2 velocity) {
+
 	Vector2 vel=Entity::moveEntity(velocity);
+	if (this->arm->usingItem && !this->arm->getSwingItem()->canFlipWhenUsed) {
+		this->hDirection = oldHDirection;
+		this->arm->hDirection = oldHDirection;
+	}
 	if (!this->isWalking && this->onGround)  {
 		vel.X = 0;
 	}
@@ -243,7 +250,7 @@ bool Player::handleWalking() {
 			this->arm->rotation = -45 * this->hDirection;
 			break;
 		case (2):
-			this->arm->rotation = 45 * this->hDirection;;
+			this->arm->rotation = 45 * this->hDirection;
 			break;
 		default:
 			this->arm->rotation = 0;
@@ -299,3 +306,24 @@ bool Player::handleWalking() {
 //	end = Main::rotatePt(end-offset, base, this->arm->rotation*this->hDirection);
 //	return end;
 //}
+
+bool Player::removeFromInventory(int row, int col,int amount) {
+	if (this->inventory[row][col] == nullptr) return false;
+	else {
+		this->inventory[row][col]->setCount(this->inventory[row][col]->getCount() - amount);
+		if (this->inventory[row][col]->getCount() <= 0) this->inventory[row][col] = nullptr;
+		return true;
+	}
+}
+
+bool Player::has(int itemID,Vector2* itemPos) {
+	for (int x = 0; x < this->inventoryRows; x++) {
+		for (int y = 0; y < this->inventoryColumns; y++) {
+			if (this->inventory[x][y]!=nullptr && this->inventory[x][y]->id == itemID) {
+				*itemPos = { x,y };
+				return true;
+			}
+		}
+	}
+	return false;
+}

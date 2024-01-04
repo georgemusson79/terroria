@@ -7,11 +7,13 @@ class Texture;
 class Entity;
 class ItemSwing;
 class Player;
+class Arm;
 
 
 class Item {
 
 public:
+	bool canFlipWhenUsed = false; //player can turn around when using the item
 	bool null = false;
 	float defaultHeldRotation = 0;
 	SpecialisedType itemType = SpecialisedType::GENERIC;
@@ -24,6 +26,7 @@ public:
 	float kb = 0;
 	int id = -1;
 	int width = 0;
+	int critChance = 0;
 	int height = 0;
 	int useTime =0;
 	int useAnimation = -1;
@@ -44,7 +47,7 @@ public:
 
 	ItemSwing* getItemProjectile(Vector2 position,Entity* owner);
 	virtual bool use(Player* player);
-	virtual bool shoot();
+	virtual bool shoot(Arm* src,Vector2 tgt);
 	virtual void renderTexture(SDL_Rect* pos);
 	virtual void setTexture(std::string path);
 	virtual void setHotbarTexture(std::string path);

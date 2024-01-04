@@ -10,15 +10,24 @@
 #include <cmath>
 #include <iostream>
 void Entity::update() {
+
 	this->velocity = moveEntity(this->velocity);
 	this->timeBetweenFrames++;
+	if (this->damage > 0) {
+		std::vector<Entity*> entities = this->getEntityCollisions();
+		for (Entity* e : entities) {
+				this->onHitNPC(e, this);
+			
+		}
+		if (this->collidesWith(Main::player)) this->onHitPlayer(Main::player, this);
+	}
 }
 
 
-
 std::vector<Entity*> Entity::getEntityCollisions() {
+	//can be optimised
 	std::vector<Entity*> tgts = {};
-	for (Entity* e : Main::entities) if (this->collidesWith(e)) tgts.push_back(e);
+	for (Entity* e : Main::entities) if (this->collidesWith(e) && this!=e) tgts.push_back(e);
 	return tgts;
 }
 
@@ -26,12 +35,16 @@ void Entity::onTileCollision() {
 
 }
 
-void Entity::onHitNPC(Entity* NPC,Entity* src) {
-	NPC->hurt(this->damage, this->kbDealt, src);
+bool Entity::onHitNPC(Entity* NPC,Entity* src) {
+	if ((this->friendly && NPC->hostile) || (this->hostile && NPC->friendly)) {
+		return NPC->hurt(this->damage, this->kbDealt, src);
+	}
+	return false;
 }
 
-void Entity::onHitPlayer(Player* player,Entity* src) {
-	player->hurt(this->damage, this->kbDealt, src);
+bool Entity::onHitPlayer(Player* player,Entity* src) {
+	if (this->hostile) return player->hurt(this->damage, this->kbDealt, src);
+	return false;
 }
 
 bool Entity::setX(double X) {
@@ -145,6 +158,7 @@ bool Entity::switchFrames(int frame) {
 }
 
 void Entity::setRotation(double rotation) {
+	if (rotation == this->rotation) return;
 	this->rotation = rotation;
 	for (Hitbox* hitbox : this->hitboxes) {
 		if (hitbox->type == hitboxType::ROTATABLE) {
@@ -229,8 +243,14 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 	this->oldVelocity = this->velocity;
 	std::vector < Tile*> tiles;
 	if (this->setX(this->position.X + velocity.X)) {
-		if (velocity.X < 0) this->hDirection = -1;
-		else if (velocity.X > 0) this->hDirection = 1;
+		if (velocity.X < 0) {
+			oldHDirection = this->hDirection;
+			this->hDirection = -1;
+		}
+		else if (velocity.X > 0) {
+			oldHDirection = this->hDirection;
+			this->hDirection = 1;
+		}
 		if (!Debug::noclip) tiles = this->collidesWithTiles();
 		if (tiles.size() > 0) {
 			this->onTileCollision();

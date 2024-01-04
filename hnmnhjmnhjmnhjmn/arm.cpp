@@ -10,6 +10,10 @@ Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::s
 	this->position = startPos;
 	this->defaultHandPos = handPos;
 	this->owner = owner;
+	if (this->owner != nullptr) {
+		this->friendly = owner->friendly;
+		this->hostile = owner->hostile;
+	}
 	this->displayName = owner->displayName+"'s arm";
 	this->updatePos();
 	if (useDefaultHitbox) {
@@ -115,11 +119,13 @@ void Arm::useItemAnimation(float angle) {
 
 bool Arm::useHeldItem(float angle) {
 	if (this->heldItem != nullptr && this->timeToNextUse==0 && this->heldItem->isUseable) {
+		this->rotation = angle;
 		if (this->heldItem->use((Player*)this->owner)) {
 			this->useItemAnimation(angle);
 			this->timeToNextUse = this->heldItem->useTime;
 			return true;
 		}
+		else this->rotation = 0;
 	}
 	return false;
 }
@@ -128,7 +134,7 @@ bool Arm::useHeldItem(float angle) {
 Vector2 Arm::getHandPos(Vector2 itemOffset) { //the pivot point for items that are held
 	Vector2 base = this->getShoulderPos();
 	Vector2 end = base + Vector2(this->defaultHandPos.X, this->defaultHandPos.Y);
-	end = Main::rotatePt(end - itemOffset, base, this->rotation);
+	end = Main::rotatePt(end - (Vector2(this->hDirection,this->hDirection)*itemOffset), base, this->rotation);
 	return end;
 }
 Vector2 Arm::getShoulderPos() {

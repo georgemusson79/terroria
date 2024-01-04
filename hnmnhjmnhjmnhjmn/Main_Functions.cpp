@@ -68,6 +68,11 @@ void Main::updateTiles() {
     }
 }
 
+int Main::randomInt(int start, int end) {
+    end++;
+    return (rand() % (end - start)) + start;
+}
+
 TextureInfo* Main::loadTextureWithInfo(std::string texture) {
     TextureInfo* info = new TextureInfo;
     info->texture = IMG_LoadTexture(Main::renderer, texture.c_str());
@@ -103,12 +108,12 @@ void Main::handleKeyEvents(SDL_Event* e) {
 
             if (e->key.keysym.sym == SDLK_b) {
                //TestSword* bob=new TestSword;
-                new ItemPickup(std::shared_ptr<Item>(new WoodItem), Main::player->position - Vector2(2, 2));
-               ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
-               i->item->width = 3;
-               i->item->height = 9;
+               new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
+               ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
+               ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
+               i2->item->count = 999;
                new Zombie(Cursor::WorldPos());
-                //new Entity1(Cursor::WorldPos());
+               //Arrow* a=new Arrow(Cursor::WorldPos(), true, false, 10);
             }
 
             if (e->key.keysym.sym == SDLK_DELETE) {
@@ -284,4 +289,16 @@ void Main::spawnEntities() {
         return a->renderPriority > b->renderPriority;
         });
     Main::entitiesToSpawn = {};
+}
+
+Vector2 Main::getNormalisedPoint(float rotation) {
+    float x = Main::toDegrees(std::cos(rotation));
+    float y = Main::toDegrees(std::sin(rotation));
+    return { x,y };
+}
+
+Vector2 Main::normaliseTwoPoints(Vector2 a, Vector2 b) {
+    float d = a.distance(b);
+    Vector2 res = (a - b) / Vector2(d, d);
+    return res;
 }

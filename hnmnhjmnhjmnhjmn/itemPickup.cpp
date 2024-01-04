@@ -10,6 +10,7 @@ ItemPickup::ItemPickup(std::shared_ptr<Item> ptr, Vector2 position) : Entity(pos
 	this->vAcceleration = 0.01;
 	this->starttime = SDL_GetTicks();
 	this->displayName = "itempickup";
+	this->setRotation(this->item_sharedPtr->rotationInInventory);
 }
 
 void ItemPickup::update() {

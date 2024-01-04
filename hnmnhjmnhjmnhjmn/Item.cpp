@@ -17,17 +17,18 @@ ItemSwing* Item::getItemProjectile(Vector2 position,Entity* owner=nullptr) {
 	obj->damage = this->damage;
 	obj->kbDealt = this->kb;
 	if (!this->melee) obj->deleteHitboxes();
+	obj->canFlipWhenUsed = this->canFlipWhenUsed;
 	return obj;
 }
 
-bool Item::shoot(){
+bool Item::shoot(Arm* src,Vector2 tgt){
 	return true;
 }
 
 
 
 bool Item::use(Player* player) {
-	return true;
+	return false;
 }
 
 Item::~Item() {

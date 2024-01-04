@@ -8,12 +8,13 @@
 #include "Tiles.h"
 
 TestSword::TestSword() {
+	this->canFlipWhenUsed = true;
 	this->maxStack = 9;
 	this->width = 1;
 	this->height = 5;
-	this->useTime =2;
-	this->animationTime = 3;
-	this->useAnimation = 1;
+	this->useTime =40;
+	this->animationTime = 40;
+	this->useAnimation = 0;
 	this->name = "cool sword bro";
 	this->setTexture("assets\\Items\\sword.png");
 	this->setHotbarTexture("assets\\Items\\swordh.png");
@@ -68,3 +69,16 @@ bool WoodItem::use(Player* player) {
 	}
 	return false;
 }
+
+ArrowItem::ArrowItem() {
+	this->damage = 10;
+	this->ammoID = 0;
+	this->id = 2;
+	this->isAmmo = true;
+	this->setTexture("assets\\projectiles\\arrow.png");
+	this->height = 2;
+	this->rotationInInventory = 180;
+	this->width = 1;
+	this->consumable = true;
+}
+

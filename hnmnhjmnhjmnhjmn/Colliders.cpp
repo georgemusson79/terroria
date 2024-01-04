@@ -404,7 +404,18 @@ Vector2 RotatableHitbox::getClosestCorner(Vector2 pos) {
 }
 
 std::vector<Tile*> RotatableHitbox::collidesWithTiles() {
-	return {};
+	std::vector<Tile*> tiles = {};
+	float r = this->getCenter().distance(this->corners[0]);
+	if (this->active) {
+		Vector2 start = { position.X - r,position.Y - r };
+		Vector2 end = { position.X + r,position.Y + r };
+		for (int x = start.X; x <= end.X; x++) {
+			for (int y = start.Y; y <= end.Y; y++) {
+				if (Main::tiles[x][y] != nullptr && Main::tiles[x][y]->isSolid) if (this->collidesWith(Main::tiles[x][y])) tiles.push_back(Main::tiles[x][y]);
+			}
+		}
+	}
+	return tiles;
 }
 
 

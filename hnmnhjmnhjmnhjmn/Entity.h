@@ -14,6 +14,7 @@ class Tile;
 class Player;
 class Entity {
 protected:
+
     bool killed = false;
     int frameCount = 1;
     int animationFrame = 0;
@@ -23,6 +24,9 @@ protected:
     int textureHeight = 0;
     void addToEntitiesList();
 public:
+    int oldHDirection = 1;
+    int oldVDirection = 1;
+
     bool markForDeletion = false;
     bool alwaysUpdate = false;
     int renderPriority = 10; //smaller means it will be rendered first
@@ -69,8 +73,8 @@ public:
 
     virtual void update();
     virtual void checkDmgImmune();
-    virtual void onHitNPC(Entity* NPC, Entity* src = nullptr);
-    virtual void onHitPlayer(Player* player, Entity* src = nullptr);
+    virtual bool onHitNPC(Entity* NPC, Entity* src = nullptr);
+    virtual bool onHitPlayer(Player* player, Entity* src = nullptr);
     virtual std::vector<Entity*> getEntityCollisions();
     virtual bool setX(double X);
     virtual bool setY(double Y);

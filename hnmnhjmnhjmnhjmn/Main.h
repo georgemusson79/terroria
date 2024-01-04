@@ -55,12 +55,15 @@ namespace Main {
     extern Uint32 heldMouseKeys;
     void handleKeyEvents(SDL_Event* e);
     void handleMouseEvents(SDL_Event* e);
+    Vector2 getNormalisedPoint(float rotation);
+    Vector2 normaliseTwoPoints(Vector2 a, Vector2 b);
     Vector2 convertCameraPosToWorldPos(iVector2 pos);
     iVector2 convertWorldPosToCameraPos(Vector2 pos);
     int convertTileSizeToPixelSize(double value, Camera* camera=Main::camera);
     double convertPixelSizeToTileSize(int pixelSize, Camera* camera = Main::camera);
     void handleEvents(SDL_Event* e, void* ctx = nullptr);
     void updateTiles();
+    int randomInt(int start, int end);
     void init();
     void initAllTextures();
     TextureInfo* loadTextureWithInfo(std::string texture);

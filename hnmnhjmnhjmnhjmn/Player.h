@@ -27,7 +27,6 @@ private:
     Vector2 armPos = { 0,0 };
     Vector2 armRotationPt = { 0,0 };
     Vector2 armDims = { 0,0 };
-    Vector2 getHandPos(Vector2 offset={0,0});
 
 public:
     Arm* arm = nullptr;
@@ -57,6 +56,7 @@ public:
     bool getCursorDistance();
     Player(Vector2 pos);
     Player();
+    bool has(int itemID,Vector2* itemPos);
     ~Player();
     void update() override;
     void placeBlock(Tile* t);
@@ -130,6 +130,7 @@ public:
     void handleKeyInput();
     void jump();
     bool dropItem(std::shared_ptr<Item>& item);
+    bool removeFromInventory(int row, int col, int amount);
     
 
 };

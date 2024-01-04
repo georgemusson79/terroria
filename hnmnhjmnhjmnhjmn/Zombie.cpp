@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Colliders.h"
 #include "Item_pickup.h"
-Zombie::Zombie(Vector2 position) : Entity(position, 2, 3, 500, "assets\\enemy\\zombie1.png") {
+Zombie::Zombie(Vector2 position) : Entity(position, 2, 3, 200, "assets\\enemy\\zombie1.png") {
 	this->dmgImmuneMaxTime = 20;
 	this->displayName = "zombie";
 	this->maxXVelocity = 0.2;

@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="arm.cpp" />
+    <ClCompile Include="arrow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="swinging Item.cpp" />
     <ClCompile Include="Tile Entities.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="tilewall.cpp" />
     <ClCompile Include="tilewalls.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="bows.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>

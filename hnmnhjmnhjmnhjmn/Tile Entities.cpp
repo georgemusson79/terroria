@@ -5,15 +5,14 @@
 #include "gui.h"
 #include <SDL.h>
 
-
-HeartCrystal::HeartCrystal(uint16_t X, uint16_t Y, bool placeIntoWorld, bool isParent, MultiTileObject* parent) : MultiTileObject(HCRYSTAL, X, Y, 4, 4, isParent, parent) {
+HeartCrystal::HeartCrystal(uint16_t X, uint16_t Y, bool placeIntoWorld, bool isParent, MultiTileObject* parent) : MultiTileObject(HCRYSTAL,X,Y,4,4,30,isParent,parent) {
 	this->isSolid = false;
 	this->placeIntoWorld = placeIntoWorld;
 	if (this->placeIntoWorld) this->create();
 }
 
 
-Chest::Chest(uint16_t X, uint16_t Y, bool placeIntoWorld, bool isParent, MultiTileObject* parent) : MultiTileObject(CHEST, X, Y, 2, 2, isParent, parent) {
+Chest::Chest(uint16_t X, uint16_t Y, bool placeIntoWorld, bool isParent, MultiTileObject* parent) : MultiTileObject(CHEST, X, Y, 2, 2,20, isParent, parent) {
 	this->isSolid = false;
 	this->placeIntoWorld = placeIntoWorld;
 	this->texture = IMG_LoadTexture(Main::renderer,"assets\\tiles\\chest.png");

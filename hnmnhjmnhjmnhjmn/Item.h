@@ -25,6 +25,9 @@ public:
 	int damage = 0;
 	float kb = 0;
 	int id = -1;
+	int pickaxePower = 0;
+	int axePower = 0;
+	int hammerPower = 0;
 	int width = 0;
 	int critChance = 0;
 	int height = 0;

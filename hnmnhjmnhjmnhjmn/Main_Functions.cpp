@@ -107,12 +107,17 @@ void Main::handleKeyEvents(SDL_Event* e) {
         if (Main::player != nullptr) {
 
             if (e->key.keysym.sym == SDLK_b) {
-               //TestSword* bob=new TestSword;
+                //bob
+                ItemPickup* i0= new ItemPickup(std::shared_ptr<Item>(new WoodItem), Main::player->position - Vector2(2, 2));
+                ItemPickup* i4= new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
+                i0->item->setCount(99);
+                i4->item->setCount(99);
                new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
                ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
-               ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
+               ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new CopperPickaxe), Main::player->position - Vector2(2, 2));
                i2->item->count = 999;
-               new Zombie(Cursor::WorldPos());
+               //new Zombie(Cursor::WorldPos());
+               new Chest(Cursor::WorldPos().X, Cursor::WorldPos().Y);
                //Arrow* a=new Arrow(Cursor::WorldPos(), true, false, 10);
             }
 
@@ -168,6 +173,17 @@ void Main::removeDeletedEntities() {
            list.pop_back();
         }
     }
+}
+
+void Main::removeDeletedTiles() {
+    std::vector<Tile*> list(Main::tilesToDelete.begin(), Main::tilesToDelete.end());
+    while (!list.empty()) {
+        if (list.size() > 0) {
+            delete list.back();
+            list.pop_back();
+        }
+    }
+    Main::tilesToDelete = {};
 }
 
 
@@ -301,4 +317,9 @@ Vector2 Main::normaliseTwoPoints(Vector2 a, Vector2 b) {
     float d = a.distance(b);
     Vector2 res = (a - b) / Vector2(d, d);
     return res;
+}
+
+Tile* Main::getTileAt(int x, int y) {
+    if (Main::checkForTile({ x,y })) return Main::tiles[x][y];
+    return nullptr;
 }

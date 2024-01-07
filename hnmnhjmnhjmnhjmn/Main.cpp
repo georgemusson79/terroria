@@ -24,6 +24,7 @@ uint16_t Main::WORLD_HEIGHT = 1500;
 uint16_t Main::WORLD_WIDTH = 7000;
 std::vector<Entity*> Main::entities = {};
 std::vector<Entity*> Main::entitiesToSpawn = {};
+std::set<Tile*> Main::tilesToDelete = {};
 std::map<int,SDL_Texture*> Main::tileTexture;
 std::map<int, SDL_Texture*> Main::tileWallTexture;
 std::map<int, SDL_Texture*> Main::backgrounds;
@@ -125,6 +126,7 @@ int main() {
     //ItemSwing* obj = new ItemSwing(Main::player->position, 10, 10, "assets\\Items\\sword.png");
     //Main::player->pickup(new WoodItem(), 0, 0, true);
     while (Debug::running) {
+        Main::removeDeletedTiles();
         Main::removeDeletedEntities();
         Main::spawnEntities();
         Main::resetLightMap();

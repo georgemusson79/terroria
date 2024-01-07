@@ -2,6 +2,7 @@
 //main.h
 #include "headers.h"
 #include "game_datatypes.h"
+#include <set>
 class Hitbox;
 class Player;
 class CircleHitbox;
@@ -32,6 +33,7 @@ namespace Main {
     extern std::map<int, SDL_Texture*> tileTexture;
     extern std::map<int,SDL_Texture*> tileWallTexture;
     extern std::vector<std::vector<Tile*>> tiles;
+    extern std::set<Tile*> tilesToDelete;
     extern std::vector<std::vector<uint16_t>> lightMap;
     extern std::vector<iVector2> changedLights;
     extern std::vector<std::vector<TileWall*>> tileWalls;
@@ -59,6 +61,7 @@ namespace Main {
     Vector2 normaliseTwoPoints(Vector2 a, Vector2 b);
     Vector2 convertCameraPosToWorldPos(iVector2 pos);
     iVector2 convertWorldPosToCameraPos(Vector2 pos);
+ 
     int convertTileSizeToPixelSize(double value, Camera* camera=Main::camera);
     double convertPixelSizeToTileSize(int pixelSize, Camera* camera = Main::camera);
     void handleEvents(SDL_Event* e, void* ctx = nullptr);
@@ -72,6 +75,7 @@ namespace Main {
     void setCursorType(cursorType type);
     void removeDeletedEntities();
     void spawnEntities();
+    void removeDeletedTiles();
     double toDegrees(double val);
     double toRadians(double val);
     double setSign(double src, double tgt);
@@ -82,6 +86,7 @@ namespace Main {
     bool inWorldBounds(Vector2 pos);
     void renderPos(Vector2 pos);
     void drawSquare(Vector2 center, SDL_Color color, int width);
+    Tile* getTileAt(int x, int y);
     ItemPickup* convertItemToItemPickup(Item* item, Vector2 position);
     Vector2 getIntersectPt(Line l1, Line l2);
     bool checkForTile(Vector2 pos);

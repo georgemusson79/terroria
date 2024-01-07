@@ -2,7 +2,7 @@
 #include "Tiles.h"
 #include "Main.h"
 
-MultiTileObject::MultiTileObject(uint16_t id,uint16_t X, uint16_t Y, uint16_t W, uint16_t H,bool isParent, MultiTileObject* parent) : Tile(id,X,Y) {
+MultiTileObject::MultiTileObject(uint16_t id,uint16_t X, uint16_t Y, uint16_t W, uint16_t H,int health,bool isParent, MultiTileObject* parent) : Tile(id,X,Y,health) {
     this->width = W;
     this->translucent = true;
     this->placeIntoWorld = placeIntoWorld;
@@ -37,18 +37,20 @@ bool MultiTileObject::draw(SDL_Renderer* renderer, Camera& camera) {
     return false;
 }
 
-void MultiTileObject::destroy() {
+void MultiTileObject::destroy(bool dropItem) {
     if (this->isParent) {
         for (Tile* tile : this->tileList) {
             if (Main::inWorldBounds({ tile->X,tile->Y })) {
                 Vector2 pos = { tile->X,tile->Y };
                 Main::tiles[pos.X][pos.Y] = nullptr;
-                delete tile;
+                tile->markedForDeletion = true;
+                Main::tilesToDelete.insert(tile);
             }
             
         }
         Main::tiles[this->X][this->Y] = nullptr;
-        delete this;
+        if (dropItem) this->dropItem();
+        Main::tilesToDelete.insert(this);
         return;
         
 
@@ -103,6 +105,12 @@ void MultiTileObject::create() {
     }
 }
 
+bool MultiTileObject::mine(int pickaxePower, int axePower, int hammerPower,bool dropItem) {
+    if (this->parent!=nullptr) {
+        return this->parent->mine(pickaxePower, axePower, hammerPower,dropItem);
+    }
+    else return Tile::mine(pickaxePower, axePower, hammerPower,dropItem);
+}
 
 
 

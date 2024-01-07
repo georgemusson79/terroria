@@ -35,3 +35,9 @@ class WoodBow : public Bow {
 public:
 	WoodBow();
 };
+
+
+class CopperPickaxe : public Item {
+public:
+	CopperPickaxe();
+};

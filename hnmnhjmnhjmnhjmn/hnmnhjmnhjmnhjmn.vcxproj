@@ -153,6 +153,7 @@
     <ClCompile Include="arm.cpp" />
     <ClCompile Include="arrow.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="pickaxes.cpp" />
     <ClCompile Include="swinging Item.cpp" />
     <ClCompile Include="Tile Entities.cpp" />
     <ClCompile Include="Colliders.cpp" />
@@ -194,7 +195,6 @@
     <ClInclude Include="Item_specialisedTypes.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="multitileobj.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectiles.h" />
     <ClInclude Include="Tile.h" />

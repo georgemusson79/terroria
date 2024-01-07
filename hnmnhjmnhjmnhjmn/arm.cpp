@@ -134,7 +134,9 @@ bool Arm::useHeldItem(float angle) {
 Vector2 Arm::getHandPos(Vector2 itemOffset) { //the pivot point for items that are held
 	Vector2 base = this->getShoulderPos();
 	Vector2 end = base + Vector2(this->defaultHandPos.X, this->defaultHandPos.Y);
-	end = Main::rotatePt(end - (Vector2(this->hDirection,this->hDirection)*itemOffset), base, this->rotation);
+	itemOffset.X *= this->hDirection;
+	end = Main::rotatePt(end - itemOffset, base, this->rotation);
+	//end = Main::rotatePt(end, base, this->rotation);
 	return end;
 }
 Vector2 Arm::getShoulderPos() {
@@ -144,7 +146,7 @@ Vector2 Arm::getShoulderPos() {
 }
 
 void Arm::setHeldItem(std::shared_ptr<Item> item) {
-	if (this->heldItem!=nullptr && item!=nullptr) if (item->name == this->heldItem->name) return;
+	if (this->heldItem!=nullptr && item!=nullptr) if (item->id == this->heldItem->id) return;
 	this->deleteHeldItem();
 	this->heldItem = item;
 	this->swingItem = item->getItemProjectile(this->getHandPos(item->handOffset), this->owner);

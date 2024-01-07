@@ -3,10 +3,12 @@
 #include "Projectiles.h"
 #include "Main.h"
 #include "Player.h"
+#include "Tile.h"
 #include <SDL_image.h>
 #include "gui.h"
 #include "Entities.h"
 #include "Item_pickup.h"
+#include "Cursor.h"
 
 Item::Item() {
 	this->null = true;
@@ -28,7 +30,13 @@ bool Item::shoot(Arm* src,Vector2 tgt){
 
 
 bool Item::use(Player* player) {
-	return false;
+	Vector2 cursorPos = Cursor::WorldPos();
+	Tile* t = Main::getTileAt(cursorPos.X,cursorPos.Y);
+	if (t != nullptr) {
+		t->mine(this->pickaxePower, this->axePower, this->hammerPower, true);
+		std::cout << t->health << "\n";
+	}
+	return true;
 }
 
 Item::~Item() {

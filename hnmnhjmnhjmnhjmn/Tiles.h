@@ -22,6 +22,7 @@ public:
 class Wood :public Tile {
 public:
 	Wood(uint16_t X, uint16_t Y, bool placeIntoWorld = true);
+	void dropItem() override;
 };
 
 class Air :public Tile {

@@ -30,7 +30,7 @@ bool TileWall::draw(SDL_Renderer* renderer, Camera& camera) {
     return false;
 }
 
-TileWall::TileWall(uint16_t tileID, uint16_t X, uint16_t Y) : Tile(tileID, X, Y) {
+TileWall::TileWall(uint16_t tileID, uint16_t X, uint16_t Y) : Tile(tileID, X, Y,10) {
 
 }
 
@@ -41,7 +41,8 @@ void TileWall::create() {
     Main::tileWalls[this->X][this->Y] = new TileWall(*this);
 }
 
-void TileWall::destroy() {
+void TileWall::destroy(bool dropItem) {
     Main::tileWalls[this->X][this->Y] = nullptr;
+    if (dropItem) this->dropItem();
     delete this;
 }

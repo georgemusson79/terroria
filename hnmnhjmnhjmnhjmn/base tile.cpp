@@ -6,7 +6,9 @@
 #include "Colliders.h"
 #include "Player.h"
 #include <cassert>
-Tile::Tile(uint16_t tileID, uint16_t X, uint16_t Y) : tileID(tileID), X(X), Y(Y) {
+Tile::Tile(uint16_t tileID, uint16_t X, uint16_t Y,int health) : tileID(tileID), X(X), Y(Y) {
+    this->health = health;
+    this->maxHeealth = health;
 }
 Tile::Tile() : tileID(AIR), X(0),Y(0),isSolid(false),isMineable(false) {
 }
@@ -59,7 +61,7 @@ void Tile::create() {
 
 }
 
-void Tile::destroy() {
+void Tile::destroy(bool dropItem) {
     if (this->isMultiTile) {
         Tile* tile = Main::tiles[X][Y];
         MultiTileObject* obj = dynamic_cast<MultiTileObject*>(tile);
@@ -68,7 +70,9 @@ void Tile::destroy() {
 
     else if (this->X <= Main::WORLD_WIDTH && this->Y <= Main::WORLD_HEIGHT && this->X >= 0 && this->Y >= 0) {
         Main::tiles[X][Y] = nullptr;
-        delete this;
+        if (dropItem) this->dropItem();
+        Main::tilesToDelete.insert(this);
+        this->markedForDeletion = true;
     }
 }
 
@@ -86,7 +90,7 @@ bool Tile::getIsMineable() {
 }
 
 int Tile::getPickaxePower() {
-    return this->pickaxePower;
+    return this->minPickaxePower;
 }
 
 bool Tile::collides(Vector2 pos) {
@@ -95,6 +99,8 @@ bool Tile::collides(Vector2 pos) {
 }
 
 void Tile::update(){
+    if (this->markedForDeletion) return;
+    if (this->health <= 0) this->destroy();
 }
 
 Tile::~Tile() {
@@ -112,4 +118,22 @@ void Tile::onLeftClick(Player* player) {
 
 void Tile::updateLightMap() {
     Main::updateLightMap({ this->X,this->Y }, this->lightStrength);
+}
+
+bool Tile::mine(int pickaxePower,int axePower,int hammerPower, bool dropItem) {
+    if (!this->isMineable) return false;
+    int oldHealth = this->health;
+    if (this->minHammerPower < hammerPower) this->health -= hammerPower;
+    else if (this->minPickaxePower < pickaxePower) this->health -= pickaxePower;
+    else if (this->minAxePower < axePower) this->health -= axePower;
+    if (this->health <= 0) this->destroy(dropItem);
+    if (this->health != oldHealth) {
+        this->update();
+        return true;
+    }
+    return false;
+}
+
+void Tile::dropItem() {
+
 }

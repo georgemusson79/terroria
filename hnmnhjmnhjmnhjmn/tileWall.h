@@ -8,7 +8,7 @@ class TileWall : public Tile {
 public:
     TileWall(uint16_t tileID, uint16_t X, uint16_t Y);
     virtual void create() override;
-    virtual void destroy() override;
+    virtual void destroy(bool dropItem=false) override;
     bool draw(SDL_Renderer* renderer, Camera& camera) override;
     SDL_Texture* getTexture() override;
     template <typename tileWallInstance>

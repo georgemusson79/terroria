@@ -18,7 +18,7 @@ Player::Player(Vector2 pos) {
 	this->health = 400;
 	this->maxHealth = 400;
 	this->setPos(pos.X,pos.Y);
-	this->width =2;
+	this->width =1.9;
 	this->maxXVelocity = 0.4;
 	this->height = 3.5;
 	this->setTexture("assets\\player\\plr.png");

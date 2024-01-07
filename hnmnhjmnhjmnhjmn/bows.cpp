@@ -14,6 +14,7 @@ Bow::Bow(std::string displayName,std::string pathToTexture, float width, float h
 	this->ranged = true;
 	this->ammoID = 0;
 	this->useAnimation = 1;
+	this->maxStack = 1;
 	this->isStackable = false;
 	this->isUseable = true;
 	this->useTime = 30;
@@ -46,4 +47,5 @@ bool Bow::use(Player* player) {
 }
 
 WoodBow::WoodBow() : Bow("Wooden Bow","assets\\Items\\WoodBow.png",2,2,10,10,1,1) {
+	this->id = 3;
 }

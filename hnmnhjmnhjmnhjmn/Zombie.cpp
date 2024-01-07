@@ -16,14 +16,14 @@ Zombie::Zombie(Vector2 position) : Entity(position, 2, 3, 200, "assets\\enemy\\z
 	this->friendly = false;
 	this->hostile = true;
 	this->frameCount = 3;
-	this->arm = new Arm({0,0}, {0, 1.9}, 0.5, 2, "assets\\player\\arm2.png", true, this);
+	//this->arm = new Arm({0,0}, {0, 1.9}, 0.5, 2, "assets\\player\\arm2.png", true, this);
 	this->setTexture("assets\\enemy\\zombie1.png");
-	this->arm->setHeldItem(std::shared_ptr<Item>(new TestSword()));
+	//this->arm->setHeldItem(std::shared_ptr<Item>(new TestSword()));
 }
 
 void Zombie::kill() {
 	Entity::kill();
-	this->arm->despawn();
+	//this->arm->despawn();
 	new ItemPickup(std::shared_ptr<Item>(new WoodItem), this->position);
 }
 
@@ -46,7 +46,7 @@ void Zombie::walk(Vector2 pos) {
 
 void Zombie::update() {
 	Entity::update();
-	if (this->arm->timeToNextUse==0) this->arm->useHeldItem(-Main::getAngle(this->center,Main::player->center));
+	//if (this->arm->timeToNextUse==0) this->arm->useHeldItem(-Main::getAngle(this->center,Main::player->center));
 	//std::cout << -Main::getAngle(this->center, Main::player->center) << "\n";
 	if (Main::player != nullptr) this->walk(Main::player->position);
 	if (this->onGround && !this->walking) this->velocity.X = 0;

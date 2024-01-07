@@ -15,18 +15,22 @@ namespace Main {
 
 class Tile {
 public:
+    int maxHeealth = 100;
     int health = 100;
     bool translucent = false;
     uint16_t X;
     uint16_t Y;
     uint16_t lightStrength = 0;
+    bool markedForDeletion = false;
     bool isLight = false;
     bool isMineable = true;
     bool isMultiTile = false;
     bool isSolid = true;
     bool dynamicTile = false;
     bool isLiquid = false;
-    uint16_t pickaxePower = 0;
+    uint16_t minPickaxePower = 0;
+    uint16_t minHammerPower = 0;
+    uint16_t minAxePower = 0;
     bool getIsMineable();
     bool getIsSolid();
     bool getIsLiquid();
@@ -38,7 +42,8 @@ public:
         Main::tiles[tile.X][tile.Y] = new tileInstance(tile);
     }
     inline virtual void create();
-    inline virtual void destroy();
+    inline virtual void destroy(bool dropItem=false);
+    virtual void dropItem();
     virtual void updateLightMap();
     virtual void onRightClick(Player* player);
     virtual void onLeftClick(Player* player);
@@ -47,10 +52,11 @@ public:
     virtual bool draw(SDL_Renderer* renderer, Camera& camera);
     inline virtual SquareHitbox getHitbox();
     bool collides(Vector2 pos);
-    Tile(uint16_t tileID, uint16_t X, uint16_t Y);
+    Tile(uint16_t tileID, uint16_t X, uint16_t Y,int health);
     Tile();
     virtual ~Tile();
     int getID();
+    virtual bool mine(int pickaxePower, int axePower, int hammerPower,bool dropItem);
 protected:
     uint16_t tileID = 0;
 };
@@ -66,12 +72,13 @@ public:
     Tile* parent = nullptr;
     uint16_t width;
     uint16_t height;
-    MultiTileObject(uint16_t id, uint16_t X, uint16_t Y, uint16_t W, uint16_t H,bool isParent, MultiTileObject* parent=nullptr);
-    virtual void destroy() override;
+    MultiTileObject(uint16_t id, uint16_t X, uint16_t Y, uint16_t W, uint16_t H,int health,bool isParent, MultiTileObject* parent=nullptr);
+    virtual void destroy(bool dropItem=false) override;
     bool draw(SDL_Renderer* renderer, Camera& camera) override;
     virtual void create() override;
     void generate();
     virtual void update() override;
     virtual void onLeftClick(Player* player) override;
     virtual void onRightClick(Player* player) override;
+    virtual bool mine(int pickaxePower, int axePower, int hammerPower,bool dropItem) override;
 };

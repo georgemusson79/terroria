@@ -84,7 +84,7 @@ bool Camera::renderTileWalls() {
 
 bool Camera::renderEntities() {
 	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted() && Main::player->center.distance(entity->center)< (this->diagonalLength/2)+(std::sqrt(std::powf(entity->width, 2) + std::powf(entity->height, 2))/2)) {
-		if (Main::player == nullptr || entity != Main::player->arm) {
+		if (Main::player == nullptr || entity != Main::player->arm || entity!= Main::player->arm->getSwingItem()) {
 			entity->renderEntity();
 		}
 	}
@@ -155,6 +155,7 @@ void Camera::blockPlacementPositionDraw(Vector2 pos) {
 
 void Camera::renderPlayer(Player* player) {
 	player->renderEntity();
+	if (player->arm->getSwingItem() != nullptr && player->arm->getSwingItem()->active) player->arm->getSwingItem()->renderEntity();
 	player->arm->renderEntity();
 }
 

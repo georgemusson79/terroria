@@ -116,7 +116,7 @@ void Main::handleKeyEvents(SDL_Event* e) {
                ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
                ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new CopperPickaxe), Main::player->position - Vector2(2, 2));
                i2->item->count = 999;
-               //new Zombie(Cursor::WorldPos());
+               new Zombie(Cursor::WorldPos());
                new Chest(Cursor::WorldPos().X, Cursor::WorldPos().Y);
                //Arrow* a=new Arrow(Cursor::WorldPos(), true, false, 10);
             }
@@ -322,4 +322,12 @@ Vector2 Main::normaliseTwoPoints(Vector2 a, Vector2 b) {
 Tile* Main::getTileAt(int x, int y) {
     if (Main::checkForTile({ x,y })) return Main::tiles[x][y];
     return nullptr;
+}
+
+void Main::saveWorld() {
+    for (int x = 0; x <= Main::WORLD_WIDTH; x++) {
+        for (int y = 0; y <= Main::WORLD_WIDTH; x++) {
+
+        }
+    }
 }

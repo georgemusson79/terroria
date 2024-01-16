@@ -5,10 +5,10 @@ CopperPickaxe::CopperPickaxe() {
 	this->maxStack = 9;
 	this->width = 2;
 	this->height = 3;
-	this->handOffset = {0,this->height/2};
-	this->useTime = 40;
+	this->handOffset = { 0,this->height / 2 };
+	this->useTime = 35;
 	this->pickaxePower = 5;
-	this->animationTime = 40;
+	this->animationTime = 45;
 	this->useAnimation = 0;
 	this->name = "Copper Pickaxe";
 	this->setTexture("assets\\Items\\CopperPickaxe.png");

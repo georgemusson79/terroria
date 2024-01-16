@@ -136,7 +136,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\george\Documents\SDL\SDL2_image-2.6.3\include;C:\Users\george\Documents\SDL\SDL2_ttf-2.20.2\include;C:\Users\george\Documents\SDL\SDL2-2.26.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>/O3</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

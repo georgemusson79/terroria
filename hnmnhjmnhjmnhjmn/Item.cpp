@@ -34,7 +34,6 @@ bool Item::use(Player* player) {
 	Tile* t = Main::getTileAt(cursorPos.X,cursorPos.Y);
 	if (t != nullptr) {
 		t->mine(this->pickaxePower, this->axePower, this->hammerPower, true);
-		std::cout << t->health << "\n";
 	}
 	return true;
 }

@@ -107,6 +107,7 @@ void MultiTileObject::create() {
 
 bool MultiTileObject::mine(int pickaxePower, int axePower, int hammerPower,bool dropItem) {
     if (this->parent!=nullptr) {
+   
         return this->parent->mine(pickaxePower, axePower, hammerPower,dropItem);
     }
     else return Tile::mine(pickaxePower, axePower, hammerPower,dropItem);

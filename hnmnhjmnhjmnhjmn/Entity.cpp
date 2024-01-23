@@ -106,6 +106,11 @@ bool Entity::renderEntity() {
 bool Entity::toBeDeleted() {
 	return this->markForDeletion;
 }
+
+float Entity::getDistanceTravelled() {
+	return std::sqrt(std::pow(distanceTravelled.X, 2) + std::pow(distanceTravelled.Y, 2));
+}
+
 void Entity::despawn() {
 	this->deleteHitboxes();
 	this->markForDeletion = true;
@@ -243,6 +248,7 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 	this->oldVelocity = this->velocity;
 	std::vector < Tile*> tiles;
 	if (this->setX(this->position.X + velocity.X)) {
+		this->distanceTravelled.X += abs(velocity.X);
 		if (velocity.X < 0) {
 			oldHDirection = this->hDirection;
 			this->hDirection = -1;
@@ -260,6 +266,7 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 	}
 	else velocity.X = 0;
 	if (this->setY(this->position.Y + velocity.Y)) {
+		this->distanceTravelled.Y += abs(velocity.Y);
 		onGround = false;
 		if (velocity.Y < 0) this->vDirection = -1;
 		else if (velocity.Y > 0) this->vDirection = 1;

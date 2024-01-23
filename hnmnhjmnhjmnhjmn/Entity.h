@@ -17,6 +17,7 @@ protected:
 
     bool killed = false;
     int frameCount = 1;
+    Vector2 distanceTravelled = { 0,0 };
     int animationFrame = 0;
     int timeBetweenFrames = 0;
     int minTimeBetweenFrames = 15;
@@ -86,6 +87,7 @@ public:
     virtual void renderHitboxes();
     virtual void deleteHitboxes();
     bool toBeDeleted();
+    float getDistanceTravelled();
     void setRotationAround(double rotation, Vector2 point, RotationType rotationType);  //rotation type can be set to absolute or relative, absolute doesnt consider where the entity currently is
     virtual void despawn();
     inline virtual bool collidesWith(Vector2 position);

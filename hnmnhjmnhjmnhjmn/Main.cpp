@@ -14,6 +14,7 @@
 #include "Items.h"
 #include "Item.h"
 #include "Cursor.h"
+#include <fstream>
 CircleHitbox* Main::testcbox = new CircleHitbox;
 int Main::frames = 0;
 int Main::WINDOW_WIDTH = 1920/2;
@@ -123,8 +124,27 @@ int main() {
     bool increasing = true;
     //Entity1* en=new Entity1({ Main::player->position.X + 10, Main::player->position.Y });
     //Entity1* en2=new Entity1(en->position);
-    //ItemSwing* obj = new ItemSwing(Main::player->position, 10, 10, "assets\\Items\\sword.png");
-    //Main::player->pickup(new WoodItem(), 0, 0, true);
+
+    //std::ofstream f("C:\\Users\\george\\Pictures\\Screenshots\\tiles.bin", std::ios::binary);
+    //Tile* t = new Dirt(1, 1,true);
+    //t->save(f);
+    ////Main::tiles[900][900]->save(f);
+    //f.close();
+
+    //std::ofstream f("tiles.bin", std::ios::binary);
+    //for (Tile* t : Main::tiles[0]) if (t!=nullptr && t->getID()!=AIR) t->save(f);
+    //f.close();
+
+   //std::ifstream f2("C:\\Users\\george\\Pictures\\Screenshots\\tiles.bin", std::ios::binary);
+   //std::cout << f2.is_open() << "\n";
+   ////for (int i = 0; i < 1; i++) {
+   //    Tile* r = new Tile();
+   //    std::cout << f2.read((char*)r, 40).gcount() << "\n";
+   //    r->getInfo();
+   
+   //}
+  
+    
     while (Debug::running) {
         Main::removeDeletedTiles();
         Main::removeDeletedEntities();

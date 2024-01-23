@@ -327,3 +327,15 @@ bool Player::has(int itemID,Vector2* itemPos) {
 	}
 	return false;
 }
+
+bool Player::has(AmmoType ammoID, Vector2* pos) {
+	for (int x = 0; x < this->inventoryRows; x++) {
+		for (int y = 0; y < this->inventoryColumns; y++) {
+			if (this->inventory[x][y] != nullptr && this->inventory[x][y]->ammoID == ammoID) {
+				*pos = { x,y };
+				return true;
+			}
+		}
+	}
+	return false;
+}

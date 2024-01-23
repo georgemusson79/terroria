@@ -1,0 +1,4 @@
+#pragma once
+enum ItemIDs {
+	WOOD_ITEM,WOOD_BOW,ARROW_ITEM,TEST_SWORD,PISTOL
+};

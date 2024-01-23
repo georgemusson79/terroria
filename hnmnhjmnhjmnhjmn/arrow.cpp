@@ -20,11 +20,6 @@ Arrow::Arrow(Vector2 position, int damage, Entity* src, bool hostile , bool frie
 void Arrow::update() {
 	Entity::update();
 	this->setRotation(Main::toDegrees(std::atan2(this->velocity.Y, this->velocity.X))+90);
-
-	if (this->onGround) {
-		if (Main::randomInt(0, 2) == 1) new ItemPickup(std::shared_ptr<Item>(new ArrowItem()), this->center);
-		this->kill();
-	}
 }
 
 
@@ -38,5 +33,10 @@ bool Arrow::onHitPlayer(Player* player, Entity* src) {
 	bool res = Entity::onHitPlayer(player, src);
 	if (res && !this->piercing) this->kill();
 	return res;
+}
+
+void Arrow::onTileCollision() {
+	if (Main::randomInt(0, 2) == 1) new ItemPickup(std::shared_ptr<Item>(new ArrowItem()), this->center);
+	this->kill();
 }
 

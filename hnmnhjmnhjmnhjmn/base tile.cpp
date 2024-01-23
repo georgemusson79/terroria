@@ -5,6 +5,8 @@
 #include "Main.h"
 #include "Colliders.h"
 #include "Player.h"
+#include <iostream>
+#include <fstream>
 #include <cassert>
 Tile::Tile(uint16_t tileID, uint16_t X, uint16_t Y,int health) : tileID(tileID), X(X), Y(Y) {
     this->health = health;
@@ -51,6 +53,11 @@ SDL_Texture* Tile::getTexture() {
 //    this
 //}
 
+void Tile::getInfo() {
+    //debug for outputting tile data to console
+    std::cout << "tile info:\n Position: " << this->X << " " << this->Y << "\n Id:" << this->getID() << "\n";
+}
+
 void Tile::create() {
     bool isInRange = (this->X >= 0 && this->Y >= 0 && this->Y < Main::tiles[0].size() && this->X < Main::tiles.size());
     if (!isInRange) std::cout << "\n" << this->X << " " << this->Y << " " << Main::tiles[0].size() << " " << Main::tiles.size() << "\n";
@@ -96,6 +103,17 @@ int Tile::getPickaxePower() {
 bool Tile::collides(Vector2 pos) {
     if (pos.X >= this->X && pos.X < this->X + 1 && pos.X >= this->Y && pos.Y < this->Y + 1) return true;
     return false;
+}
+
+void Tile::save(std::ofstream& file) {
+    file.write((char*)(this), sizeof(*this));
+}
+
+Tile* Tile::load(std::ifstream& file) {
+    int size = sizeof(Tile);
+    Tile* t = new Tile();
+    file.read((char*)t, size);
+    return t;
 }
 
 void Tile::update(){

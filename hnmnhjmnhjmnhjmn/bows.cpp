@@ -12,7 +12,7 @@ Bow::Bow(std::string displayName,std::string pathToTexture, float width, float h
 	this->kb = kb;
 	this->handOffset = handOffset;
 	this->ranged = true;
-	this->ammoID = 0;
+	this->ammoID = AmmoType::NONE;
 	this->useAnimation = 1;
 	this->maxStack = 1;
 	this->isStackable = false;
@@ -38,7 +38,7 @@ bool Bow::shoot(Arm* src,Vector2 tgt) {
 bool Bow::use(Player* player) {
 	Vector2 itemPos;
 
-	if (player->has(2, &itemPos)) {
+	if (player->has(this->useAmmoID,&itemPos)) {
 		player->removeFromInventory(itemPos.X, itemPos.Y, 1);
 		this->shoot(player->arm, Cursor::WorldPos());
 		return true;
@@ -47,5 +47,5 @@ bool Bow::use(Player* player) {
 }
 
 WoodBow::WoodBow() : Bow("Wooden Bow","assets\\Items\\WoodBow.png",2,2,10,10,1,1) {
-	this->id = 3;
+	this->id = WOOD_BOW;
 }

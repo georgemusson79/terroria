@@ -129,6 +129,12 @@
     <ClCompile Include="pickaxes.cpp">
       <Filter>Source Files\item</Filter>
     </ClCompile>
+    <ClCompile Include="guns.cpp">
+      <Filter>Source Files\item</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Projectiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -192,6 +198,9 @@
       <Filter>Header Files\item</Filter>
     </ClInclude>
     <ClInclude Include="Cursor.h">
+      <Filter>Header Files\item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemIDs.h">
       <Filter>Header Files\item</Filter>
     </ClInclude>
   </ItemGroup>

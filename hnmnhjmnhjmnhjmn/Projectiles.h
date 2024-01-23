@@ -22,5 +22,14 @@ public:
 	Arrow(Vector2 position,int damage,Entity* src=nullptr, bool hostile = false, bool friendly = false);
 	virtual void update() override;
 	virtual bool onHitNPC(Entity* NPC, Entity* src = nullptr) override;
+	virtual void onTileCollision() override;
 	virtual bool onHitPlayer(Player* player, Entity* src = nullptr) override;
+};
+
+class Bullet : public Entity {
+public:
+	int maxDistance = 50;
+	Bullet(Vector2 position, int damage, Vector2 initialVelocity, Entity* src = nullptr, bool hostile = false, bool friendly = false);
+	void update() override;
+	void onTileCollision() override;
 };

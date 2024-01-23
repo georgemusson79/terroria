@@ -77,10 +77,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\george\Documents\SDL\SDL2_image-2.6.3\include;C:\Users\george\Documents\SDL\SDL2-2.26.5\include;C:\Users\george\Documents\SDL\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2Main.lib;SDL2_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\george\Documents\SDL\SDL2_image-2.6.3\lib\x86;C:\Users\george\Documents\SDL\SDL2-2.26.5\lib\x86;C:\Users\george\Documents\SDL\SDL2_ttf-2.20.2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,12 +94,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\george\Documents\SDL\SDL2_image-2.6.3\include;C:\Users\george\Documents\SDL\SDL2-2.26.5\include;C:\Users\george\Documents\SDL\SDL2_ttf-2.20.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2Main.lib;SDL2_image.lib;SDL2.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\george\Documents\SDL\SDL2_image-2.6.3\lib\x86;C:\Users\george\Documents\SDL\SDL2-2.26.5\lib\x86;C:\Users\george\Documents\SDL\SDL2_ttf-2.20.2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,7 +142,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\george\Documents\SDL\SDL2_image-2.6.3\include;C:\Users\george\Documents\SDL\SDL2_ttf-2.20.2\include;C:\Users\george\Documents\SDL\SDL2-2.26.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <Optimization>/O3</Optimization>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,6 +159,8 @@
     <ClCompile Include="arm.cpp" />
     <ClCompile Include="arrow.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="guns.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="pickaxes.cpp" />
     <ClCompile Include="swinging Item.cpp" />
     <ClCompile Include="Tile Entities.cpp" />
@@ -190,6 +198,7 @@
     <ClInclude Include="gui.h" />
     <ClInclude Include="headers.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemIDs.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Item_pickup.h" />
     <ClInclude Include="Item_specialisedTypes.h" />

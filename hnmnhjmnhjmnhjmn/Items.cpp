@@ -18,7 +18,7 @@ TestSword::TestSword() {
 	this->name = "cool sword bro";
 	this->setTexture("assets\\Items\\sword.png");
 	this->setHotbarTexture("assets\\Items\\swordh.png");
-	this->id = 0;
+	this->id = TEST_SWORD;
 	this->damage = 20;
 	this->kb = 0.7;
 	this->melee = true;
@@ -35,7 +35,7 @@ WoodItem::WoodItem() {
 	this->width = 1;
 	this->height = 1;
 	this->itemType = SpecialisedType::GENERIC;
-	this->id = 1;
+	this->id = WOOD_ITEM;
 	this->name = "Wood tile";
 	this->maxStack = 999;
 	this->useTime = 10;
@@ -72,8 +72,8 @@ bool WoodItem::use(Player* player) {
 
 ArrowItem::ArrowItem() {
 	this->damage = 10;
-	this->ammoID = 0;
-	this->id = 2;
+	this->ammoID = AmmoType::ARROW;
+	this->id = ARROW_ITEM;
 	this->isAmmo = true;
 	this->setTexture("assets\\projectiles\\arrow.png");
 	this->height = 2;

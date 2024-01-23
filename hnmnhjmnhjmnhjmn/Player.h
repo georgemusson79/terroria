@@ -81,6 +81,7 @@ public:
         }
         return false;
     }
+    bool has(AmmoType ammoID, Vector2* pos);
     bool pickup(std::shared_ptr<Item>);
     bool pickup(Item* item) {
         for (int x = 0; x < inventoryRows; x++) {

@@ -26,6 +26,7 @@ public:
 class Bow : public Item {
 public:
 	float power;
+	AmmoType useAmmoID = AmmoType::ARROW;
 	Bow(std::string displayName,std::string pathToTexture, float width, float height, int damage, int critChance, float kb, float power);
 	virtual bool shoot(Arm* src,Vector2 tgt) override;
 	virtual bool use(Player* player) override;
@@ -34,6 +35,16 @@ public:
 class WoodBow : public Bow {
 public:
 	WoodBow();
+};
+
+class Gun : public Bow {
+public:
+	Gun(std::string displayName, std::string pathToTexture, float width, float height, int damage, int critChance, float kb, float power);
+};
+
+class Pistol : public Gun {
+public:
+	Pistol();
 };
 
 

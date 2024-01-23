@@ -8,6 +8,7 @@
 #include "Entities.h"
 #include "Item_pickup.h"
 #include "Cursor.h"
+#include <fstream>
 #include "Items.h"
 #include <SDL.h>
 #include <set>
@@ -105,9 +106,12 @@ void Main::handleMouseEvents(SDL_Event* e) {
 void Main::handleKeyEvents(SDL_Event* e) {
     if (e->type == SDL_KEYDOWN) {
         if (Main::player != nullptr) {
+            if (e->key.keysym.sym == SDLK_t) new Zombie(Cursor::WorldPos());
 
             if (e->key.keysym.sym == SDLK_b) {
                 //bob
+                new Bullet(Cursor::WorldPos(), 30, { 0.6,0.6 }, Main::player);
+
                 ItemPickup* i0= new ItemPickup(std::shared_ptr<Item>(new WoodItem), Main::player->position - Vector2(2, 2));
                 ItemPickup* i4= new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
                 i0->item->setCount(99);
@@ -116,7 +120,7 @@ void Main::handleKeyEvents(SDL_Event* e) {
                ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
                ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new CopperPickaxe), Main::player->position - Vector2(2, 2));
                i2->item->count = 999;
-               new Zombie(Cursor::WorldPos());
+               //new Zombie(Cursor::WorldPos());
                new Chest(Cursor::WorldPos().X, Cursor::WorldPos().Y);
                //Arrow* a=new Arrow(Cursor::WorldPos(), true, false, 10);
             }
@@ -324,10 +328,16 @@ Tile* Main::getTileAt(int x, int y) {
     return nullptr;
 }
 
-void Main::saveWorld() {
+void Main::saveWorld(std::string filePath) {
+    std::ofstream file(filePath.c_str(), std::ios::binary);
     for (int x = 0; x <= Main::WORLD_WIDTH; x++) {
-        for (int y = 0; y <= Main::WORLD_WIDTH; x++) {
-
+        for (int y = 0; y <= Main::WORLD_HEIGHT; y++) {
+            if (Main::tiles[x][y] != nullptr) {
+                Main::tiles[x][y]->save(file);
+                file.close();
+                return;
+           }
         }
     }
+    file.close();
 }

@@ -1,5 +1,6 @@
 //item.h
 #include "headers.h"
+#include "ItemIDs.h"
 #include "Item_specialisedTypes.h"
 #include "Vector2.h"
 #pragma once
@@ -36,7 +37,7 @@ public:
 	int useSound = -1;
 	int maxStack = 999;
 	int animationTime = -1;
-	int ammoID = 0;
+	AmmoType ammoID = AmmoType::NONE;
 	bool isUseable = true;
 	bool ranged = false;
 	bool isAmmo = false;

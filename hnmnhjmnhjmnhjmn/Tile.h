@@ -1,5 +1,6 @@
 #include <cstdint>
 #include "game_datatypes.h"
+#include <fstream>
 #include <vector>
 #pragma once
 struct SDL_Texture;
@@ -41,6 +42,7 @@ public:
         if (Main::tiles[tile.X][tile.Y] != nullptr) Main::tiles[tile.X][tile.Y]->destroy();
         Main::tiles[tile.X][tile.Y] = new tileInstance(tile);
     }
+    virtual void getInfo();
     inline virtual void create();
     inline virtual void destroy(bool dropItem=false);
     virtual void dropItem();
@@ -51,6 +53,8 @@ public:
     virtual SDL_Texture* getTexture();
     virtual bool draw(SDL_Renderer* renderer, Camera& camera);
     inline virtual SquareHitbox getHitbox();
+    virtual void save(std::ofstream& file);
+    static Tile* load(std::ifstream& file);
     bool collides(Vector2 pos);
     Tile(uint16_t tileID, uint16_t X, uint16_t Y,int health);
     Tile();
@@ -81,4 +85,5 @@ public:
     virtual void onLeftClick(Player* player) override;
     virtual void onRightClick(Player* player) override;
     virtual bool mine(int pickaxePower, int axePower, int hammerPower,bool dropItem) override;
+ 
 };

@@ -25,25 +25,35 @@ Bow::Bow(std::string displayName,std::string pathToTexture, float width, float h
 	this->handOffset.X = float(this->height) / 2;
 }
 
-bool Bow::shoot(Arm* src,Vector2 tgt) {
+bool Bow::shoot(Arm* src,double rotation, Entity* projectile) {
 	if (src->getOwner() != nullptr) {
 		Vector2 handpos = src->getHandPos({ 0,0 });
-		Arrow* a=new Arrow(handpos, this->damage,src);
-		a->setCenter(handpos.X, handpos.Y);
-		a->velocity = Main::normaliseTwoPoints(tgt, a->center) * Vector2(this->power, this->power);
+		projectile->setCenter(handpos.X, handpos.Y);
+		projectile->damage += this->damage;
+		projectile->velocity = Main::getNormalisedPoint(src->rotation+90)* Vector2(this->power, this->power);
+		projectile->velocity.out();
 		
 	}
 	return true;
 }
+
+
+
 bool Bow::use(Player* player) {
 	Vector2 itemPos;
 
 	if (player->has(this->useAmmoID,&itemPos)) {
+		Entity* proj = player->inventory[itemPos.X][itemPos.Y]->getRangedProjectile(player->center, player, { 0,0 });
 		player->removeFromInventory(itemPos.X, itemPos.Y, 1);
-		this->shoot(player->arm, Cursor::WorldPos());
+		this->shoot(player->arm, player->arm->rotation, proj);
 		return true;
 	}
 	return false;
+}
+
+bool Bow::use(Arm* arm) {
+	//if (arm->getItem()!=nullptr) return this->shoot(this)
+	return true;
 }
 
 WoodBow::WoodBow() : Bow("Wooden Bow","assets\\Items\\WoodBow.png",2,2,10,10,1,1) {

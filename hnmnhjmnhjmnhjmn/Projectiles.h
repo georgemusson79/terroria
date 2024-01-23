@@ -19,14 +19,14 @@ class Arrow : public Entity {
 public:
 	bool piercing = false;
 	Entity* owner = nullptr;
-	Arrow(Vector2 position,int damage,Entity* src=nullptr, bool hostile = false, bool friendly = false);
+	Arrow(Vector2 position,int damage,Vector2 initialVelocity,Entity* src=nullptr, double width=1,double height=2, std::string pathToTexture = "assets\\projectiles\\arrow.png", bool hostile = false, bool friendly = false);
 	virtual void update() override;
 	virtual bool onHitNPC(Entity* NPC, Entity* src = nullptr) override;
 	virtual void onTileCollision() override;
 	virtual bool onHitPlayer(Player* player, Entity* src = nullptr) override;
 };
 
-class Bullet : public Entity {
+class Bullet : public Arrow {
 public:
 	int maxDistance = 50;
 	Bullet(Vector2 position, int damage, Vector2 initialVelocity, Entity* src = nullptr, bool hostile = false, bool friendly = false);

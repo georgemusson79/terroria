@@ -14,6 +14,10 @@ Item::Item() {
 	this->null = true;
 }
 
+Entity* Item::getRangedProjectile(Vector2 position, Entity* owner,Vector2 initialVelocity) {
+	return nullptr;
+}
+
 ItemSwing* Item::getItemProjectile(Vector2 position,Entity* owner=nullptr) {
 	ItemSwing* obj = new ItemSwing(position, this->width, this->height, this->texturePath,0,handOffset,owner,this->useAnimation,this->defaultHeldRotation);
 	obj->damage = this->damage;
@@ -23,19 +27,22 @@ ItemSwing* Item::getItemProjectile(Vector2 position,Entity* owner=nullptr) {
 	return obj;
 }
 
-bool Item::shoot(Arm* src,Vector2 tgt){
+bool Item::shoot(Arm* src,double rotation, Entity* projectile){
 	return true;
 }
 
-
+bool Item::use(Arm* arm) {
+	return true;
+}
 
 bool Item::use(Player* player) {
+
 	Vector2 cursorPos = Cursor::WorldPos();
 	Tile* t = Main::getTileAt(cursorPos.X,cursorPos.Y);
 	if (t != nullptr) {
 		t->mine(this->pickaxePower, this->axePower, this->hammerPower, true);
 	}
-	return true;
+	return this->use(player->arm);
 }
 
 Item::~Item() {

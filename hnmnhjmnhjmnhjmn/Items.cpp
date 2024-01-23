@@ -75,6 +75,7 @@ ArrowItem::ArrowItem() {
 	this->ammoID = AmmoType::ARROW;
 	this->id = ARROW_ITEM;
 	this->isAmmo = true;
+	this->name = "Wood Arrow";
 	this->setTexture("assets\\projectiles\\arrow.png");
 	this->height = 2;
 	this->rotationInInventory = 180;
@@ -82,3 +83,22 @@ ArrowItem::ArrowItem() {
 	this->consumable = true;
 }
 
+Entity* ArrowItem::getRangedProjectile(Vector2 position, Entity* owner, Vector2 initialVelocity) {
+	return new Arrow(position,10,initialVelocity, owner);
+}
+
+MusketBallItem::MusketBallItem() {
+	this->damage = 7;
+	this->ammoID = AmmoType::BULLET;
+	this->id = MUSKET_BALL;
+	this->isAmmo = true;
+	this->name = "Musket Ball";
+	this->setTexture("assets\\projectiles\\arrow.png");
+	this->height = 0.4;
+	this->width = 0.4;
+	this->consumable = true;
+}
+
+Entity* MusketBallItem::getRangedProjectile(Vector2 position, Entity* owner,Vector2 initialvelocity) {
+	return new Bullet(position, 7, initialvelocity, owner);
+}

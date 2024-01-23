@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Colliders.h"
 #include "Items.h"
-Arrow::Arrow(Vector2 position, int damage, Entity* src, bool hostile , bool friendly) : Entity(position, 1, 2, -1, "assets\\projectiles\\arrow.png", true, false, true) {
+Arrow::Arrow(Vector2 position, int damage, Vector2 initialvelocity, Entity* src, double width, double height,std::string pathToTexture, bool hostile, bool friendly) : Entity(position, width, height, -1, pathToTexture, true, false, true) {
 	this->hostile = hostile;
 	this->friendly = friendly;
 	if (src != nullptr) {
@@ -11,6 +11,7 @@ Arrow::Arrow(Vector2 position, int damage, Entity* src, bool hostile , bool frie
 		this->friendly = src->friendly;
 	}
 	this->displayName = "arrow";
+	this->velocity = initialvelocity;
 	this->kbDealt = 0.4;
 	this->damage = damage;
 	this->hitboxes.push_back(new RotatableHitbox(this->center, this->width, this->height));

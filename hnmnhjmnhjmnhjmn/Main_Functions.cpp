@@ -110,16 +110,16 @@ void Main::handleKeyEvents(SDL_Event* e) {
 
             if (e->key.keysym.sym == SDLK_b) {
                 //bob
-                new Bullet(Cursor::WorldPos(), 30, { 0.6,0.6 }, Main::player);
+                
 
-                ItemPickup* i0= new ItemPickup(std::shared_ptr<Item>(new WoodItem), Main::player->position - Vector2(2, 2));
-                ItemPickup* i4= new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
-                i0->item->setCount(99);
+                ItemPickup* i4= new ItemPickup(std::shared_ptr<Item>(new MusketBallItem), Main::player->position - Vector2(2, 2));
+                i4->item->setCount(99);
+                i4 = new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
                 i4->item->setCount(99);
                new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
-               ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
-               ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new CopperPickaxe), Main::player->position - Vector2(2, 2));
-               i2->item->count = 999;
+               ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new Pistol), Main::player->position - Vector2(2, 2));
+               ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
+               //i2->item->count = 999;
                //new Zombie(Cursor::WorldPos());
                new Chest(Cursor::WorldPos().X, Cursor::WorldPos().Y);
                //Arrow* a=new Arrow(Cursor::WorldPos(), true, false, 10);
@@ -312,8 +312,8 @@ void Main::spawnEntities() {
 }
 
 Vector2 Main::getNormalisedPoint(float rotation) {
-    float x = Main::toDegrees(std::cos(rotation));
-    float y = Main::toDegrees(std::sin(rotation));
+    float x = std::cos(Main::toRadians(rotation));
+    float y = std::sin(Main::toRadians(rotation));
     return { x,y };
 }
 

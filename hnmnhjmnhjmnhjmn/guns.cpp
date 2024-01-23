@@ -3,6 +3,8 @@ Gun::Gun(std::string displayName, std::string pathToTexture, float width, float 
 	this->useAmmoID = AmmoType::BULLET;
 }
 
-Pistol::Pistol() : Gun("Wooden Bow", "assets\\Items\\WoodBow.png", 2, 2, 10, 10, 1, 1) {
+Pistol::Pistol() : Gun("Pistol", "assets\\Items\\Handgun.png", 2.2, 2, 10, 10, 1, 1) {
 	this->id = PISTOL;
+	this->useTime = 4;
+	this->animationTime = 5;
 }

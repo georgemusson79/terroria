@@ -49,9 +49,11 @@ public:
 	double rotationInInventory = 0;
 	std::shared_ptr<SDL_Texture> hotbarTexture = nullptr;
 
+	virtual Entity* getRangedProjectile(Vector2 position, Entity* owner, Vector2 initialvelocity);
 	ItemSwing* getItemProjectile(Vector2 position,Entity* owner);
 	virtual bool use(Player* player);
-	virtual bool shoot(Arm* src,Vector2 tgt);
+	virtual bool use(Arm* arm);
+	virtual bool shoot(Arm* src,double rotation, Entity* projectile);
 	virtual void renderTexture(SDL_Rect* pos);
 	virtual void setTexture(std::string path);
 	virtual void setHotbarTexture(std::string path);

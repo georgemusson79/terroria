@@ -165,7 +165,7 @@ int main() {
             if (Main::entities[e] != nullptr && !Main::entities[e]->toBeDeleted() && Main::entities[e]->active) {
                 Entity* entity = Main::entities[e];
                 float maxUpdateDist = Main::camera->diagonalLength + std::sqrt(std::powf(entity->width, 2) + std::powf(entity->height, 2));
-                if (Main::entities[e]->alwaysUpdate || Main::entities[e]->center.distance(Main::player->center)<maxUpdateDist)  Main::entities[e]->update();
+                if (Main::entities[e]->alwaysUpdate || (Main::player==nullptr || Main::entities[e]->center.distance(Main::player->center))<maxUpdateDist)  Main::entities[e]->update();
             }
         }
         for (Tile* t : Main::testcbox->collidesWithTiles()) t->destroy();

@@ -27,11 +27,10 @@ Bow::Bow(std::string displayName,std::string pathToTexture, float width, float h
 
 bool Bow::shoot(Arm* src,double rotation, Entity* projectile) {
 	if (src->getOwner() != nullptr) {
-		Vector2 handpos = src->getHandPos({ 0,0 });
+		Vector2 handpos = src->getHandPos(bulletOffset);
 		projectile->setCenter(handpos.X, handpos.Y);
 		projectile->damage += this->damage;
 		projectile->velocity = Main::getNormalisedPoint(src->rotation+90)* Vector2(this->power, this->power);
-		projectile->velocity.out();
 		
 	}
 	return true;

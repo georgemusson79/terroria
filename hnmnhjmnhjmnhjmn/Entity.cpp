@@ -19,7 +19,7 @@ void Entity::update() {
 				this->onHitNPC(e, this);
 			
 		}
-		if (this->collidesWith(Main::player)) this->onHitPlayer(Main::player, this);
+		if (Main::player!=nullptr && this->collidesWith(Main::player)) this->onHitPlayer(Main::player, this);
 	}
 }
 

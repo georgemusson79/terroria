@@ -114,11 +114,11 @@ void Main::handleKeyEvents(SDL_Event* e) {
 
                 ItemPickup* i4= new ItemPickup(std::shared_ptr<Item>(new MusketBallItem), Main::player->position - Vector2(2, 2));
                 i4->item->setCount(99);
-                i4 = new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
+                //i4 = new ItemPickup(std::shared_ptr<Item>(new ArrowItem), Main::player->position - Vector2(2, 2));
                 i4->item->setCount(99);
-               new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
+              // new ItemPickup(std::shared_ptr<Item>(new TestSword), Main::player->position - Vector2(2, 2));
                ItemPickup* i=new ItemPickup(std::shared_ptr<Item>(new Pistol), Main::player->position - Vector2(2, 2));
-               ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
+               //ItemPickup* i2 = new ItemPickup(std::shared_ptr<Item>(new WoodBow), Main::player->position - Vector2(2, 2));
                //i2->item->count = 999;
                //new Zombie(Cursor::WorldPos());
                new Chest(Cursor::WorldPos().X, Cursor::WorldPos().Y);

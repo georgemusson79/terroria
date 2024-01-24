@@ -25,6 +25,8 @@ public:
 };
 
 class Bow : public Item {
+protected:
+	Vector2 bulletOffset = { 0,0 }; //where the bullwt spawns relative to the hand
 public:
 	float power;
 	AmmoType useAmmoID = AmmoType::ARROW;

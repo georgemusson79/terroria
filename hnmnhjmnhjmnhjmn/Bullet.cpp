@@ -10,9 +10,9 @@ Bullet::Bullet(Vector2 position, int damage, Vector2 initalVelocity, Entity* src
 }
 
 void Bullet::update() {
+	if (this->velocity != this->oldVelocity) this->setRotation(Main::toDegrees(std::atan2(this->velocity.Y, this->velocity.X)) + 90);
 	Entity::update();
-	Main::updateLightMap(this->center, 4);
-	this->setRotation(Main::toDegrees(std::atan2(this->velocity.Y, this->velocity.X)) + 90);
+	Main::updateLightMap(this->center, 2);
 	if (this->getDistanceTravelled() > this->maxDistance) {
 		this->kill();
 	}

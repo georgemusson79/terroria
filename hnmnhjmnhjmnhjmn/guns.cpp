@@ -7,4 +7,5 @@ Pistol::Pistol() : Gun("Pistol", "assets\\Items\\Handgun.png", 2.2, 2, 10, 10, 1
 	this->id = PISTOL;
 	this->useTime = 4;
 	this->animationTime = 5;
+	this->bulletOffset = { -0.4,0 };
 }

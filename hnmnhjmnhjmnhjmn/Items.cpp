@@ -93,9 +93,9 @@ MusketBallItem::MusketBallItem() {
 	this->id = MUSKET_BALL;
 	this->isAmmo = true;
 	this->name = "Musket Ball";
-	this->setTexture("assets\\projectiles\\arrow.png");
-	this->height = 0.4;
-	this->width = 0.4;
+	this->setTexture("assets\\Items\\MusketBall.png");
+	this->height = 1;
+	this->width = 1;
 	this->consumable = true;
 }
 

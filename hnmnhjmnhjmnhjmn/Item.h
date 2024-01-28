@@ -34,6 +34,7 @@ public:
 	int height = 0;
 	int useTime =0;
 	int useAnimation = -1;
+	int manaCost = 0;
 	int useSound = -1;
 	int maxStack = 999;
 	int animationTime = -1;

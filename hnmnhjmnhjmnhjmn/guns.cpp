@@ -5,7 +5,7 @@ Gun::Gun(std::string displayName, std::string pathToTexture, float width, float 
 
 Pistol::Pistol() : Gun("Pistol", "assets\\Items\\Handgun.png", 2.2, 2, 10, 10, 1, 1) {
 	this->id = PISTOL;
-	this->useTime = 4;
-	this->animationTime = 5;
+	this->useTime = 20;
+	this->animationTime = 21;
 	this->bulletOffset = { -0.4,0 };
 }

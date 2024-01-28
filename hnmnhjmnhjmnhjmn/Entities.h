@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include <vector>
 class Arm;
 class ItemSwing;
 class Item;
@@ -59,3 +60,13 @@ public:
 	bool renderEntity() override;
 };
 
+class ArmedEntity : public Entity {
+protected:
+	int armCount;
+	int armRenderInFrontOfEntity = 0; //the in the arms array to render arms in front of the entity instead of behind
+	std::vector<Arm*> arms = {};
+public:
+	void addArm(Arm* arm);
+	ArmedEntity(Vector2 position, float width, float height, int health, std::string pathToTexture, int armCount,int armRenderInFrontOfEntity,bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
+
+};

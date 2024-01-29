@@ -54,6 +54,7 @@ public:
 	ItemSwing* getItemProjectile(Vector2 position,Entity* owner);
 	virtual bool use(Player* player);
 	virtual bool use(Arm* arm);
+	virtual bool use(Arm* arm,Entity* proj);
 	virtual bool shoot(Arm* src,double rotation, Entity* projectile);
 	virtual void renderTexture(SDL_Rect* pos);
 	virtual void setTexture(std::string path);

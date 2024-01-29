@@ -157,12 +157,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="arm.cpp" />
+    <ClCompile Include="armedEntity.cpp" />
     <ClCompile Include="arrow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="guns.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="pickaxes.cpp" />
     <ClCompile Include="swinging Item.cpp" />
+    <ClCompile Include="Mafia.cpp" />
     <ClCompile Include="Tile Entities.cpp" />
     <ClCompile Include="Colliders.cpp" />
     <ClCompile Include="cursor.cpp" />

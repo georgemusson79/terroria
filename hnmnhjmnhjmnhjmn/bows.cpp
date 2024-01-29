@@ -50,8 +50,8 @@ bool Bow::use(Player* player) {
 	return false;
 }
 
-bool Bow::use(Arm* arm) {
-	//if (arm->getItem()!=nullptr) return this->shoot(this)
+bool Bow::use(Arm* arm,Entity* proj) {
+	if (arm->getItem() != nullptr) return this->shoot(arm, arm->rotation, proj);
 	return true;
 }
 

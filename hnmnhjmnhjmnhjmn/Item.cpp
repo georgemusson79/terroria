@@ -35,6 +35,10 @@ bool Item::use(Arm* arm) {
 	return true;
 }
 
+bool Item::use(Arm* arm, Entity* proj) {
+	return true;
+}
+
 bool Item::use(Player* player) {
 
 	Vector2 cursorPos = Cursor::WorldPos();

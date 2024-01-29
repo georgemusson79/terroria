@@ -33,7 +33,7 @@ public:
 	Bow(std::string displayName,std::string pathToTexture, float width, float height, int damage, int critChance, float kb, float power);
 	virtual bool shoot(Arm* src,double rotation,Entity* projectile) override;
 	virtual bool use(Player* player) override;
-	virtual bool use(Arm* arm) override;
+	virtual bool use(Arm* arm, Entity* proj) override;
 };
 
 class WoodBow : public Bow {

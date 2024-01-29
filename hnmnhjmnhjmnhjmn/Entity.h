@@ -14,7 +14,6 @@ class Tile;
 class Player;
 class Entity {
 protected:
-
     bool killed = false;
     int frameCount = 1;
     Vector2 distanceTravelled = { 0,0 };
@@ -27,10 +26,10 @@ protected:
 public:
     int oldHDirection = 1;
     int oldVDirection = 1;
-
+    bool checkIfOnGround(std::vector<Tile*>& tiles);
     bool markForDeletion = false;
     bool alwaysUpdate = false;
-    int renderPriority = 10; //smaller means it will be rendered first
+    double renderPriority = 10; //smaller means it will be rendered first
     std::string displayName = "";
     bool active = true;
     bool hostile = false;
@@ -96,7 +95,7 @@ public:
     inline virtual bool collidesWith(Entity* entity);
     virtual std::vector<Tile*> collidesWithTiles();
     virtual Vector2 moveEntity(Vector2 velocity);
-    virtual void onTileCollision();
+    virtual void onTileCollision(std::vector<Tile*>& tiles);
     void setTexture(std::string path);
     void deleteTexture();
     virtual bool hurt(int dmg, float kb = 0,Entity* src=nullptr);

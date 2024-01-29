@@ -37,10 +37,12 @@ public:
 	void setHeldItem(std::shared_ptr<Item> item);
 	void deleteHeldItem();
 	void useItemCancel();
+	bool canUseHeldItem();
 	void setOwner(Entity* owner);
+	void pointAt(Vector2 position);
 	ItemSwing* getSwingItem();
 	std::shared_ptr<Item> getItem();
-	bool useHeldItem(float angle=0);
+	bool useHeldItem(float angle=0, Entity* projectile=nullptr, bool deleteProjectileOnFail=true);
 	void swingAnim();
 	void pokeAnim(float angle);
 	void useItemAnimation(float startAngle = 0);
@@ -66,7 +68,15 @@ protected:
 	int armRenderInFrontOfEntity = 0; //the in the arms array to render arms in front of the entity instead of behind
 	std::vector<Arm*> arms = {};
 public:
-	void addArm(Arm* arm);
-	ArmedEntity(Vector2 position, float width, float height, int health, std::string pathToTexture, int armCount,int armRenderInFrontOfEntity,bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
+	int getArmCount();
+	void setArms(int armRenderInFrontOfEntity,std::vector<Arm*> arms);
+	ArmedEntity(Vector2 position, float width, float height, int health, std::string pathToTexture, std::vector<Arm*> arms,int armRenderInFrontOfEntity,bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
+	~ArmedEntity();
+};
 
+class MafiaMan : public ArmedEntity {
+public:
+	std::shared_ptr<Item> ammo = nullptr;
+	MafiaMan(Vector2 position);
+	void update() override;
 };

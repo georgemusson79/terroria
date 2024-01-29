@@ -31,7 +31,19 @@ std::vector<Entity*> Entity::getEntityCollisions() {
 	return tgts;
 }
 
-void Entity::onTileCollision() {
+bool Entity::checkIfOnGround(std::vector<Tile*>& tiles) {
+	if (this->vDirection == 1) {
+		for (auto& tile : tiles) {
+			if (tile->Y >= this->position.Y) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+void Entity::onTileCollision(std::vector<Tile*>& tiles) {
 
 }
 
@@ -259,12 +271,13 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 		}
 		if (!Debug::noclip) tiles = this->collidesWithTiles();
 		if (tiles.size() > 0) {
-			this->onTileCollision();
+			this->onTileCollision(tiles);
 			velocity.X = 0;
 			this->setX(oldPos.X);
 		}
 	}
 	else velocity.X = 0;
+	if (this->gravity == true && velocity.Y != this->maxYVelocity) velocity.Y += vAcceleration;
 	if (this->setY(this->position.Y + velocity.Y)) {
 		this->distanceTravelled.Y += abs(velocity.Y);
 		onGround = false;
@@ -272,14 +285,16 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 		else if (velocity.Y > 0) this->vDirection = 1;
 		if (!Debug::noclip) tiles = this->collidesWithTiles();
 		if (tiles.size() > 0) {
-			this->onTileCollision();
+			this->onTileCollision(tiles);
 			if (this->vDirection == 1) onGround = true;
 			velocity.Y = 0;
 			this->setY(oldPos.Y);
 		}
-		else if (this->gravity == true && velocity.Y != this->maxYVelocity) velocity.Y += vAcceleration;
 	}
-	else velocity.Y = 0;
+	else {
+		//this->setPos(this->oldPos.Y);
+		this->velocity.Y==0;
+	}
 	return velocity;
 }
 

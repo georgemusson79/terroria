@@ -45,6 +45,7 @@ void Arm::updatePos() {
 }
 
 
+
 void Arm::update() {
 	this->updatePos();
 	if (this->usingItem) this->useItemAnimation();
@@ -57,8 +58,14 @@ void Arm::update() {
 }
 
 
+
+
 void Arm::setOwner(Entity* owner) {
 	this->owner = owner;
+}
+
+void Arm::pointAt(Vector2 position) {
+	this->rotation = -Main::getAngle(this->getShoulderPos(), position);
 }
 Entity* Arm::getOwner() {
 	return this->owner;
@@ -116,17 +123,25 @@ void Arm::useItemAnimation(float angle) {
 	}
 
 }
+bool Arm::canUseHeldItem() {
+	if (this->heldItem != nullptr && this->timeToNextUse == 0 && this->heldItem->isUseable) return true;
+	return false;
+}
 
-bool Arm::useHeldItem(float angle) {
-	if (this->heldItem != nullptr && this->timeToNextUse==0 && this->heldItem->isUseable) {
+bool Arm::useHeldItem(float angle,Entity* projectile, bool deleteProjectileOnFail) {
+	if (this->canUseHeldItem()) {
 		this->rotation = angle;
-		if (this->heldItem->use((Player*)this->owner)) {
+		bool success;
+		if (this->owner->displayName!="player") success = (projectile == nullptr) ? this->heldItem->use(this) : this->heldItem->use(this, projectile);
+		else success = this->heldItem->use((Player*)this->owner);
+		if (success) {
 			this->useItemAnimation(angle);
 			this->timeToNextUse = this->heldItem->useTime;
 			return true;
 		}
 		else this->rotation = 0;
 	}
+	if (deleteProjectileOnFail && projectile != nullptr) projectile->despawn();
 	return false;
 }
 

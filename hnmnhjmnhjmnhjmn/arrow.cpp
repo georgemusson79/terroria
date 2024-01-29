@@ -36,7 +36,7 @@ bool Arrow::onHitPlayer(Player* player, Entity* src) {
 	return res;
 }
 
-void Arrow::onTileCollision() {
+void Arrow::onTileCollision(std::vector<Tile*>& tiles) {
 	if (Main::randomInt(0, 2) == 1) new ItemPickup(std::shared_ptr<Item>(new ArrowItem()), this->center);
 	this->kill();
 }

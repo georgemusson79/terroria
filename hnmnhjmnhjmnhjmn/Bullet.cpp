@@ -18,6 +18,6 @@ void Bullet::update() {
 	}
 }
 
-void Bullet::onTileCollision() {
+void Bullet::onTileCollision(std::vector<Tile*>& tiles) {
 	this->kill();
 }

@@ -14,7 +14,7 @@ class Arm;
 class Item {
 
 public:
-	bool canFlipWhenUsed = false; //player can turn around when using the item
+	bool canFlipWhenUsed = true; //player can turn around when using the item
 	bool null = false;
 	float defaultHeldRotation = 0;
 	SpecialisedType itemType = SpecialisedType::GENERIC;

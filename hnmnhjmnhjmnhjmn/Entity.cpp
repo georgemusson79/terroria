@@ -293,7 +293,7 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 	}
 	else {
 		//this->setPos(this->oldPos.Y);
-		this->velocity.Y==0;
+		this->velocity.Y=0;
 	}
 	
 	return velocity;

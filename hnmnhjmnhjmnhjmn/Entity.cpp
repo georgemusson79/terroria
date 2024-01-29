@@ -295,6 +295,7 @@ Vector2 Entity::moveEntity(Vector2 velocity) {
 		//this->setPos(this->oldPos.Y);
 		this->velocity.Y==0;
 	}
+	
 	return velocity;
 }
 

@@ -50,7 +50,7 @@ void Arm::update() {
 	this->updatePos();
 	if (this->usingItem) this->useItemAnimation();
 	if (this->timeToNextUse != 0) this->timeToNextUse--;
-	if (this->usingItem || this->swingItemActiveOverride) this->positionItem();
+	if (this->usingItem || this->swingItemActiveOverride || this->alwaysDisplayHeldItem) this->positionItem();
 	this->hDirection = this->owner->hDirection;
 	//this->rotation = Main::setSign(this->hDirection,this->rotation);
 	this->setRotationAround(this->rotation, this->getShoulderPos(), RotationType::ABSOLUTE);
@@ -107,7 +107,7 @@ void Arm::useItemAnimation(float angle) {
 	if (heldItem == nullptr || this->animationFramesPassed >= heldItem->animationTime) {
 		this->usingItem = false;
 		if (!this->swingItemActiveOverride && this->swingItem != nullptr) {
-			this->swingItem->active = false;
+			if (!this->alwaysDisplayHeldItem) this->swingItem->active = false;
 			this->rotation = 0;
 		}
 		return;
@@ -165,9 +165,19 @@ void Arm::setHeldItem(std::shared_ptr<Item> item) {
 	this->deleteHeldItem();
 	this->heldItem = item;
 	this->swingItem = item->getItemProjectile(this->getHandPos(item->handOffset), this->owner);
-	this->swingItem->active = false;
+	this->swingItem->active = this->alwaysDisplayHeldItem;
+	this->swingItem->renderPriority = this->renderPriority +0.01;
+	
 }
 
+
+bool Arm::getAlwaysDisplayHeldItem() {
+	return this->alwaysDisplayHeldItem;
+}
+void Arm::setAlwaysDisplayHeldItem(bool value) {
+	this->alwaysDisplayHeldItem = value;
+	if (this->swingItem != nullptr) this->swingItem->active = value;
+}
 
 ItemSwing* Arm::getSwingItem() {
 	return this->swingItem;

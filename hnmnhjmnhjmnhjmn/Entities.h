@@ -29,7 +29,10 @@ protected:
 	int animationFramesPassed = 0;
 	std::shared_ptr<Item> heldItem = nullptr;
 	ItemSwing* swingItem = nullptr;
+	bool alwaysDisplayHeldItem = false;
 public:
+	bool getAlwaysDisplayHeldItem();
+	void setAlwaysDisplayHeldItem(bool value);
 	float pokeAnimationRotation = 0;
 	int timeToNextUse = 0;
 	bool swingItemActiveOverride = false; //when true other code can decide when the swingitem is active or inactive
@@ -76,6 +79,7 @@ public:
 
 class MafiaMan : public ArmedEntity {
 public:
+	int guninuse = 0;
 	std::shared_ptr<Item> ammo = nullptr;
 	MafiaMan(Vector2 position);
 	void update() override;

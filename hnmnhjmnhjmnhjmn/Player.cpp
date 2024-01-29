@@ -141,7 +141,6 @@ Vector2 Player::moveEntity(Vector2 velocity) {
 	if ((this->oldVelocity.Y!=0 || !this->isWalking) && this->onGround  )  {
 		vel.X = 0;
 	}
-	std::cout << this->onGround << "\n";
 	return vel;
 }
 

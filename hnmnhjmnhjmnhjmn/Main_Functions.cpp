@@ -106,9 +106,10 @@ void Main::handleMouseEvents(SDL_Event* e) {
 void Main::handleKeyEvents(SDL_Event* e) {
     if (e->type == SDL_KEYDOWN) {
         if (Main::player != nullptr) {
+            if (Debug::runDebugFunctions) Debug::DebugHotkeyFunctions(e->key.keysym.sym);
             if (e->key.keysym.sym == SDLK_t) {
                 new Zombie(Cursor::WorldPos());
-                new MafiaMan(Cursor::WorldPos());
+                //new MafiaMan(Cursor::WorldPos());
             }
 
             if (e->key.keysym.sym == SDLK_b) {
@@ -284,6 +285,12 @@ Vector2 Main::getIntersectPt(Line l1, Line l2) {
 double Main::getAngle(Vector2 pointA, Vector2 pointB) {
     pointB = pointB - pointA;
     return Main::toDegrees(std::atan2(pointB.X, pointB.Y));
+}
+
+Vector2 Main::getWidthAndHeight(Vector2 pointA, Vector2 pointB) {
+    double width = std::max(pointA.X, pointB.X) - std::min(pointA.X, pointB.X);
+    double height = std::max(pointA.Y, pointB.Y) - std::min(pointA.Y, pointB.Y);
+    return { width,height };
 }
 
 Vector2 Main::rotatePt(Vector2 in, Vector2 around, double rotation) {

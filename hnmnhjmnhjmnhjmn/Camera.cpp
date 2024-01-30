@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "tileWalls.h"
 #include "Entities.h"
+#include "Bossbar.h"
 #include <algorithm>
 #include "gui.h"
 #include "Colliders.h"

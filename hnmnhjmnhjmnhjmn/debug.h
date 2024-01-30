@@ -1,4 +1,10 @@
 #pragma once
+#include <SDL_keycode.h>
+#include <unordered_map>
+#include <string>
+
+
+
 namespace Debug {
 	extern bool vsync;
 	extern bool renderHitboxes;
@@ -7,4 +13,14 @@ namespace Debug {
 	extern bool fullscreen;
 	extern bool running;
 	extern float MAX_ENTITY_UPDATE_DIST;
+	extern bool runDebugFunctions;
+	void DebugHotkeyFunctions(SDL_Keycode key);
+	void outputCursorPos();
+	void toggleHitboxes();
+	void outputScreenDims();
+	void getEntityCount();
+	void outputWorldDims();
+	void getPxWidthHeightRelativeToWindow();
+	void generateMessageBox(std::wstring title,std::wstring text);
+	extern std::unordered_map<SDL_Keycode, void(*)()> hotKeyToFn;
 }

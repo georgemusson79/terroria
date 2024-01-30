@@ -3,6 +3,7 @@
 #include "Main.h"
 #include "Player.h"
 #include "Entities.h"
+#include "Bossbar.h"
 #include "Projectiles.h"
 #include "Tile.h"
 #include "Tiles.h"
@@ -109,13 +110,13 @@ int main() {
     //this must happen first
     Main::init();
 
-    temp_populateHalfTiles(Dirt(2,2,false),WoodWall(2,2,false));
-    Main::camera=new Camera(1000,1000,Main::renderer);
+    temp_populateHalfTiles(Dirt(2, 2, false), WoodWall(2, 2, false));
+    Main::camera = new Camera(1000, 1000, Main::renderer);
     Main::player = new Player({ 500,Main::WORLD_HEIGHT / 2 });
     Main::player->setY(Main::player->position.Y - 10);
     //Main::p2 = new Player({ 500,Main::WORLD_HEIGHT/2 });
     SDL_Event e;
-   
+
     Main::testcbox->position = Main::player->position;
     Main::testcbox->r = 10;
     Main::testcbox->active = false;
@@ -141,11 +142,14 @@ int main() {
    //    Tile* r = new Tile();
    //    std::cout << f2.read((char*)r, 40).gcount() << "\n";
    //    r->getInfo();
-   
+
    //}
-  
+
     
+
+
     while (Debug::running) {
+        if (Debug::runDebugFunctions) 
         Main::removeDeletedTiles();
         Main::removeDeletedEntities();
         Main::spawnEntities();
@@ -172,7 +176,7 @@ int main() {
 
         Main::camera->renderScreen();
         //handle fps: should be put in function and needs work
-
+      
         if (SDL_GetTicks() - frmstart < 1000 / 60) {
             
             //while (SDL_GetTicks() - frmstart < 1000 / 60 && Main::vsync) {}

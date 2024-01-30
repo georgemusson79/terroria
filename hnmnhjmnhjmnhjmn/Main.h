@@ -9,6 +9,7 @@ class CircleHitbox;
 class Entity;
 class Tile;
 class Camera;
+class BossBar;
 class Player;
 class TileWall;
 class Item;
@@ -49,6 +50,7 @@ namespace Main {
     extern int WINDOW_WIDTH;
     extern int WINDOW_HEIGHT;
     extern double gravity;
+    extern BossBar* bossBar;
     extern Camera* camera;
     extern Player* player;
     extern CircleHitbox* testcbox;
@@ -87,6 +89,7 @@ namespace Main {
     bool inWorldBounds(Vector2 pos);
     void renderPos(Vector2 pos);
     void drawSquare(Vector2 center, SDL_Color color, int width);
+    Vector2 getWidthAndHeight(Vector2 pointA, Vector2 pointB);
     Tile* getTileAt(int x, int y);
     ItemPickup* convertItemToItemPickup(Item* item, Vector2 position);
     Vector2 getIntersectPt(Line l1, Line l2);

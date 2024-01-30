@@ -34,7 +34,7 @@
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="bows.cpp" />
     <ClCompile Include="Zombie.cpp" />
-    <ClCompile Include="assets\GUI\BossBar.cpp" />
+    <ClCompile Include="BossBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Colliders.h" />
@@ -59,6 +59,6 @@
     <ClInclude Include="tileWall.h" />
     <ClInclude Include="tileWalls.h" />
     <ClInclude Include="Vector2.h" />
-    <ClInclude Include="assets\GUI\Bossbar.h" />
+    <ClInclude Include="Bossbar.h" />
   </ItemGroup>
 </Project>

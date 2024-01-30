@@ -159,7 +159,7 @@
     <ClCompile Include="arm.cpp" />
     <ClCompile Include="armedEntity.cpp" />
     <ClCompile Include="arrow.cpp" />
-    <ClCompile Include="assets\GUI\BossBar.cpp" />
+    <ClCompile Include="BossBar.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="guns.cpp" />
     <ClCompile Include="Bullet.cpp" />
@@ -192,7 +192,7 @@
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="assets\GUI\Bossbar.h" />
+    <ClInclude Include="Bossbar.h" />
     <ClInclude Include="Colliders.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="debug.h" />

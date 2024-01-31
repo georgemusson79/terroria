@@ -40,6 +40,7 @@ namespace Main {
     extern std::vector<std::vector<TileWall*>> tileWalls;
     extern std::map<int, SDL_Texture*> backgrounds;
     extern uint16_t defaultLightValue;
+    extern bool doesBossBarExist; //only allows one boss bar to be rendered at a time
     extern std::vector<Entity*> entities;
     extern std::vector<Entity*> entitiesToSpawn;
     extern SDL_Renderer* renderer;

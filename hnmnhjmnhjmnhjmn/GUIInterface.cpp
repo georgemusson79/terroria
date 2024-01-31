@@ -10,7 +10,6 @@
 
 
 GUIinterface::InventoryTile::InventoryTile(InventoryFrames type, SDL_Point onScreenPos, int size, std::shared_ptr<Item>& item,SpecialisedType itemType,int place,bool isHotbar) : type(type),onScreenPos(onScreenPos),size(size), itemType(itemType),item(item),isHotbar(isHotbar),place(place) {
-	//why are you gae
 	hitbox = new SquareHitbox(Main::convertCameraPosToWorldPos({ onScreenPos.x,onScreenPos.y }),Main::convertPixelSizeToTileSize(size), Main::convertPixelSizeToTileSize(size));
 	this->texture = GUIinterface::inventoryTileTexture;
 	this->outputRect = { onScreenPos.x,onScreenPos.y,size,size };

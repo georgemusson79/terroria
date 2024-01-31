@@ -36,6 +36,8 @@ void BossBar::setHealthTexture(std::string path) {
 }
 
 void BossBar::render() {
+	if (Main::doesBossBarExist) return;
+	Main::doesBossBarExist = true;
 	if (this->src != nullptr) {
 		this->health = src->health;
 		this->maxHealth = src->maxHealth;
@@ -51,5 +53,6 @@ void BossBar::render() {
 	healthRectDst.w *= (double)this->health / this->maxHealth;
 	SDL_RenderCopy(Main::renderer, this->healthTexture->texture, &healthRectSrc, &healthRectDst);
 
-	
+	SDL_Rect headPos = { Main::WINDOW_WIDTH * 0.190542, Main::WINDOW_HEIGHT * 0.870370, Main::WINDOW_WIDTH * 0.036292,Main::WINDOW_HEIGHT * 0.04333 };
+	SDL_RenderCopy(Main::renderer, this->bossHeadTexture.get(), NULL, &headPos);
 }

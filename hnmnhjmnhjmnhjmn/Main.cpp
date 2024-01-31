@@ -22,6 +22,7 @@ int Main::WINDOW_WIDTH = 1920/2;
 double Main::gravity = 9;
 int Main::WINDOW_HEIGHT = 1080/2;
 bool Main::scaleToWindowSize = false;
+bool Main::doesBossBarExist = false;
 uint16_t Main::WORLD_HEIGHT = 1500;
 uint16_t Main::WORLD_WIDTH = 7000;
 std::vector<Entity*> Main::entities = {};
@@ -192,5 +193,6 @@ int main() {
             Main::frames = 0;
             starttime = SDL_GetTicks();
         }
+        Main::doesBossBarExist = false;
     }
 }

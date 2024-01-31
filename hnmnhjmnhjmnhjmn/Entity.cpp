@@ -106,7 +106,6 @@ bool Entity::setCenter(double X, double Y) {
 bool Entity::renderEntity() {
 	if (!this->active) return false;
 	if (!this->renderToScreen) return false;
-
 	iVector2 renderPos = Main::convertWorldPosToCameraPos(this->position);
 	Vector2 dims = { Main::convertTileSizeToPixelSize(this->width*this->scale), Main::convertTileSizeToPixelSize(this->height*this->scale) };
 	SDL_Rect r = { renderPos.X,renderPos.Y,dims.X,dims.Y };

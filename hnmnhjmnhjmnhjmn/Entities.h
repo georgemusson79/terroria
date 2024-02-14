@@ -83,4 +83,5 @@ public:
 	std::shared_ptr<Item> ammo = nullptr;
 	MafiaMan(Vector2 position);
 	void update() override;
+	bool renderEntity() override;
 };

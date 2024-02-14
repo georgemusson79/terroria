@@ -108,8 +108,8 @@ void Main::handleKeyEvents(SDL_Event* e) {
         if (Main::player != nullptr) {
             if (Debug::runDebugFunctions) Debug::DebugHotkeyFunctions(e->key.keysym.sym);
             if (e->key.keysym.sym == SDLK_t) {
-                new Zombie(Cursor::WorldPos());
-                //new MafiaMan(Cursor::WorldPos());
+                //new Zombie(Cursor::WorldPos());
+                new MafiaMan(Cursor::WorldPos());
             }
 
             if (e->key.keysym.sym == SDLK_b) {

@@ -15,6 +15,7 @@ Zombie::Zombie(Vector2 position) : Entity(position, 2, 3, 200, "assets\\enemy\\z
 	this->frameCount = 1;
 	this->friendly = false;
 	this->hostile = true;
+	dynamic_cast<SquareHitbox*>(this->hitboxes[0])->h -= 0.1;
 	this->frameCount = 3;
 	//this->arm = new Arm({0,0}, {0, 1.9}, 0.5, 2, "assets\\player\\arm2.png", true, this);
 	this->setTexture("assets\\enemy\\zombie1.png");
@@ -45,13 +46,11 @@ void Zombie::walk(Vector2 pos) {
 }
 
 void Zombie::update() {
+	if (Main::player != nullptr) Entity::walk(this, Main::player->position, 0.1, 0, 1, 0);
 	Entity::update();
-	//if (this->arm->timeToNextUse==0) this->arm->useHeldItem(-Main::getAngle(this->center,Main::player->center));
-	//std::cout << -Main::getAngle(this->center, Main::player->center) << "\n";
-	if (Main::player != nullptr) this->walk(Main::player->position);
+	//if (Main::player != nullptr) this->walk(Main::player->position);
+	
 	if (this->onGround && !this->walking) this->velocity.X = 0;
 	if (this->collidesWith(Main::player)) Main::player->hurt(this->damage, this->kbDealt, this);
-	//this->arm->rotation++;
-	//(this->hDirection > 0) ? this->arm->rotation++ : this->arm->rotation--;
 }
 

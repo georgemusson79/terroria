@@ -349,3 +349,19 @@ bool Entity::checkOnSameTeam(Entity* e) {
 	if (e->friendly && this->friendly) return false;
 	return false;
 }
+
+void Entity::walk(Entity* e, Vector2 to, double speed, int firstWalkFrame, int lastWalkFrame,int standingFrame) {
+	if (e->position.distance(to) > 1) {
+		if (e->onGround) {
+			e->walking = true;
+			e->hAcceleration = (e->position.X < to.X) ? speed : -speed;
+			e->velocity.X = e->hAcceleration;
+			
+			e->switchFrames((e->animationFrame == lastWalkFrame) ? firstWalkFrame : e->animationFrame + 1);
+		}
+	}
+	else {
+		e->walking = false;
+		e->switchFrames(standingFrame);
+	}
+}

@@ -42,3 +42,8 @@ void MafiaMan::update() {
 	//	
 	//if (this->onGround) this->velocity.X = 0;
 }
+
+bool MafiaMan::renderEntity() {
+	Entity::renderEntity();
+	return true;
+}

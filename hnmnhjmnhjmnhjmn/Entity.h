@@ -24,6 +24,7 @@ protected:
     int textureHeight = 0;
     void addToEntitiesList();
 public:
+    bool walking = false;
     int oldHDirection = 1;
     int oldVDirection = 1;
     bool checkIfOnGround(std::vector<Tile*>& tiles);
@@ -104,6 +105,7 @@ public:
     Entity(Vector2 position, float width, float height, int health, std::string pathToTexture, bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
     Entity(Vector2 position, float width, float height,int health, SDL_Texture* t, bool gravity = true, bool defaultCollider = true, bool tileCollision = true);
     Entity();
+    static void walk(Entity* e, Vector2 to, double speed = 0.1, int firstWalkFrame = 0, int lastWalkFrame = 0, int standingFrame = 0);
     bool switchFrames(int frame);
     virtual ~Entity();
     void setRotation(double rotation);

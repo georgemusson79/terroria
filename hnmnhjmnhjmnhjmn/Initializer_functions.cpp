@@ -4,6 +4,7 @@
 #include "tileWalls.h"
 #include "gui.h"
 #include "debug.h"
+#include <Windows.h>
 namespace Main {
     Uint8 heldKeys[SDL_NUM_SCANCODES] = {};
     Uint32 heldMouseKeys = NULL;
@@ -18,6 +19,7 @@ namespace GUIinterface {
 
 void Main::init() {
     srand(time(0));
+    if (Debug::consoleEnabled) Debug::enableConsole();
     SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG);
     TTF_Init();

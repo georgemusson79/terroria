@@ -12,6 +12,7 @@ namespace Debug {
 	extern bool lighting;
 	extern bool fullscreen;
 	extern bool running;
+	extern bool consoleEnabled;
 	extern float MAX_ENTITY_UPDATE_DIST;
 	extern bool runDebugFunctions;
 	void DebugHotkeyFunctions(SDL_Keycode key);
@@ -21,6 +22,8 @@ namespace Debug {
 	void getEntityCount();
 	void outputWorldDims();
 	void getPxWidthHeightRelativeToWindow();
+	void toggleWindow();
 	void generateMessageBox(std::wstring title,std::wstring text);
+	void enableConsole();
 	extern std::unordered_map<SDL_Keycode, void(*)()> hotKeyToFn;
 }

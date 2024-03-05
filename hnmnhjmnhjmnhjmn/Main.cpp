@@ -1,5 +1,4 @@
 //main.cpp
-#define SDL_MAIN_HANDLED
 #include "Main.h"
 #include "Player.h"
 #include "Entities.h"
@@ -15,6 +14,7 @@
 #include "Items.h"
 #include "Item.h"
 #include "Cursor.h"
+#include <Windows.h>
 #include <fstream>
 CircleHitbox* Main::testcbox = new CircleHitbox;
 int Main::frames = 0;
@@ -107,10 +107,9 @@ void temp_populateAllTiles(TileInstance tile,TileWallInstance tilewall) {
         }
     }
 }
-int main() {
+int main(int argc, char** argv) {
     //this must happen first
     Main::init();
-
     temp_populateHalfTiles(Dirt(2, 2, false), WoodWall(2, 2, false));
     Main::camera = new Camera(1000, 1000, Main::renderer);
     Main::player = new Player({ 500,Main::WORLD_HEIGHT / 2 });

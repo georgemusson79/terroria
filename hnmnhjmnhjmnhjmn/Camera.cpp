@@ -56,7 +56,7 @@ bool Camera::renderTiles() {
 			if ((x >= 0 && y >= 0) && (x <= Main::WORLD_WIDTH && y <= Main::WORLD_HEIGHT)) {
 				if (Main::tiles[x][y] != nullptr) {
 					if (Main::tiles[x][y]->isMultiTile) {
-						if (std::find(pos.begin(), pos.end(), Vector2(x, y)) == pos.end()) {
+						if (std::find(pos.begin(), pos.end(), Vector2( x, y )) == pos.end()) {
 							if (Main::tiles[x][y]->draw(renderer, *this)) size++;
 							pos.push_back({ x,y });
 						}

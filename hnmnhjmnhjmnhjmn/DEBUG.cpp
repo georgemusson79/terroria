@@ -9,8 +9,9 @@
 
 namespace Debug {
     Vector2* positionA = nullptr;
+    bool consoleEnabled = true;
     bool getPxCalculationStarted = false;
-
+    bool hiddenWindow = false;
     bool running = true;
     bool vsync = true;
     bool renderHitboxes = true;
@@ -25,7 +26,8 @@ namespace Debug {
         {SDLK_F9,&Debug::outputWorldDims},
         {SDLK_F8, &Debug::outputScreenDims},
         {SDLK_HOME, &Debug::getPxWidthHeightRelativeToWindow},
-        {SDLK_F7,&Debug::getEntityCount}
+        {SDLK_F7,&Debug::getEntityCount},
+        {SDLK_F2,&Debug::toggleWindow}
     };
 }
 
@@ -93,4 +95,26 @@ void Debug::getPxWidthHeightRelativeToWindow() {
             Debug::positionA = nullptr;
         }
     }
+}
+
+void Debug::toggleWindow() {
+    if (Debug::hiddenWindow) {
+        SDL_ShowWindow(Main::window);
+        std::cout<< "Window Shown\n";
+    }
+    else {
+        SDL_HideWindow(Main::window);
+        std::cout << "Window Hidden\n";
+    }
+    Debug::hiddenWindow = !Debug::hiddenWindow;
+ 
+}
+
+
+void Debug::enableConsole() {
+    AllocConsole();
+    FILE* fDummy;
+    freopen_s(&fDummy, "CONIN$", "r", stdin);
+    freopen_s(&fDummy, "CONOUT$", "w", stderr);
+    freopen_s(&fDummy, "CONOUT$", "w", stdout);
 }

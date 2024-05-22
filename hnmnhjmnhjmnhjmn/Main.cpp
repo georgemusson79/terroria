@@ -16,6 +16,8 @@
 #include "Cursor.h"
 #include <Windows.h>
 #include <fstream>
+
+#define SDL_MAIN_HANDLED
 CircleHitbox* Main::testcbox = new CircleHitbox;
 int Main::frames = 0;
 int Main::WINDOW_WIDTH = 1920/2;
@@ -148,8 +150,7 @@ int main(int argc, char** argv) {
     
 
 
-    while (Debug::running) {
-        if (Debug::runDebugFunctions) 
+    while (Debug::running) { 
         Main::removeDeletedTiles();
         Main::removeDeletedEntities();
         Main::spawnEntities();
@@ -194,4 +195,6 @@ int main(int argc, char** argv) {
         }
         Main::doesBossBarExist = false;
     }
+
+    return 0;
 }

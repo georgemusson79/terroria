@@ -50,7 +50,7 @@ void Arm::update() {
 	this->hDirection = this->owner->hDirection;
 	this->updatePos();
 	if (this->usingItem) this->useItemAnimation();
-	else this->rotation = this->restingRotation;
+	// this->rotation = this->restingRotation;
 	if (this->timeToNextUse != 0) this->timeToNextUse--;
 	if (this->usingItem || this->swingItemActiveOverride || this->alwaysDisplayHeldItem) this->positionItem();
 	//this->rotation = Main::setSign(this->hDirection,this->rotation);

@@ -9,12 +9,18 @@
 #include <memory>
 
 enum class PlayerSprite {
-     WALK1, IDLE, WALK2
+    WALK1, IDLE, WALK2
 };
 class Chest;
 class Arm;
 class Player : public Entity {
 private:
+    int bonusHealth = 0;
+    int bonusDefense = 0;
+    int bonusHAcceleration = 0;
+    int bonusVAcceleration = 0;
+    int bonusKBResist = 0;
+    void handleArmorModifiers();
     //Item heldItem;
     //ItemSwing* swingItem = nullptr;
     int tempRotation = 0;
@@ -30,6 +36,8 @@ private:
 
 public:
     Arm* arm = nullptr;
+    Arm* arm2 = nullptr;
+    std::string pathToDefaultArmTexture = "assets\\player\\arm.png";
     //void swingAnim(Item* item);
     bool usingItem = false;
     bool isWalking = false;
@@ -46,34 +54,34 @@ public:
     int accessoryCount = 6;
     int selectedInventoryItem = -1;
     int temp_cooldown = 0;
-    int mana =100;
+    int mana = 100;
     int maxMana = 100;
     //static void blockSelectDraw(SDL_Renderer* renderer, SDL_Rect r);
-    std::array<std::shared_ptr<Item>, 3> armor = {nullptr,nullptr,nullptr};
+    std::array<std::shared_ptr<Item>, 3> armor = { nullptr,nullptr,nullptr };
     std::vector<std::shared_ptr<Item>> accessories = std::vector<std::shared_ptr<Item>>(accessoryCount, nullptr);
     std::vector<std::vector<std::shared_ptr<Item>>> inventory;
     int animationTimePassed = 0;
     bool getCursorDistance();
     Player(Vector2 pos);
     Player();
-    bool has(int itemID,Vector2* itemPos);
+    bool has(int itemID, Vector2* itemPos);
     ~Player();
     void update() override;
     void placeBlock(Tile* t);
-    //bool renderEntity() override;
+    bool renderEntity() override;
     void clearInventory();
     template <typename ItemType>
     bool pickup(ItemType* item, int row, int column, bool replace = false) {
         static_assert(std::is_base_of_v<Item, ItemType>, "item is not of type Item");
         ItemType cpy = *item;
         if (row < this->inventoryRows && column < this->inventoryColumns) {
-            if (replace || inventory[row][column]==nullptr) {
+            if (replace || inventory[row][column] == nullptr) {
                 inventory[row][column] = std::shared_ptr<Item>(new ItemType(cpy));
                 return true;
             }
             else {
-                
-                if (item->id== inventory[row][column]->id && item->isStackable && (inventory[row][column]->count+item->count)<=item->maxStack) {
+
+                if (item->id == inventory[row][column]->id && item->isStackable && (inventory[row][column]->count + item->count) <= item->maxStack) {
                     inventory[row][column]->setCount(inventory[row][column]->count + item->count);
                     return true;
                 }
@@ -121,8 +129,8 @@ public:
 
 
 
-    
-    bool hurt(int dmg, float kb=0,Entity* src=nullptr) override;
+
+    bool hurt(int dmg, float kb = 0, Entity* src = nullptr) override;
     void kill() override;
     Vector2 moveEntity(Vector2 velocity) override;
     void rightClick();
@@ -132,6 +140,6 @@ public:
     void jump();
     bool dropItem(std::shared_ptr<Item>& item);
     bool removeFromInventory(int row, int col, int amount);
-    
+
 
 };

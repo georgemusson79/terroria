@@ -17,21 +17,23 @@ Player::Player(Vector2 pos) {
 	this->renderToScreen = true;
 	this->health = 400;
 	this->maxHealth = 400;
-	this->setPos(pos.X,pos.Y);
-	this->width =1.9;
+	this->setPos(pos.X, pos.Y);
+	this->width = 1.9;
 	this->maxXVelocity = 0.4;
 	this->height = 3.5;
 	this->setTexture("assets\\player\\plr.png");
-	Vector2 armDims= { this->width * 0.2,this->height * 0.4};
-//	this->armPos = { center.X - (armDims.X / 2),position.Y + (this->height * 0.4) };
-	this->arm = new Arm({ 0,-0.4 }, { 0, armDims.Y }, armDims.X, armDims.Y, "assets\\player\\arm.png", false, this,this->position);
+	Vector2 armDims = { this->width * 0.2,this->height * 0.4 };
+	//	this->armPos = { center.X - (armDims.X / 2),position.Y + (this->height * 0.4) };
+	this->arm = new Arm({ 0,-0.4 }, { 0, armDims.Y }, armDims.X, armDims.Y, pathToDefaultArmTexture, false, this, this->position);
+	this->arm2 = new Arm({ 0,-0.4 }, { 0, armDims.Y }, armDims.X, armDims.Y, pathToDefaultArmTexture, false, this, this->position);
+
 	//this->armTexture = IMG_LoadTexture(Main::renderer,"assets\\player\\arm.png");
 	this->hitboxes.push_back(new SquareHitbox({ this->position.X,this->position.Y }, this->width, this->height));
-	this->inventory= std::vector<std::vector<std::shared_ptr<Item>>>(inventoryRows, std::vector<std::shared_ptr<Item>>(inventoryColumns));
+	this->inventory = std::vector<std::vector<std::shared_ptr<Item>>>(inventoryRows, std::vector<std::shared_ptr<Item>>(inventoryColumns));
 }
 
 Player::Player() {
-	
+
 }
 
 Player::~Player() {
@@ -49,6 +51,7 @@ void Player::update() {
 	this->animationTimePassed++;;
 	Main::camera->setPos(this->center.X, this->center.Y);
 	this->handleWalking();
+	this->handleArmorModifiers();
 	checkDmgImmune();
 	Main::updateLightMap(this->center, 500);
 	Main::player->isCollidingWithGUI = false;
@@ -65,8 +68,8 @@ void Player::clearInventory() {
 
 
 
-bool Player::hurt(int dmg, float kb,Entity* src) {
-	if (Entity::hurt(dmg,kb,src)) {
+bool Player::hurt(int dmg, float kb, Entity* src) {
+	if (Entity::hurt(dmg, kb, src)) {
 		this->invulnerable = true;
 		this->dmgImmuneTime = SDL_GetTicks();
 		return true;
@@ -133,19 +136,19 @@ bool Player::pickup(std::shared_ptr<Item> item) {
 
 Vector2 Player::moveEntity(Vector2 velocity) {
 
-	Vector2 vel=Entity::moveEntity(velocity);
+	Vector2 vel = Entity::moveEntity(velocity);
 	if (this->arm->usingItem && !this->arm->getSwingItem()->canFlipWhenUsed) {
 		this->hDirection = oldHDirection;
 		this->arm->hDirection = oldHDirection;
 	}
-	if ((this->oldVelocity.Y!=0 || !this->isWalking) && this->onGround  )  {
+	if ((this->oldVelocity.Y != 0 || !this->isWalking) && this->onGround) {
 		vel.X = 0;
 	}
 	return vel;
 }
 
 void Player::jump() {
-	if (this->onGround) this->velocity.Y =-abs(jumpVelocity) - vAcceleration;
+	if (this->onGround) this->velocity.Y = -abs(jumpVelocity) - vAcceleration;
 }
 
 
@@ -163,7 +166,7 @@ bool Player::dropItem(std::shared_ptr<Item>& item) {
 	if (item != nullptr) {
 		std::shared_ptr<Item> item2;
 		item2.swap(item);
-		ItemPickup* pickup = new ItemPickup(item2, this->position);
+		ItemPickup* pickup =new ItemPickup(item2, this->position);
 		pickup->velocity = Vector2(0.3 * this->hDirection, -0.3);
 	}
 	return false;
@@ -174,8 +177,8 @@ void Player::leftClick() {
 	Vector2 pos = Cursor::cursorWorldPos;
 	if (Main::tiles[pos.X][pos.Y] != nullptr) Main::tiles[pos.X][pos.Y]->onLeftClick(this);
 	if (this->arm->timeToNextUse > 0) return;
-//use item
-	std::shared_ptr<Item> &selectedItem = this->inventory[0][selectedHBItem];
+	//use item
+	std::shared_ptr<Item>& selectedItem = this->inventory[0][selectedHBItem];
 	if (selectedItem.get() != nullptr) {
 		this->arm->useItemCancel();
 		this->arm->setHeldItem(selectedItem);
@@ -202,7 +205,7 @@ void Player::handleMouseInput() {
 }
 
 void Player::handleKeyInput() {
-	const Uint8* keys=SDL_GetKeyboardState(nullptr);
+	const Uint8* keys = SDL_GetKeyboardState(nullptr);
 	this->isWalking = false;
 	if (keys[SDL_SCANCODE_SPACE]) {
 		this->jump();
@@ -234,12 +237,13 @@ bool Player::handleWalking() {
 	if (abs(velocity.X) < 0.03) {
 		animationFrame = (int)PlayerSprite::IDLE;
 		if (!this->arm->usingItem) this->arm->rotation = 0;
+		this->arm2->rotation = 0;
 		return false;
 	}
- 
+
 
 	if (this->animationTimePassed < 15) return false;
-	PlayerSprite walkAnims[] = {PlayerSprite::WALK1,PlayerSprite::IDLE,PlayerSprite::WALK2,PlayerSprite::IDLE};
+	PlayerSprite walkAnims[] = { PlayerSprite::WALK1,PlayerSprite::IDLE,PlayerSprite::WALK2,PlayerSprite::IDLE };
 	this->walkFrame++;
 	if (this->walkFrame == std::size(walkAnims)) this->walkFrame = 0;
 	this->animationFrame = (int)walkAnims[this->walkFrame];
@@ -255,9 +259,16 @@ bool Player::handleWalking() {
 		default:
 			this->arm->rotation = 0;
 		}
+		this->arm2->rotation = (this->arm->rotation != 0) ? -this->arm->rotation : 0;
 
 	}
 	return true;
+}
+
+bool Player::renderEntity() {
+	this->arm->renderEntity();
+	this->arm2->renderEntity();
+	return Entity::renderEntity();
 }
 
 //void Player::swingAnim(Item* item) {
@@ -307,7 +318,7 @@ bool Player::handleWalking() {
 //	return end;
 //}
 
-bool Player::removeFromInventory(int row, int col,int amount) {
+bool Player::removeFromInventory(int row, int col, int amount) {
 	if (this->inventory[row][col] == nullptr) return false;
 	else {
 		this->inventory[row][col]->setCount(this->inventory[row][col]->getCount() - amount);
@@ -316,10 +327,10 @@ bool Player::removeFromInventory(int row, int col,int amount) {
 	}
 }
 
-bool Player::has(int itemID,Vector2* itemPos) {
+bool Player::has(int itemID, Vector2* itemPos) {
 	for (int x = 0; x < this->inventoryRows; x++) {
 		for (int y = 0; y < this->inventoryColumns; y++) {
-			if (this->inventory[x][y]!=nullptr && this->inventory[x][y]->id == itemID) {
+			if (this->inventory[x][y] != nullptr && this->inventory[x][y]->id == itemID) {
 				*itemPos = { x,y };
 				return true;
 			}
@@ -338,4 +349,8 @@ bool Player::has(AmmoType ammoID, Vector2* pos) {
 		}
 	}
 	return false;
+}
+
+void Player::handleArmorModifiers() {
+
 }

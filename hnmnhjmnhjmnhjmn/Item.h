@@ -66,3 +66,17 @@ public:
 
 	
 };
+
+class Accessory : public Item {
+public:
+	int defense = 0;
+	int kbResist = 0;
+	int health = 0;
+	int critChance = 0;
+	Accessory();
+};
+
+class ArmorPiece : public Accessory {
+public:
+	ArmorPiece();
+};

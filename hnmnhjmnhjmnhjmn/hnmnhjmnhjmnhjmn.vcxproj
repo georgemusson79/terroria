@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="accessories.cpp" />
     <ClCompile Include="arm.cpp" />
     <ClCompile Include="armedEntity.cpp" />
     <ClCompile Include="arrow.cpp" />

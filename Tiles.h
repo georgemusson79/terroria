@@ -1,7 +1,7 @@
 //tiles.h
 #include "Tile.h"
 #include <SDL.h>
-
+#include <memory>
 #pragma once
 class Item;
 enum tileIDEnum {

@@ -84,7 +84,7 @@ bool Camera::renderTileWalls() {
 }
 
 bool Camera::renderEntities() {
-	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted() && (Main::player==nullptr || Main::player->center.distance(entity->center)< (this->diagonalLength/2)+(std::sqrt(std::powf(entity->width, 2) + std::powf(entity->height, 2))/2))) {
+	for (Entity* entity : Main::entities) if (entity->renderToScreen && !entity->toBeDeleted() && (Main::player==nullptr || Main::player->center.distance(entity->center)< (this->diagonalLength/2)+(std::sqrt(std::pow(entity->width, 2) + std::pow(entity->height, 2))/2))) {
 		if (Main::player == nullptr || entity != Main::player->arm || entity!= Main::player->arm->getSwingItem()) {
 			entity->renderEntity();
 		}
@@ -129,7 +129,7 @@ void Camera::updateCameraBounds() {
 	this->cameraBounds= this->checkCameraBoundsAt({ this->X, this->Y });
 	screenWidth = this->cameraBounds.bottomRight.X - this->cameraBounds.bottomLeft.X;
 	screenHeight = this->cameraBounds.bottomLeft.Y - this->cameraBounds.topLeft.Y;
-	diagonalLength = std::sqrt(std::powf(screenWidth, 2) + std::powf(screenHeight, 2));
+	diagonalLength = std::sqrt(std::pow(screenWidth, 2) + std::pow(screenHeight, 2));
 }
 
 

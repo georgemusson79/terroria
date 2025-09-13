@@ -36,7 +36,7 @@ void Debug::DebugHotkeyFunctions(SDL_Keycode key) {
 }
 
 void Debug::generateMessageBox(std::wstring title,std::wstring text) {
-    MessageBox(NULL,text.c_str(),title.c_str(), MB_OK);
+    MessageBoxW(NULL, text.c_str(), title.c_str(), MB_OK);
 }
 
 void Debug::outputCursorPos() {

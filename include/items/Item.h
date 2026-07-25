@@ -1,7 +1,7 @@
-//item.h
+// item.h
 #include "headers.h"
-#include "ItemIDs.h"
-#include "Item_specialisedTypes.h"
+#include "items/ItemIDs.h"
+#include "items/Item_specialisedTypes.h"
 #include "Vector2.h"
 #pragma once
 class Texture;
@@ -10,11 +10,11 @@ class ItemSwing;
 class Player;
 class Arm;
 
-
-class Item {
+class Item
+{
 
 public:
-	bool canFlipWhenUsed = true; //player can turn around when using the item
+	bool canFlipWhenUsed = true; // player can turn around when using the item
 	bool null = false;
 	float defaultHeldRotation = 0;
 	SpecialisedType itemType = SpecialisedType::GENERIC;
@@ -32,7 +32,7 @@ public:
 	int width = 0;
 	int critChance = 0;
 	int height = 0;
-	int useTime =0;
+	int useTime = 0;
 	int useAnimation = -1;
 	int manaCost = 0;
 	int useSound = -1;
@@ -46,28 +46,27 @@ public:
 	bool isStackable = true;
 	bool melee = false;
 	std::string hotbarTexturePath = "";
-	Vector2 handOffset = { 0,0 }; //where the item should be held in relation to the player hand
+	Vector2 handOffset = {0, 0}; // where the item should be held in relation to the player hand
 	double rotationInInventory = 0;
 	std::shared_ptr<SDL_Texture> hotbarTexture = nullptr;
 
-	virtual Entity* getRangedProjectile(Vector2 position, Entity* owner, Vector2 initialvelocity);
-	ItemSwing* getItemProjectile(Vector2 position,Entity* owner);
-	virtual bool use(Player* player);
-	virtual bool use(Arm* arm);
-	virtual bool use(Arm* arm,Entity* proj);
-	virtual bool shoot(Arm* src,double rotation, Entity* projectile);
-	virtual void renderTexture(SDL_Rect* pos);
+	virtual Entity *getRangedProjectile(Vector2 position, Entity *owner, Vector2 initialvelocity);
+	ItemSwing *getItemProjectile(Vector2 position, Entity *owner);
+	virtual bool use(Player *player);
+	virtual bool use(Arm *arm);
+	virtual bool use(Arm *arm, Entity *proj);
+	virtual bool shoot(Arm *src, double rotation, Entity *projectile);
+	virtual void renderTexture(SDL_Rect *pos);
 	virtual void setTexture(std::string path);
 	virtual void setHotbarTexture(std::string path);
 	void setCount(int count);
 	int getCount();
 	virtual ~Item();
 	Item();
-
-	
 };
 
-class Accessory : public Item {
+class Accessory : public Item
+{
 public:
 	int defense = 0;
 	int kbResist = 0;
@@ -76,7 +75,8 @@ public:
 	Accessory();
 };
 
-class ArmorPiece : public Accessory {
+class ArmorPiece : public Accessory
+{
 public:
 	ArmorPiece();
 };

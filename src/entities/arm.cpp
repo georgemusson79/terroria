@@ -4,6 +4,13 @@
 #include "Player.h"
 #include "Item.h"
 
+
+//game will search assets/armor/armorFolderName
+ void Arm::equipArmour(std::string armorFolderName) {
+ 	std::string path="assets/armor/"+armorFolderName+"/"+armorFolderName+"_arm.png";
+ 	this->setTexture(path);
+ }
+
 Arm::Arm(Vector2 shoulderPos, Vector2 handPos, float width, float height, std::string pathToTexture, bool useDefaultHitbox, Entity* owner, Vector2 startPos) : Entity(shoulderPos, width, height, -1, pathToTexture, false, false, false) {
 	this->renderPriority = 0;
 	this->defaultShoulderPos = shoulderPos;

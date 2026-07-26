@@ -1,7 +1,9 @@
 #include "world.h"
 #include "Main.h"
 #include "Tiles.h"
+#include "engineDebug.h"
 #include <cmath>
+#include <random>
 
 World::World() {
   int width = WORLD_WIDTH + 10;
@@ -33,4 +35,40 @@ void World::sinTiles() {
       prevY = y;
     }
   }
+}
+
+std::vector<int> World::valueNoiseGen(int distance, int frequency,
+                                      int amplitude) {
+  std::vector<int> yvals(distance);
+  int numPoints = std::ceil((float)distance / (float)frequency) + 1;
+  std::vector<float> values(numPoints);
+  int sz = values.size();
+
+  for (int i = 0; i < values.size(); i++) {
+    int rnd = rand() % (amplitude + 1);
+    if (rand() % 2 == 0)
+      rnd *= -1;
+
+    values[i] = rnd;
+  }
+  int step = 0;
+  for (int pointPos = 0; pointPos < values.size() - 1 && step < yvals.size();
+       pointPos++) {
+
+    // smoothstep interpolation
+    float A = values[pointPos];
+    float B = values[pointPos + 1];
+    for (float x = 0; x < frequency; x++) {
+      float t = x / (float)frequency;
+      t = smoothstep(t);
+      float lerp = A + (t * (B - A));
+      int intLerp = std::floor(lerp);
+      yvals[step] = intLerp;
+      step++;
+      if (step >= yvals.size())
+        break;
+    }
+  }
+
+  return yvals;
 }

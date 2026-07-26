@@ -144,7 +144,7 @@ Vector2 Player::moveEntity(Vector2 velocity) {
     this->hDirection = oldHDirection;
     this->arm->hDirection = oldHDirection;
   }
-  if ((this->oldVelocity.Y != 0 || !this->isWalking) && this->onGround) {
+  if (!this->isWalking && this->onGround) {
     vel.X = 0;
   }
   return vel;

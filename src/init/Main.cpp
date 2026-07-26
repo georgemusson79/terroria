@@ -54,7 +54,12 @@ Player *Main::p2 = nullptr;
 int main(int argc, char **argv) {
   // this must happen first
   Main::init();
-  Main::world->temp_populateHalfTiles(Dirt(2, 2, false), WoodWall(2, 2, false));
+  // Main::world->valueNoiseGen(500, 30, 20);
+
+  // Main::world->temp_populateHalfTiles(Dirt(2, 2, false), WoodWall(2, 2,
+  // false));
+  Main::world->temp_populateByValueGen(Dirt(2, 2, false),
+                                       WoodWall(2, 2, false));
   Main::camera = new Camera(1000, 1000, Main::renderer);
   Main::player = new Player({500, Main::world->WORLD_HEIGHT / 2});
   Main::player->setY(Main::player->position.Y - 10);

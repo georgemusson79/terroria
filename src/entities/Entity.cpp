@@ -292,50 +292,80 @@ std::vector<Tile *> Entity::collidesWithTiles() {
 }
 
 Vector2 Entity::moveEntity(Vector2 velocity) {
+  // Store original position and velocity for collision rollback and state
+  // tracking
   Vector2 oldPos = this->position;
   this->oldVelocity = this->velocity;
   std::vector<Tile *> tiles;
+
+  // --- HORIZONTAL (X) MOVEMENT & COLLISION ---
   if (this->setX(this->position.X + velocity.X)) {
+    // Track total horizontal distance moved
     this->distanceTravelled.X += abs(velocity.X);
+
+    // Update facing direction based on horizontal movement vector
     if (velocity.X < 0) {
       oldHDirection = this->hDirection;
-      this->hDirection = -1;
+      this->hDirection = -1; // Facing left
     } else if (velocity.X > 0) {
       oldHDirection = this->hDirection;
-      this->hDirection = 1;
+      this->hDirection = 1; // Facing right
     }
+
+    // Check for tile collisions unless noclip mode is active
     if (!Debug::noclip)
       tiles = this->collidesWithTiles();
+
+    // Handle horizontal collision response
     if (tiles.size() > 0) {
       this->onTileCollision(tiles);
-      velocity.X = 0;
-      this->setX(oldPos.X);
+      velocity.X = 0;       // Stop horizontal momentum
+      this->setX(oldPos.X); // Revert X position to prevent clipping
     }
-  } else
-    velocity.X = 0;
+  } else {
+    velocity.X = 0; // Set position failed, reset horizontal velocity
+  }
+
+  // --- GRAVITY APPLICATION ---
+  // Apply downward acceleration if gravity is enabled and terminal velocity
+  // hasn't been reached
   if (this->gravity == true && velocity.Y != this->maxYVelocity)
     velocity.Y += vAcceleration;
+
+  // --- VERTICAL (Y) MOVEMENT & COLLISION ---
   if (this->setY(this->position.Y + velocity.Y)) {
+    // Track total vertical distance moved
     this->distanceTravelled.Y += abs(velocity.Y);
-    onGround = false;
+    onGround = false; // Assume airborne until ground collision is confirmed
+
+    // Update vertical direction state
     if (velocity.Y < 0)
-      this->vDirection = -1;
+      this->vDirection = -1; // Moving up (jumping)
     else if (velocity.Y > 0)
-      this->vDirection = 1;
+      this->vDirection = 1; // Moving down (falling)
+
+    // Check for tile collisions unless noclip mode is active
     if (!Debug::noclip)
       tiles = this->collidesWithTiles();
+
+    // Handle vertical collision response
     if (tiles.size() > 0) {
       this->onTileCollision(tiles);
+
+      // If moving downwards on collision, entity has landed on the ground
       if (this->vDirection == 1)
         onGround = true;
-      velocity.Y = 0;
-      this->setY(oldPos.Y);
+
+      velocity.Y = 0;       // Stop vertical momentum
+      this->setY(oldPos.Y); // Revert Y position to prevent clipping
     }
   } else {
     // this->setPos(this->oldPos.Y);
-    this->velocity.Y = 0;
+    this->velocity.Y =
+        0; // Set position failed, reset internal vertical velocity
   }
 
+  // Return the resolved velocity vector after applying collisions
   return velocity;
 }
 

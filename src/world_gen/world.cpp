@@ -1,5 +1,6 @@
 #include "world.h"
 #include "Main.h"
+#include "TileWalls.h"
 #include "Tiles.h"
 #include "engineDebug.h"
 #include <cmath>
@@ -33,6 +34,31 @@ void World::sinTiles() {
         }
       }
       prevY = y;
+    }
+  }
+}
+
+void World::updateWorld() {
+  int tilesToUpdate = 500;
+  for (int i = 0; i < tilesToUpdate; i++) {
+    int x = Main::randomInt(0, WORLD_WIDTH);
+    int y = Main::randomInt(0, WORLD_HEIGHT);
+    if (Main::world->tileAt(x, y) != nullptr)
+      Main::world->tileAt(x, y)->randomTickUpdate();
+  }
+}
+
+void World::temp_populateByValueGen() {
+
+  std::vector<int> tilePoints = this->valueNoiseGen(WORLD_WIDTH, 30, 20);
+
+  for (int x = 0; x < tilePoints.size(); x++) {
+    int y = WORLD_HEIGHT / 2;
+    y -= tilePoints[x];
+    for (int dy = y; dy <= WORLD_HEIGHT; dy++) {
+      bool isGrass = (dy == y) ? true : false;
+      new WoodWall(x, dy);
+      new Dirt(x, dy, true, isGrass);
     }
   }
 }

@@ -31,24 +31,9 @@ public:
     }
   }
 
-  template <typename TileInstance, typename TileWallInstance>
-  void temp_populateByValueGen(TileInstance tile, TileWallInstance tilewall) {
-    static_assert(std::is_base_of_v<Tile, TileInstance>,
-                  "input is not of type tile");
-    static_assert(std::is_base_of_v<TileWall, TileWallInstance>,
-                  "input is not of type tilewall");
+  void updateWorld();
 
-    std::vector<int> tilePoints = this->valueNoiseGen(WORLD_WIDTH, 30, 20);
-
-    for (int x = 0; x < tilePoints.size(); x++) {
-      int y = WORLD_HEIGHT / 2;
-      y -= tilePoints[x];
-      for (int dy = y; dy <= WORLD_HEIGHT; dy++) {
-        new TileWallInstance(x, dy);
-        new TileInstance(x, dy);
-      }
-    }
-  }
+  void temp_populateByValueGen();
 
   std::vector<int> valueNoiseGen(int distance, int frequency, int amplitude);
 
@@ -56,7 +41,13 @@ public:
     return (x >= 0 && x <= WORLD_WIDTH && y >= 0 && y <= WORLD_HEIGHT);
   }
 
-  Tile *tileAt(int x, int y) { return tiles[x][y]; }
+  Tile *tileAt(int x, int y) {
+    if (x < 0 || y < 0 || x > this->WORLD_WIDTH || y > this->WORLD_HEIGHT)
+
+      return nullptr;
+
+    return tiles[x][y];
+  }
   bool setTileAt(int x, int y, Tile *tile) {
     if (isInWorld(x, y)) {
       tiles[x][y] = tile;

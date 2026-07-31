@@ -58,8 +58,7 @@ int main(int argc, char **argv) {
 
   // Main::world->temp_populateHalfTiles(Dirt(2, 2, false), WoodWall(2, 2,
   // false));
-  Main::world->temp_populateByValueGen(Dirt(2, 2, false),
-                                       WoodWall(2, 2, false));
+  Main::world->temp_populateByValueGen();
   Main::camera = new Camera(1000, 1000, Main::renderer);
   Main::player = new Player({500, Main::world->WORLD_HEIGHT / 2});
   Main::player->setY(Main::player->position.Y - 10);
@@ -101,6 +100,7 @@ int main(int argc, char **argv) {
 
     Cursor::update();
     Main::handleEvents(&e, nullptr);
+    Main::world->updateWorld();
     if (Main::player != nullptr) {
 
       Main::player->update();

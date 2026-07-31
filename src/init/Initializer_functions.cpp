@@ -44,8 +44,11 @@ void Main::init() {
 
 void Main::initAllTextures() {
   // some textures are pre emptively initialised mostly for performance reasons
+
   Main::tileWallTexture.insert(
       {WOODWALL, IMG_LoadTexture(Main::renderer, "assets\\tiles\\wood.png")});
+  Main::tileTexture.insert(
+      {GRASS, IMG_LoadTexture(Main::renderer, "assets\\tiles\\grass.png")});
   Main::tileTexture.insert(
       {DIRT, IMG_LoadTexture(Main::renderer, "assets\\tiles\\dirt.png")});
   Main::tileTexture.insert(

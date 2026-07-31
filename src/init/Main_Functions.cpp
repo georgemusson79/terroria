@@ -54,14 +54,6 @@ double Main::convertPixelSizeToTileSize(int pixelValue, Camera *camera) {
   return double(pixelValue) / camera->zoom();
 }
 
-void Main::updateTiles() {
-  for (int x = 0; x < Main::world->WORLD_WIDTH; x++) {
-    for (int y = 0; y < Main::world->WORLD_HEIGHT; y++) {
-      Main::world->tileAt(x, y)->update();
-    }
-  }
-}
-
 int Main::randomInt(int start, int end) {
   end++;
   return (rand() % (end - start)) + start;

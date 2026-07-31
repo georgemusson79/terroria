@@ -70,6 +70,21 @@ void Tile::create() {
   if (Main::world->tileAt(this->X, this->Y) != nullptr)
     Main::world->tileAt(this->X, this->Y)->destroy();
   Main::world->setTileAt(this->X, this->Y, this);
+
+  // update surrounding 4 tiles
+  Vector2 adjTileLeft = {this->X - 1, this->Y};
+  Vector2 adjTileRight = {this->X + 1, this->Y};
+  Vector2 adjTileTop = {this->X, this->Y - 1};
+  Vector2 adjTileBottom = {this->X, this->Y + 1};
+  std::vector<Vector2> adjTiles = {adjTileLeft, adjTileRight, adjTileTop,
+                                   adjTileBottom};
+
+  for (Vector2 tilePos : adjTiles) {
+    Tile *tile = Main::world->tileAt(tilePos.X, tilePos.Y);
+    if (tile != nullptr)
+      tile->update();
+  }
+
   if (this->lightStrength > 0)
     this->updateLightMap();
 }

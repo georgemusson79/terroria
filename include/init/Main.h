@@ -63,7 +63,6 @@ iVector2 convertWorldPosToCameraPos(Vector2 pos);
 int convertTileSizeToPixelSize(double value, Camera *camera = Main::camera);
 double convertPixelSizeToTileSize(int pixelSize, Camera *camera = Main::camera);
 void handleEvents(SDL_Event *e, void *ctx = nullptr);
-void updateTiles();
 void saveWorld(std::string filePath);
 int randomInt(int start, int end);
 void init();

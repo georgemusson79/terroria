@@ -44,6 +44,19 @@ public:
     if (Main::world->tileAt(tile.X, tile.Y) != nullptr)
       Main::world->tileAt(tile.X, tile.Y)->destroy();
     Main::world->setTileAt(tile.X, tile.Y, new tileInstance(tile));
+    // update surrounding 4 tiles
+    Vector2 adjTileLeft = {tile.X - 1, tile.Y};
+    Vector2 adjTileRight = {tile.X + 1, tile.Y};
+    Vector2 adjTileTop = {tile.X, tile.Y - 1};
+    Vector2 adjTileBottom = {tile.X, tile.Y + 1};
+    std::vector<Vector2> adjTiles = {adjTileLeft, adjTileRight, adjTileTop,
+                                     adjTileBottom};
+
+    for (Vector2 tilePos : adjTiles) {
+      Tile *tile = Main::world->tileAt(tilePos.X, tilePos.Y);
+      if (tile != nullptr)
+        tile->update();
+    }
   }
   virtual void getInfo();
   inline virtual void create();
@@ -53,6 +66,7 @@ public:
   virtual void onRightClick(Player *player);
   virtual void onLeftClick(Player *player);
   virtual void update();
+  virtual void randomTickUpdate() {}
   virtual SDL_Texture *getTexture();
   virtual bool draw(SDL_Renderer *renderer, Camera &camera);
   inline virtual SquareHitbox getHitbox();

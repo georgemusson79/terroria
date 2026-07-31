@@ -10,6 +10,12 @@
 #include "Vector2.h"
 #include "engineDebug.h"
 
+void Player::giveStartingItems() {
+  std::shared_ptr<Item> block = std::shared_ptr<Item>(new WoodItem());
+  block.get()->setCount(50);
+  this->pickup(block);
+}
+
 Player::Player(Vector2 pos) {
   this->friendly = true;
   this->hostile = false;
@@ -37,6 +43,7 @@ Player::Player(Vector2 pos) {
       {this->position.X, this->position.Y}, this->width, this->height));
   this->inventory = std::vector<std::vector<std::shared_ptr<Item>>>(
       inventoryRows, std::vector<std::shared_ptr<Item>>(inventoryColumns));
+  this->giveStartingItems();
 }
 
 Player::Player() {}
